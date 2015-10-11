@@ -4,13 +4,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.content.Intent;
 
 public class MainMenuActivity extends AppCompatActivity {
+    Button aboutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        aboutButton = (Button) findViewById(R.id.aboutButton);
+        aboutButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainMenuActivity.this.onAboutButtonClick(v);
+            }
+        });
     }
 
     @Override
@@ -33,5 +45,9 @@ public class MainMenuActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public void onAboutButtonClick(View view) {
+        Intent myIntent = new Intent(MainMenuActivity.this, AboutActivity.class);
+        startActivity(myIntent);
     }
 }
