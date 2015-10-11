@@ -1,12 +1,121 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="edu.pacificu.chordinate.chordinate.AboutActivity">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollViewAbout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    android:scrollIndicators="right">
 
-    <TextView android:text="@string/about_text" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="edu.pacificu.chordinate.chordinate.AboutActivity"
+        android:scrollIndicators="right">
 
-</RelativeLayout>
+        <TextView android:text="@string/about_version_text" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/TextViewVersion"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:focusable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/about_contact_title_text"
+            android:id="@+id/TextViewContactTitle"
+            android:layout_below="@+id/TextViewVersion"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/about_contact_team_name_1"
+            android:id="@+id/textViewContactName1"
+            android:layout_below="@+id/TextViewContactTitle"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/about_contact_team_name_2"
+            android:id="@+id/textViewContactName2"
+            android:layout_below="@+id/textViewContactName1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/about_git_title"
+            android:id="@+id/textViewGitTitle"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/textViewContactName2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/about_git_url"
+            android:id="@+id/textViewGitUrl"
+            android:layout_below="@+id/textViewGitTitle"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:autoLink="web" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/about_contact_team_email_1"
+            android:id="@+id/textViewContactEmail1"
+            android:layout_below="@+id/TextViewContactTitle"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:autoText="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/about_contact_team_email_2"
+            android:id="@+id/textViewContactEmail2"
+            android:layout_alignTop="@+id/textViewContactName2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/about_license_title"
+            android:id="@+id/textViewLicenseTitle"
+            android:layout_marginTop="22dp"
+            android:layout_below="@+id/textViewGitUrl"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/about_license_text"
+            android:id="@+id/textViewLicenseText"
+            android:layout_below="@+id/textViewLicenseTitle"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+</ScrollView>
