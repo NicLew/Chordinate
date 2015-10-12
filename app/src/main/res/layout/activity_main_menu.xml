@@ -8,10 +8,86 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/about_btn_str"
+        android:text="@string/main_about_btn_str"
         android:id="@+id/aboutButton"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/settingsButton"
+        android:layout_alignLeft="@+id/recordButton"
+        android:layout_alignStart="@+id/recordButton"
+        android:layout_alignRight="@+id/settingsButton"
+        android:layout_alignEnd="@+id/settingsButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_keyboard_btn_str"
+        android:id="@+id/keyboardButton"
+        android:layout_marginTop="28dp"
+        android:layout_below="@+id/textViewMainSubtitle"
+        android:layout_alignLeft="@+id/compsButton"
+        android:layout_alignStart="@+id/compsButton"
+        android:layout_alignRight="@+id/recordButton"
+        android:layout_alignEnd="@+id/recordButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_record_btn_str"
+        android:id="@+id/recordButton"
+        android:layout_below="@+id/keyboardButton"
+        android:layout_alignRight="@+id/compsButton"
+        android:layout_alignEnd="@+id/compsButton"
+        android:layout_alignLeft="@+id/compsButton"
+        android:layout_alignStart="@+id/compsButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_instr_btn_str"
+        android:id="@+id/instrButton"
+        android:layout_below="@+id/compsButton"
+        android:layout_alignLeft="@+id/compsButton"
+        android:layout_alignStart="@+id/compsButton"
+        android:layout_alignRight="@+id/compsButton"
+        android:layout_alignEnd="@+id/compsButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_settings_btn_str"
+        android:id="@+id/settingsButton"
+        android:layout_below="@+id/instrButton"
+        android:layout_alignLeft="@+id/instrButton"
+        android:layout_alignStart="@+id/instrButton"
+        android:layout_alignRight="@+id/instrButton"
+        android:layout_alignEnd="@+id/instrButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_comps_btn_str"
+        android:id="@+id/compsButton"
+        android:layout_below="@+id/recordButton"
+        android:layout_alignRight="@+id/textViewMainTitle"
+        android:layout_alignEnd="@+id/textViewMainTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/main_menu_title"
+        android:id="@+id/textViewMainTitle"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="147dp" />
+        android:layout_marginTop="29dp"
+        android:textSize="@dimen/abc_text_size_display_1_material" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/main_menu_subtitle"
+        android:id="@+id/textViewMainSubtitle"
+        android:layout_below="@+id/textViewMainTitle"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
