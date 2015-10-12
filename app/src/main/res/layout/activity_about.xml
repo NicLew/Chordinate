@@ -80,10 +80,10 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/about_contact_team_email_1"
             android:id="@+id/textViewContactEmail1"
-            android:layout_below="@+id/TextViewContactTitle"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:autoText="false" />
+            android:autoText="false"
+            android:layout_above="@+id/textViewContactEmail2"
+            android:layout_alignLeft="@+id/textViewContactEmail2"
+            android:layout_alignStart="@+id/textViewContactEmail2" />
 
         <TextView
             android:layout_width="wrap_content"
