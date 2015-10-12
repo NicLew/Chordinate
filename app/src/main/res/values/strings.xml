@@ -3,13 +3,14 @@
 
     <string name="hello_world">Hello World!</string>
     <string name="about_version_text">Version 1.0A</string>
-    <string name="about_contact_title_text">Contact Development Team</string>
+    <string name="about_contact_title_text">Development Team</string>
     <string name="about_contact_team_name_1">Jacob Lundgren</string>
     <string name="about_contact_team_name_2">Nicole Lewey</string>
     <string name="about_contact_team_email_1">lund3481@pacificu.edu</string>
     <string name="about_contact_team_email_2">lewe4441@pacificu.edu </string>
-    <string name="about_git_title">GitHub Info</string>
+    <string name="about_git_title">GitHub</string>
     <string name="about_git_url">https://github.com/NicLew/Chordinate</string>
+    <string name="about_git_issues">Report bugs using GitHub Issues</string>
     <string name="about_license_title">The MIT License (MIT)</string>
     <string name="about_license_text">Copyright (c) 2015\n\nPermission is hereby granted, free
         of charge, to any person obtaining a copy of this software and associated documentation
