@@ -1,93 +1,124 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainMenuActivity">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollViewAbout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    android:scrollIndicators="none"
+    android:background="@color/main_menu_bkgrd_color">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_about_btn_str"
-        android:id="@+id/aboutButton"
-        android:layout_below="@+id/settingsButton"
-        android:layout_alignLeft="@+id/recordButton"
-        android:layout_alignStart="@+id/recordButton"
-        android:layout_alignRight="@+id/settingsButton"
-        android:layout_alignEnd="@+id/settingsButton" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainMenuActivity"
+        android:backgroundTint="@color/material_grey_850">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_keyboard_btn_str"
-        android:id="@+id/keyboardButton"
-        android:layout_marginTop="28dp"
-        android:layout_below="@+id/textViewMainSubtitle"
-        android:layout_alignLeft="@+id/compsButton"
-        android:layout_alignStart="@+id/compsButton"
-        android:layout_alignRight="@+id/recordButton"
-        android:layout_alignEnd="@+id/recordButton" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_about_btn_str"
+            android:id="@+id/aboutButton"
+            android:layout_below="@+id/settingsButton"
+            android:layout_alignLeft="@+id/recordButton"
+            android:layout_alignStart="@+id/recordButton"
+            android:layout_alignRight="@+id/settingsButton"
+            android:layout_alignEnd="@+id/settingsButton"
+            android:background="@drawable/bottom_button"
+            android:textColor="@color/material_grey_850"
+            android:textSize="23dp"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_record_btn_str"
-        android:id="@+id/recordButton"
-        android:layout_below="@+id/keyboardButton"
-        android:layout_alignRight="@+id/compsButton"
-        android:layout_alignEnd="@+id/compsButton"
-        android:layout_alignLeft="@+id/compsButton"
-        android:layout_alignStart="@+id/compsButton" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_keyboard_btn_str"
+            android:id="@+id/keyboardButton"
+            android:background="@drawable/top_button"
+            android:layout_below="@+id/imageViewAppTitle"
+            android:layout_centerHorizontal="true"
+            android:textSize="23dp"
+            android:textColor="@color/material_grey_850"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:textAllCaps="false" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_instr_btn_str"
-        android:id="@+id/instrButton"
-        android:layout_below="@+id/compsButton"
-        android:layout_alignLeft="@+id/compsButton"
-        android:layout_alignStart="@+id/compsButton"
-        android:layout_alignRight="@+id/compsButton"
-        android:layout_alignEnd="@+id/compsButton" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_record_btn_str"
+            android:id="@+id/recordButton"
+            android:background="@drawable/middle_button1"
+            android:layout_below="@+id/keyboardButton"
+            android:layout_alignLeft="@+id/keyboardButton"
+            android:layout_alignStart="@+id/keyboardButton"
+            android:textColor="@color/material_grey_850"
+            android:textSize="23dp"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:textAllCaps="false" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_settings_btn_str"
-        android:id="@+id/settingsButton"
-        android:layout_below="@+id/instrButton"
-        android:layout_alignLeft="@+id/instrButton"
-        android:layout_alignStart="@+id/instrButton"
-        android:layout_alignRight="@+id/instrButton"
-        android:layout_alignEnd="@+id/instrButton" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_instr_btn_str"
+            android:id="@+id/instrButton"
+            android:layout_below="@+id/compsButton"
+            android:layout_alignLeft="@+id/compsButton"
+            android:layout_alignStart="@+id/compsButton"
+            android:layout_alignRight="@+id/compsButton"
+            android:layout_alignEnd="@+id/compsButton"
+            android:background="@drawable/middle_button3"
+            android:textColor="@color/material_grey_850"
+            android:textSize="23dp"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:textAllCaps="false" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_comps_btn_str"
-        android:id="@+id/compsButton"
-        android:layout_below="@+id/recordButton"
-        android:layout_alignRight="@+id/textViewMainTitle"
-        android:layout_alignEnd="@+id/textViewMainTitle" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_settings_btn_str"
+            android:id="@+id/settingsButton"
+            android:layout_below="@+id/instrButton"
+            android:layout_alignLeft="@+id/instrButton"
+            android:layout_alignStart="@+id/instrButton"
+            android:layout_alignRight="@+id/instrButton"
+            android:layout_alignEnd="@+id/instrButton"
+            android:background="@drawable/middle_button4"
+            android:textColor="@color/material_grey_850"
+            android:textSize="23dp"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:textAllCaps="false" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/main_menu_title"
-        android:id="@+id/textViewMainTitle"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="29dp"
-        android:textSize="@dimen/abc_text_size_display_1_material" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_comps_btn_str"
+            android:id="@+id/compsButton"
+            android:background="@drawable/middle_button2"
+            android:layout_below="@+id/recordButton"
+            android:layout_alignLeft="@+id/recordButton"
+            android:layout_alignStart="@+id/recordButton"
+            android:textColor="@color/material_grey_850"
+            android:textSize="23dp"
+            android:typeface="serif"
+            android:textStyle="bold"
+            android:textAllCaps="false" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/main_menu_subtitle"
-        android:id="@+id/textViewMainSubtitle"
-        android:layout_below="@+id/textViewMainTitle"
-        android:layout_centerHorizontal="true" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:id="@+id/imageViewAppTitle"
+            android:src="@drawable/chordinate_title"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>
