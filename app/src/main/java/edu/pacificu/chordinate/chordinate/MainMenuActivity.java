@@ -95,8 +95,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void onKeyboardButtonClick(View view) {
         view.setBackgroundResource(R.drawable.top_button_press);
-        //Intent myIntent = new Intent(MainMenuActivity.this, NewActivity.class);
-        //startActivity(myIntent);
+        Intent myIntent = new Intent(MainMenuActivity.this, KeyboardActivity.class);
+        startActivity(myIntent);
     }
 
     public void onRecordButtonClick(View view) {

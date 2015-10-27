@@ -20,6 +20,12 @@
             android:name=".AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
+        <activity
+            android:name=".KeyboardActivity"
+            android:label="@string/title_activity_keyboard"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="landscape" >
+        </activity>
     </application>
 
 </manifest>
