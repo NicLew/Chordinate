@@ -30,7 +30,7 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
 
-        recordButton = (Button) findViewById(R.id.recordButton);
+        recordButton = (Button) findViewById(R.id.recordMenuButton);
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
