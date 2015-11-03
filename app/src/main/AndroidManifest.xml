@@ -23,8 +23,10 @@
         <activity
             android:name=".KeyboardActivity"
             android:label="@string/title_activity_keyboard"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".RecordActivity" >
         </activity>
     </application>
 
