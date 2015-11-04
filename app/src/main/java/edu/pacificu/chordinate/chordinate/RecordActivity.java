@@ -23,6 +23,9 @@ public class RecordActivity extends AppCompatActivity {
     String mFileName;
     int numRec = 0;
 
+    private MediaPlayer mPlayer = new MediaPlayer();
+    boolean bIsPlaying = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +80,32 @@ public class RecordActivity extends AppCompatActivity {
             mRecorder.stop();
             mRecorder.reset();
             mRecorder.release();
+            mRecorder = null;
             Toast.makeText(getApplicationContext(), "Recording stopped.", Toast.LENGTH_LONG).show();
         }
     }
 
     public void onPlayButtonClick(View view) {
-        // call java classes
+        //mPlayer = new MediaPlayer();
+
+        if (!bIsPlaying)
+        {
+            try {
+                mPlayer.setDataSource(mFileName);
+                mPlayer.prepare();
+                mPlayer.start();
+                bIsPlaying = true;
+                Toast.makeText(getApplicationContext(), "Playback started.", Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                //Log.e(LOG_TAG, "prepare() failed");
+            }
+        }
+        else
+        {
+            bIsPlaying = false;
+            mPlayer.release();
+            mPlayer = null;
+            Toast.makeText(getApplicationContext(), "Playback stopped.", Toast.LENGTH_LONG).show();
+        }
     }
 }
