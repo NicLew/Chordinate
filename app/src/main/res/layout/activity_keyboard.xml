@@ -231,4 +231,12 @@
         android:layout_toRightOf="@+id/E2_button"
         android:layout_toEndOf="@+id/E2_button" />
 
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/horizontalScrollView"
+        android:layout_alignTop="@+id/C1_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
