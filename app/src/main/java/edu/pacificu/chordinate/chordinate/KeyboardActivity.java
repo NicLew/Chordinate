@@ -1,5 +1,7 @@
 package edu.pacificu.chordinate.chordinate;
 
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -30,6 +32,15 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
     Button E2Button;
     Spinner OctSpinner;
     TextView PlayedNote;
+    SoundPool KeyboardSoundPool;
+    SoundPool.Builder KeyboardSPBuilder;
+    private int[] SoundID = new int[41];
+    private int[] SoundFileID = {R.raw.c3, R.raw.cs3, R.raw.d3, R.raw.ds3, R.raw.e3, R.raw.f3,
+            R.raw.fs3, R.raw.g3, R.raw.gs3, R.raw.a3, R.raw.as3, R.raw.b3, R.raw.c4, R.raw.cs4,
+            R.raw.d4, R.raw.ds4, R.raw.e4, R.raw.f4, R.raw.fs4, R.raw.g4, R.raw.gs4, R.raw.a4,
+            R.raw.as4, R.raw.b4, R.raw.c5, R.raw.cs5, R.raw.d5, R.raw.ds5, R.raw.e5, R.raw.f5,
+            R.raw.fs5, R.raw.g5, R.raw.gs5, R.raw.a5, R.raw.as5, R.raw.b5, R.raw.c5, R.raw.cs5,
+            R.raw.d5, R.raw.ds5, R.raw.e5};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +106,32 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
         OctSpinner.setAdapter(stringArrayAdapter);
 
         PlayedNote = (TextView) findViewById(R.id.textView);
+
+        KeyboardSPBuilder = new SoundPool.Builder();
+        KeyboardSPBuilder.setMaxStreams(1);
+        KeyboardSoundPool = KeyboardSPBuilder.build();
+
+        for (int i = 0; i < SoundFileID.length; i ++)
+        {
+            SoundID[i] = KeyboardSoundPool.load (this,SoundFileID[i], 1);
+        }
     }
 
     public boolean onTouch(View v, MotionEvent event)
     {
-        int id = v.getId();
+        int id = v.getId(), keyNum = 0;
+        int octNum = 0;
+        String sId = (String) OctSpinner.getSelectedItem();
+        switch (sId)
+        {
+            case "Middle C":
+                octNum = 1; break;
+            case "High C":
+                octNum = 2; break;
+            default:
+                octNum = 0;
+        }
+
         if (id == R.id.C1_button ||
                 id == R.id.F1_button ||
                 id == R.id.C2_button) {
@@ -110,12 +142,16 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                 switch (id)
                 {
                     case R.id.C1_button:
-                        PlayedNote.setText("C1"); break;
+                        PlayedNote.setText("C1");
+                        keyNum = 0; break;
                     case R.id.F1_button:
-                        PlayedNote.setText("F1"); break;
+                        PlayedNote.setText("F1");
+                        keyNum = 5; break;
                     case R.id.C2_button:
-                        PlayedNote.setText("C2"); break;
+                        PlayedNote.setText("C2");
+                        keyNum = 12; break;
                 }
+                KeyboardSoundPool.play (SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);
 
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
@@ -135,14 +171,19 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                 switch (id)
                 {
                     case R.id.D1_button:
-                        PlayedNote.setText("D1"); break;
+                        PlayedNote.setText("D1");
+                        keyNum = 2; break;
                     case R.id.G1_button:
-                        PlayedNote.setText("G1"); break;
+                        PlayedNote.setText("G1");
+                        keyNum = 7; break;
                     case R.id.A1_button:
-                        PlayedNote.setText("A1"); break;
+                        PlayedNote.setText("A1");
+                        keyNum = 9; break;
                     case R.id.D2_button:
-                        PlayedNote.setText("D2"); break;
+                        PlayedNote.setText("D2");
+                        keyNum = 14; break;
                 }
+                KeyboardSoundPool.play (SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
                     event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
@@ -160,12 +201,16 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                 switch (id)
                 {
                     case R.id.E1_button:
-                        PlayedNote.setText("E1"); break;
+                        PlayedNote.setText("E1");
+                        keyNum = 4; break;
                     case R.id.B1_button:
-                        PlayedNote.setText("B1"); break;
+                        PlayedNote.setText("B1");
+                        keyNum = 11; break;
                     case R.id.E2_button:
-                        PlayedNote.setText("E2"); break;
+                        PlayedNote.setText("E2");
+                        keyNum = 16; break;
                 }
+                KeyboardSoundPool.play (SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
                     event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
@@ -187,20 +232,28 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                 switch (id)
                 {
                     case R.id.CS1_button:
-                        PlayedNote.setText("C#1"); break;
+                        PlayedNote.setText("C#1");
+                        keyNum = 1; break;
                     case R.id.DS1_button:
-                        PlayedNote.setText("D#1"); break;
+                        PlayedNote.setText("D#1");
+                        keyNum = 3; break;
                     case R.id.FS1_button:
-                        PlayedNote.setText("F#1"); break;
+                        PlayedNote.setText("F#1");
+                        keyNum = 6; break;
                     case R.id.GS1_button:
-                        PlayedNote.setText("G#1"); break;
+                        PlayedNote.setText("G#1");
+                        keyNum = 8; break;
                     case R.id.AS1_button:
-                        PlayedNote.setText("A#1"); break;
+                        PlayedNote.setText("A#1");
+                        keyNum = 10; break;
                     case R.id.CS2_button:
-                        PlayedNote.setText("C#2"); break;
+                        PlayedNote.setText("C#2");
+                        keyNum = 13; break;
                     case R.id.DS2_button:
-                        PlayedNote.setText("D#2"); break;
+                        PlayedNote.setText("D#2");
+                        keyNum = 15; break;
                 }
+                KeyboardSoundPool.play (SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
                     event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
