@@ -1,5 +1,6 @@
 package edu.pacificu.chordinate.chordinate;
 
+import android.content.ContentValues;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -23,15 +24,14 @@ public class RecordActivity extends AppCompatActivity {
     Button playButton;
     boolean bIsRecording = false;
     MediaRecorder mRecorder = new MediaRecorder();
-    String mFileName;
-    //int numRec = 0;
+    //String mFileName;
 
     private MediaPlayer mPlayer = new MediaPlayer();
     boolean bIsPlaying = false;
 
     // saved recordings part:
-    //Vector<String> mSavedFiles; // Instead of "String" it will be user defined class "SavedRecording" OR "SavedFile"
-    int mNumRec = 0;
+    Vector<String> mSavedFiles = new Vector<String>(); // Instead of "String" it will be user defined class "SavedRecording" OR "SavedFile"
+    //int mNumRec = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +61,14 @@ public class RecordActivity extends AppCompatActivity {
         //MediaRecorder recorder = new MediaRecorder();
         String fileName = null;
 
-        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/audiorecordtest"+mNumRec+".3gp";
+        //mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        //mFileName += "/audiorecordtest"+mNumRec+".3gp";
 
-//        fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-//        fileName += "/audiorecordtest"+mNumRec+".3gp";
-//        mSavedFiles.add(fileName);
-        ++mNumRec;
+        fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        //fileName += "/audiorecordtest"+mNumRec+".3gp";
+        fileName += "/audiorecordtest"+mSavedFiles.size()+".3gp";
+        mSavedFiles.addElement(fileName);
+        //++mNumRec;
 
         if (!bIsRecording)
         {
@@ -75,7 +76,8 @@ public class RecordActivity extends AppCompatActivity {
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             //mRecorder.setOutputFile(mSavedFiles.get(mNumRec - 1));
-            mRecorder.setOutputFile(mFileName);
+            mRecorder.setOutputFile(mSavedFiles.get(mSavedFiles.size() - 1));
+            //mRecorder.setOutputFile(mFileName);
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
             try {
@@ -107,7 +109,8 @@ public class RecordActivity extends AppCompatActivity {
         {
             try {
                 //mPlayer.setDataSource(mSavedFiles.get(mNumRec - 1));
-                mPlayer.setDataSource(mFileName);
+                mPlayer.setDataSource(mSavedFiles.get(mSavedFiles.size() - 1));
+                //mPlayer.setDataSource(mFileName);
                 mPlayer.prepare();
                 mPlayer.start();
                 bIsPlaying = true;
@@ -126,4 +129,97 @@ public class RecordActivity extends AppCompatActivity {
             playButton.setText(R.string.record_playback_button_play);
         }
     }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();  // Always call the superclass method first
+//
+//        // Save the note's current draft, because the activity is stopping
+//        // and we want to be sure the current note progress isn't lost.
+//        ContentValues values = new ContentValues();
+//        values.put("numSavedFiles", mSavedFiles.size());
+//        //values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
+//
+//        getContentResolver().update(
+//                mUri,    // The URI for the note to update.
+//                values,  // The map of column names and new values to apply to them.
+//                null,    // No SELECT criteria are used.
+//                null     // No WHERE columns are used.
+//        );
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();  // Always call the superclass method first
+//
+//        // Save the note's current draft, because the activity is stopping
+//        // and we want to be sure the current note progress isn't lost.
+//        ContentValues values = new ContentValues();
+//        values.put(NotePad.Notes.COLUMN_NAME_NOTE, getCurrentNoteText());
+//        values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
+//
+//        getContentResolver().update(
+//                mUri,    // The URI for the note to update.
+//                values,  // The map of column names and new values to apply to them.
+//                null,    // No SELECT criteria are used.
+//                null     // No WHERE columns are used.
+//        );
+//    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();  // Always call the superclass method first
+//
+//        // Save the note's current draft, because the activity is stopping
+//        // and we want to be sure the current note progress isn't lost.
+//        ContentValues values = new ContentValues();
+//        values.put(NotePad.Notes.COLUMN_NAME_NOTE, getCurrentNoteText());
+//        values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
+//
+//        getContentResolver().update(
+//                mUri,    // The URI for the note to update.
+//                values,  // The map of column names and new values to apply to them.
+//                null,    // No SELECT criteria are used.
+//                null     // No WHERE columns are used.
+//        );
+//
+//        @Override
+//        protected void onStart() {
+//            super.onStart();  // Always call the superclass method first
+//
+//            // Save the note's current draft, because the activity is stopping
+//            // and we want to be sure the current note progress isn't lost.
+//            ContentValues values = new ContentValues();
+//            values.put(NotePad.Notes.COLUMN_NAME_NOTE, getCurrentNoteText());
+//            values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
+//
+//            getContentResolver().update(
+//                    mUri,    // The URI for the note to update.
+//                    values,  // The map of column names and new values to apply to them.
+//                    null,    // No SELECT criteria are used.
+//                    null     // No WHERE columns are used.
+//            );
+//        }
+//
+//        @Override
+//        protected void onRestart() {
+//            super.onRestart();  // Always call the superclass method first
+//
+//            // Save the note's current draft, because the activity is stopping
+//            // and we want to be sure the current note progress isn't lost.
+//            ContentValues values = new ContentValues();
+//            values.put(NotePad.Notes.COLUMN_NAME_NOTE, getCurrentNoteText());
+//            values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
+//
+//            getContentResolver().update(
+//                    mUri,    // The URI for the note to update.
+//                    values,  // The map of column names and new values to apply to them.
+//                    null,    // No SELECT criteria are used.
+//                    null     // No WHERE columns are used.
+//            );
+//        }
+//    }
+
+
+
+
 }

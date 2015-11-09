@@ -12,14 +12,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe1d7827-638d-4331-ac70-6c98498e3cdc" name="Default" comment="Added a Keyboard interface">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/SavedRecording.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/RecordActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/RecordActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_record.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_record.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Chordinate.iws" />
@@ -75,21 +73,40 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RecordActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RecordActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/RecordActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3887195">
-              <caret line="108" column="70" selection-start-line="108" selection-start-column="70" selection-end-line="108" selection-end-column="70" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="66" column="8" selection-start-line="66" selection-start-column="8" selection-end-line="68" selection-end-column="65" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1259#1435#0" expanded="true" />
-                <element signature="e#1434#1435#0" expanded="true" />
-                <element signature="e#1542#1716#0" expanded="true" />
-                <element signature="e#1715#1716#0" expanded="true" />
-                <element signature="e#3051#3082#0" expanded="true" />
-                <element signature="e#3410#3440#0" expanded="true" />
-                <element signature="e#3963#3999#0" expanded="true" />
-                <element signature="e#4363#4399#0" expanded="true" />
+                <element signature="e#908#916#0" expanded="true" />
+                <element signature="e#1300#1476#0" expanded="true" />
+                <element signature="e#1475#1476#0" expanded="true" />
+                <element signature="e#1583#1757#0" expanded="true" />
+                <element signature="e#1756#1757#0" expanded="true" />
+                <element signature="e#3247#3278#0" expanded="true" />
+                <element signature="e#3606#3636#0" expanded="true" />
+                <element signature="e#4241#4277#0" expanded="true" />
+                <element signature="e#4641#4677#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SavedRecording.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/SavedRecording.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.44054878">
+              <caret line="20" column="55" selection-start-line="20" selection-start-column="55" selection-end-line="20" selection-end-column="55" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#762#763#0" expanded="true" />
+                <element signature="e#794#795#0" expanded="true" />
+                <element signature="e#824#825#0" expanded="true" />
+                <element signature="e#852#853#0" expanded="true" />
+                <element signature="e#884#885#0" expanded="true" />
+                <element signature="e#914#915#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -185,8 +202,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="resourceFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -1651,6 +1668,7 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_record.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/RecordActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/SavedRecording.java" />
       </list>
     </option>
   </component>
@@ -2174,7 +2192,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2522,14 +2540,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/InputMelody.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/MicInput.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2571,20 +2581,45 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/InputMelody.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/RecordActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3887195">
-          <caret line="108" column="70" selection-start-line="108" selection-start-column="70" selection-end-line="108" selection-end-column="70" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="66" column="8" selection-start-line="66" selection-start-column="8" selection-end-line="68" selection-end-column="65" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1259#1435#0" expanded="true" />
-            <element signature="e#1434#1435#0" expanded="true" />
-            <element signature="e#1542#1716#0" expanded="true" />
-            <element signature="e#1715#1716#0" expanded="true" />
-            <element signature="e#3051#3082#0" expanded="true" />
-            <element signature="e#3410#3440#0" expanded="true" />
-            <element signature="e#3963#3999#0" expanded="true" />
-            <element signature="e#4363#4399#0" expanded="true" />
+            <element signature="e#908#916#0" expanded="true" />
+            <element signature="e#1300#1476#0" expanded="true" />
+            <element signature="e#1475#1476#0" expanded="true" />
+            <element signature="e#1583#1757#0" expanded="true" />
+            <element signature="e#1756#1757#0" expanded="true" />
+            <element signature="e#3247#3278#0" expanded="true" />
+            <element signature="e#3606#3636#0" expanded="true" />
+            <element signature="e#4241#4277#0" expanded="true" />
+            <element signature="e#4641#4677#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/pacificu/chordinate/chordinate/SavedRecording.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44054878">
+          <caret line="20" column="55" selection-start-line="20" selection-start-column="55" selection-end-line="20" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#762#763#0" expanded="true" />
+            <element signature="e#794#795#0" expanded="true" />
+            <element signature="e#824#825#0" expanded="true" />
+            <element signature="e#852#853#0" expanded="true" />
+            <element signature="e#884#885#0" expanded="true" />
+            <element signature="e#914#915#0" expanded="true" />
           </folding>
         </state>
       </provider>
