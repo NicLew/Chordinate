@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 // button images: https://openclipart.org/detail/76183/playback-buttons
@@ -35,7 +36,7 @@ public class RecordActivity extends AppCompatActivity {
     private boolean bIsPlaying;
 
     // saved recordings part:
-    private Vector<SavedRecording> mSavedFiles = new Vector<SavedRecording>();
+    private ArrayList<SavedRecording> mSavedFiles = new ArrayList<SavedRecording>();
     //int mNumRec = 0;
 
     //private File mSavedRecFile = new File("saved_rec_file");
@@ -100,7 +101,7 @@ public class RecordActivity extends AppCompatActivity {
 
         if (!bIsRecording)
         {
-            mSavedFiles.addElement(new SavedRecording(mSavedFiles.size()));
+            mSavedFiles.add(new SavedRecording(mSavedFiles.size()));
 
             bIsRecording = true;
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -178,7 +179,7 @@ public class RecordActivity extends AppCompatActivity {
 
     public void onDeleteButtonClick(View view) {
 
-        mSavedFiles.removeElementAt(mSavedFiles.size() - 1);
+        mSavedFiles.remove(mSavedFiles.size() - 1);
         Toast.makeText(getBaseContext(),"Recording Deleted",Toast.LENGTH_SHORT).show();
     }
 //

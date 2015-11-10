@@ -38,8 +38,9 @@
         android:layout_marginTop="135dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-        android:scrollIndicators="right"
-        android:nestedScrollingEnabled="false" />
+        android:nestedScrollingEnabled="false"
+        android:layout_alignParentEnd="true"
+        android:scrollIndicators="right" />
 
     <TextView
         android:layout_width="wrap_content"
