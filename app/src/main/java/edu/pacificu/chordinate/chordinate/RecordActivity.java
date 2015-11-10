@@ -1,10 +1,6 @@
 package edu.pacificu.chordinate.chordinate;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.media.MediaRecorder;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,16 +11,11 @@ import android.media.MediaPlayer;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
-
-// button images: https://openclipart.org/detail/76183/playback-buttons
 
 
 public class RecordActivity extends AppCompatActivity {
@@ -38,10 +29,8 @@ public class RecordActivity extends AppCompatActivity {
     private MediaPlayer mPlayer = null;
     private boolean bIsPlaying;
 
-    // saved recordings part:
     private ArrayList<SavedRecording> mSavedFiles = new ArrayList<SavedRecording>();
-    //int mNumRec = 0;
-    //SavedRecordingsAdapter mAdapter = new SavedRecordingsAdapter(this, mSavedFiles);
+    SavedRecordingsAdapter mAdapter;
 
 
     //private File mSavedRecFile = new File("saved_rec_file");
@@ -53,18 +42,15 @@ public class RecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-
-        final SavedRecordingsAdapter adapter = new SavedRecordingsAdapter(this, mSavedFiles);
+        mAdapter = new SavedRecordingsAdapter(this, mSavedFiles);
         // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.savedRecordingsList);
-        listView.setAdapter(adapter);
+        listView.setAdapter(mAdapter);
 
 //        FileInputStream fin = openFileInput(FILENAME);
 //        //fin.read();
 //        fin.close();
 
-        mRecorder = new MediaRecorder();
-        mPlayer = new MediaPlayer();
         bIsPlaying = false;
         bIsRecording = false;
 
@@ -88,7 +74,6 @@ public class RecordActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.add(mSavedFiles.get(mSavedFiles.size() - 1)); //////////////////////////////////////// add to listview, why added twice?
                 RecordActivity.this.onSaveButtonClick(v);
             }
         });
@@ -103,24 +88,17 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     public void onRecordButtonClick(View view) { // change to use java class methods!!!!!
-        String fileName = null;
-
-        //fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        //fileName += "/audiorecordtest"+mNumRec+".3gp";
-        //fileName += "/audiorecordtest"+mSavedFiles.size()+".3gp";
-        //mSavedFiles.addElement(new SavedRecording(mSavedFiles.size()));
-        //++mNumRec;
 
         if (!bIsRecording)
         {
             mSavedFiles.add(new SavedRecording(mSavedFiles.size()));
 
             bIsRecording = true;
+
+            mRecorder = new MediaRecorder();
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            //mRecorder.setOutputFile(mSavedFiles.get(mNumRec - 1));
             mRecorder.setOutputFile(mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
-            //mRecorder.setOutputFile(mFileName);
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
             try {
@@ -130,7 +108,7 @@ public class RecordActivity extends AppCompatActivity {
             }
 
             mRecorder.start();
-            Toast.makeText(getApplicationContext(), "Recording started.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Recording started.", Toast.LENGTH_SHORT).show();
             recordButton.setText(R.string.record_rec_button_stop);
         }
         else
@@ -140,7 +118,7 @@ public class RecordActivity extends AppCompatActivity {
             mRecorder.reset();
             mRecorder.release();
             mRecorder = null;
-            Toast.makeText(getApplicationContext(), "Recording stopped.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Recording stopped.", Toast.LENGTH_SHORT).show();
             recordButton.setText(R.string.record_rec_button_rec);
         }
     }
@@ -150,13 +128,12 @@ public class RecordActivity extends AppCompatActivity {
         if (!bIsPlaying)
         {
             try {
-                //mPlayer.setDataSource(mSavedFiles.get(mNumRec - 1));
+                mPlayer = new MediaPlayer();
                 mPlayer.setDataSource(mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
-                //mPlayer.setDataSource(mFileName);
                 mPlayer.prepare();
                 mPlayer.start();
                 bIsPlaying = true;
-                Toast.makeText(getApplicationContext(), "Playback started.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Playback started.", Toast.LENGTH_SHORT).show();
                 playButton.setText(R.string.record_playback_button_stop);
             } catch (IOException e) {
                 //Log.e(LOG_TAG, "prepare() failed");
@@ -167,7 +144,7 @@ public class RecordActivity extends AppCompatActivity {
             bIsPlaying = false;
             mPlayer.release();
             mPlayer = null;
-            Toast.makeText(getApplicationContext(), "Playback stopped.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Playback stopped.", Toast.LENGTH_SHORT).show();
             playButton.setText(R.string.record_playback_button_play);
         }
     }
@@ -179,15 +156,7 @@ public class RecordActivity extends AppCompatActivity {
             FileOutputStream fileOutput = openFileOutput(FILENAME, MODE_APPEND);
             fileOutput.write(mData.getBytes());
             fileOutput.close();
-
-            //mAdapter.add(mSavedFiles.get(mSavedFiles.size() - 1));
-            // Or even append an entire new collection
-            // Fetching some data, data has now returned
-            // If data was JSON, convert to ArrayList of User objects.
-            //JSONArray jsonArray = ...;
-            //ArrayList<SavedRecording> newUsers = SavedRecording.fromJson(jsonArray);
-           // mAdapter.addAll(newUsers);
-
+            mAdapter.notifyDataSetChanged();
             Toast.makeText(getBaseContext(),"Recording Saved",Toast.LENGTH_SHORT).show();
         }
 
