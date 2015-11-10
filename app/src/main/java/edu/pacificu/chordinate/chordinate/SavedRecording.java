@@ -65,4 +65,8 @@ public class SavedRecording {
 
         mRecName = newName;
     }
+
+//    public SavedRecording strToSavedRecording (String line) {
+//
+//    }
 }
