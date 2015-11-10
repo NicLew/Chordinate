@@ -28,7 +28,7 @@
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/savedRecordingsList"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -38,9 +38,7 @@
         android:layout_marginTop="135dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-        android:nestedScrollingEnabled="false"
-        android:layout_alignParentEnd="true"
-        android:scrollIndicators="right" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,7 +48,7 @@
         android:id="@+id/listTitleText"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="105dp"
         android:layout_marginRight="0dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

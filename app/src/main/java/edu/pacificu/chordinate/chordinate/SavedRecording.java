@@ -3,6 +3,7 @@ package edu.pacificu.chordinate.chordinate;
 import android.os.Environment;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +40,15 @@ public class SavedRecording {
     public Date getDate () {
 
         return mDate;
+    }
+
+    public String getDateStr () {
+        String dateString = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy");
+
+        dateString = dateFormat.format(mDate);
+
+        return dateString;
     }
 
     public long getLength () {

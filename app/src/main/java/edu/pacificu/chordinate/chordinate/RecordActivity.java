@@ -12,7 +12,10 @@ import android.widget.Button;
 
 import android.util.Log;
 import android.media.MediaPlayer;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +41,8 @@ public class RecordActivity extends AppCompatActivity {
     // saved recordings part:
     private ArrayList<SavedRecording> mSavedFiles = new ArrayList<SavedRecording>();
     //int mNumRec = 0;
+    //SavedRecordingsAdapter mAdapter = new SavedRecordingsAdapter(this, mSavedFiles);
+
 
     //private File mSavedRecFile = new File("saved_rec_file");
     private String FILENAME = "saved_rec_file";
@@ -47,6 +52,12 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+
+
+        final SavedRecordingsAdapter adapter = new SavedRecordingsAdapter(this, mSavedFiles);
+        // Attach the adapter to a ListView
+        ListView listView = (ListView) findViewById(R.id.savedRecordingsList);
+        listView.setAdapter(adapter);
 
 //        FileInputStream fin = openFileInput(FILENAME);
 //        //fin.read();
@@ -77,6 +88,7 @@ public class RecordActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                adapter.add(mSavedFiles.get(mSavedFiles.size() - 1)); //////////////////////////////////////// add to listview, why added twice?
                 RecordActivity.this.onSaveButtonClick(v);
             }
         });
@@ -167,6 +179,15 @@ public class RecordActivity extends AppCompatActivity {
             FileOutputStream fileOutput = openFileOutput(FILENAME, MODE_APPEND);
             fileOutput.write(mData.getBytes());
             fileOutput.close();
+
+            //mAdapter.add(mSavedFiles.get(mSavedFiles.size() - 1));
+            // Or even append an entire new collection
+            // Fetching some data, data has now returned
+            // If data was JSON, convert to ArrayList of User objects.
+            //JSONArray jsonArray = ...;
+            //ArrayList<SavedRecording> newUsers = SavedRecording.fromJson(jsonArray);
+           // mAdapter.addAll(newUsers);
+
             Toast.makeText(getBaseContext(),"Recording Saved",Toast.LENGTH_SHORT).show();
         }
 
