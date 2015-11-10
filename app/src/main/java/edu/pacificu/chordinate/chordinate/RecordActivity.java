@@ -1,6 +1,7 @@
 package edu.pacificu.chordinate.chordinate;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -13,6 +14,9 @@ import android.util.Log;
 import android.media.MediaPlayer;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Vector;
 
@@ -20,23 +24,37 @@ import java.util.Vector;
 
 
 public class RecordActivity extends AppCompatActivity {
-    Button recordButton;
-    Button playButton;
-    boolean bIsRecording = false;
-    MediaRecorder mRecorder = new MediaRecorder();
-    //String mFileName;
+    private Button recordButton;
+    private Button playButton;
+    private Button saveButton;
+    private Button deleteButton;
+    private boolean bIsRecording;
+    private MediaRecorder mRecorder = null;
 
-    private MediaPlayer mPlayer = new MediaPlayer();
-    boolean bIsPlaying = false;
+    private MediaPlayer mPlayer = null;
+    private boolean bIsPlaying;
 
     // saved recordings part:
-    Vector<String> mSavedFiles = new Vector<String>(); // Instead of "String" it will be user defined class "SavedRecording" OR "SavedFile"
+    private Vector<SavedRecording> mSavedFiles = new Vector<SavedRecording>();
     //int mNumRec = 0;
+
+    //private File mSavedRecFile = new File("saved_rec_file");
+    private String FILENAME = "saved_rec_file";
+    private String mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+
+//        FileInputStream fin = openFileInput(FILENAME);
+//        //fin.read();
+//        fin.close();
+
+        mRecorder = new MediaRecorder();
+        mPlayer = new MediaPlayer();
+        bIsPlaying = false;
+        bIsRecording = false;
 
         recordButton = (Button) findViewById(R.id.recordButton);
         recordButton.setOnClickListener(new View.OnClickListener() {
@@ -53,30 +71,42 @@ public class RecordActivity extends AppCompatActivity {
                 RecordActivity.this.onPlayButtonClick(v);
             }
         });
+
+        saveButton = (Button) findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecordActivity.this.onSaveButtonClick(v);
+            }
+        });
+
+        deleteButton = (Button) findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecordActivity.this.onDeleteButtonClick(v);
+            }
+        });
     }
 
     public void onRecordButtonClick(View view) { // change to use java class methods!!!!!
-        //MicInput input = new MicInput();
-        //input.startRecording();
-        //MediaRecorder recorder = new MediaRecorder();
         String fileName = null;
 
-        //mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        //mFileName += "/audiorecordtest"+mNumRec+".3gp";
-
-        fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        //fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         //fileName += "/audiorecordtest"+mNumRec+".3gp";
-        fileName += "/audiorecordtest"+mSavedFiles.size()+".3gp";
-        mSavedFiles.addElement(fileName);
+        //fileName += "/audiorecordtest"+mSavedFiles.size()+".3gp";
+        //mSavedFiles.addElement(new SavedRecording(mSavedFiles.size()));
         //++mNumRec;
 
         if (!bIsRecording)
         {
+            mSavedFiles.addElement(new SavedRecording(mSavedFiles.size()));
+
             bIsRecording = true;
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             //mRecorder.setOutputFile(mSavedFiles.get(mNumRec - 1));
-            mRecorder.setOutputFile(mSavedFiles.get(mSavedFiles.size() - 1));
+            mRecorder.setOutputFile(mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
             //mRecorder.setOutputFile(mFileName);
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
@@ -103,13 +133,12 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     public void onPlayButtonClick(View view) {
-        //mPlayer = new MediaPlayer();
 
         if (!bIsPlaying)
         {
             try {
                 //mPlayer.setDataSource(mSavedFiles.get(mNumRec - 1));
-                mPlayer.setDataSource(mSavedFiles.get(mSavedFiles.size() - 1));
+                mPlayer.setDataSource(mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
                 //mPlayer.setDataSource(mFileName);
                 mPlayer.prepare();
                 mPlayer.start();
@@ -130,96 +159,109 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
+    public void onSaveButtonClick(View view) {
+        mData = mSavedFiles.toString(); //ed1.getText().toString();
+
+        try {
+            FileOutputStream fileOutput = openFileOutput(FILENAME, MODE_APPEND);
+            fileOutput.write(mData.getBytes());
+            fileOutput.close();
+            Toast.makeText(getBaseContext(),"Recording Saved",Toast.LENGTH_SHORT).show();
+        }
+
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    public void onDeleteButtonClick(View view) {
+
+        mSavedFiles.removeElementAt(mSavedFiles.size() - 1);
+        Toast.makeText(getBaseContext(),"Recording Deleted",Toast.LENGTH_SHORT).show();
+    }
+//
 //    protected void onPause() {
-//        super.onPause();  // Always call the superclass method first
+//        super.onPause();
 //
-//        // Save the note's current draft, because the activity is stopping
-//        // and we want to be sure the current note progress isn't lost.
-//        ContentValues values = new ContentValues();
-//        values.put("numSavedFiles", mSavedFiles.size());
-//        //values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
-//
-//        getContentResolver().update(
-//                mUri,    // The URI for the note to update.
-//                values,  // The map of column names and new values to apply to them.
-//                null,    // No SELECT criteria are used.
-//                null     // No WHERE columns are used.
-//        );
+//        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+//        //fos.write(mSavedFiles.toString().getBytes());
+//        fos.close();
 //    }
 //
-//    @Override
-//    protected void onResume() {
-//        super.onResume();  // Always call the superclass method first
-//
-//        // Save the note's current draft, because the activity is stopping
-//        // and we want to be sure the current note progress isn't lost.
-//        ContentValues values = new ContentValues();
-//        values.put(NotePad.Notes.COLUMN_NAME_NOTE, getCurrentNoteText());
-//        values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
-//
-//        getContentResolver().update(
-//                mUri,    // The URI for the note to update.
-//                values,  // The map of column names and new values to apply to them.
-//                null,    // No SELECT criteria are used.
-//                null     // No WHERE columns are used.
-//        );
-//    }
 //    @Override
 //    protected void onStop() {
 //        super.onStop();  // Always call the superclass method first
 //
+//        String FILENAME = "hello_file";
+//        String string = "hello world!";
+//
+//        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+//        fos.write(string.getBytes());
+//        fos.close();
+//
 //        // Save the note's current draft, because the activity is stopping
 //        // and we want to be sure the current note progress isn't lost.
-//        ContentValues values = new ContentValues();
-//        values.put(NotePad.Notes.COLUMN_NAME_NOTE, getCurrentNoteText());
-//        values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
+//       // ContentValues values = new ContentValues();
+//        //values.put("NumSavedFiles", mSavedFiles.size());
+//        //values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
 //
-//        getContentResolver().update(
-//                mUri,    // The URI for the note to update.
-//                values,  // The map of column names and new values to apply to them.
-//                null,    // No SELECT criteria are used.
-//                null     // No WHERE columns are used.
-//        );
 //
-//        @Override
-//        protected void onStart() {
-//            super.onStart();  // Always call the superclass method first
-//
-//            // Save the note's current draft, because the activity is stopping
-//            // and we want to be sure the current note progress isn't lost.
-//            ContentValues values = new ContentValues();
-//            values.put(NotePad.Notes.COLUMN_NAME_NOTE, getCurrentNoteText());
-//            values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
-//
-//            getContentResolver().update(
-//                    mUri,    // The URI for the note to update.
-//                    values,  // The map of column names and new values to apply to them.
-//                    null,    // No SELECT criteria are used.
-//                    null     // No WHERE columns are used.
-//            );
-//        }
-//
-//        @Override
-//        protected void onRestart() {
-//            super.onRestart();  // Always call the superclass method first
-//
-//            // Save the note's current draft, because the activity is stopping
-//            // and we want to be sure the current note progress isn't lost.
-//            ContentValues values = new ContentValues();
-//            values.put(NotePad.Notes.COLUMN_NAME_NOTE, getCurrentNoteText());
-//            values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
-//
-//            getContentResolver().update(
-//                    mUri,    // The URI for the note to update.
-//                    values,  // The map of column names and new values to apply to them.
-//                    null,    // No SELECT criteria are used.
-//                    null     // No WHERE columns are used.
-//            );
-//        }
+////        getContentResolver().update(
+////                mUri,    // The URI for the note to update.
+////                values,  // The map of column names and new values to apply to them.
+////                null,    // No SELECT criteria are used.
+////                null     // No WHERE columns are used.
+////        );
 //    }
 
+//    @Override
+//    protected void onStart() {
+//        super.onStart();  // Always call the superclass method first
+//
+//        // The activity is either being restarted or started for the first time
+//        // so this is where we should make sure that GPS is enabled
+////            LocationManager locationManager =
+////                    (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+////            boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+////
+////            if (!gpsEnabled) {
+////                // Create a dialog here that requests the user to enable GPS, and use an intent
+////                // with the android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS action
+////                // to take the user to the Settings screen to enable GPS when they click "OK"
+////            }
+//    }
+//
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();  // Always call the superclass method first
+//
+//        // Activity being restarted from stopped state
+//    }
 
-
+//    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        super.onSaveInstanceState(savedInstanceState);
+//        // Save UI state changes to the savedInstanceState.
+//        // This bundle will be passed to onCreate if the process is
+//        // killed and restarted.
+//        savedInstanceState.putBoolean("MyBoolean", true);
+//        savedInstanceState.putDouble("myDouble", 1.9);
+//        savedInstanceState.putInt("MyInt", 1);
+//        savedInstanceState.putString("MyString", "Welcome back to Android");
+//        // etc.
+//    }
+//
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        // Restore UI state from the savedInstanceState.
+//        // This bundle has also been passed to onCreate.
+//        boolean myBoolean = savedInstanceState.getBoolean("MyBoolean");
+//        double myDouble = savedInstanceState.getDouble("myDouble");
+//        int myInt = savedInstanceState.getInt("MyInt");
+//        String myString = savedInstanceState.getString("MyString");
+//    }
 
 }

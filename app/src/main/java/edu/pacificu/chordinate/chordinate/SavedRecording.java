@@ -17,25 +17,42 @@ public class SavedRecording {
     private long mLength; // what data type? use System.currentTimeMillis()
 
     SavedRecording (int fileNum) {
+        //String fileName;
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/recording_file_"+fileNum+".3gp";
+        mFileName += "/recording_file_"+Integer.toString(fileNum)+".3gp";
+        //mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        //mFileName += "/recording_file_"+fileNum+".3gp";
         mFile = new File(mFileName);
 
-        mRecName = "Recording #"+fileNum;
+        mRecName = "Recording #"+Integer.toString(fileNum);
 
         mDate = new Date ();
         mLength = 0;
     }
 
     public String getFileName () {
+
+        //return mFile.getName();
         return mFileName;
     }
 
     public Date getDate () {
+
         return mDate;
     }
 
     public long getLength () {
+
         return mLength;
+    }
+
+    public String getRecName () {
+
+        return mRecName;
+    }
+
+    public void setRecName (String newName) {
+
+        mRecName = newName;
     }
 }

@@ -13,24 +13,18 @@
         android:layout_height="80dp"
         android:text="@string/record_rec_button_rec"
         android:id="@+id/recordButton"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="40dp"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/playbackButton"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="false" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/playbackButton"
         android:text="@string/record_playback_button_play"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentRight="true" />
+        android:layout_alignTop="@+id/saveButton"
+        android:layout_toRightOf="@+id/recordButton"
+        android:layout_toEndOf="@+id/recordButton" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -60,5 +54,26 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="0dp" />
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:text="@string/record_save_button"
+        android:id="@+id/saveButton"
+        android:layout_marginTop="21dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/playbackButton"
+        android:layout_toEndOf="@+id/playbackButton"
+        android:layout_marginLeft="36dp"
+        android:layout_marginStart="36dp" />
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:text="@string/record_delete_button"
+        android:id="@+id/deleteButton"
+        android:layout_alignTop="@+id/saveButton"
+        android:layout_toRightOf="@+id/saveButton"
+        android:layout_toEndOf="@+id/saveButton" />
 
 </RelativeLayout>

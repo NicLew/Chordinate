@@ -40,6 +40,8 @@
     <string name="record_rec_button_stop">Stop</string>
     <string name="record_playback_button_play">Play</string>
     <string name="record_playback_button_stop">Stop</string>
+    <string name="record_save_button">Save</string>
+    <string name="record_delete_button">Delete</string>
     <string name="record_list_title">Saved Recordings</string>
 
     <string name="action_settings">Settings</string>
