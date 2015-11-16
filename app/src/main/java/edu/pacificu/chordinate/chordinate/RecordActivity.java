@@ -1,5 +1,7 @@
 package edu.pacificu.chordinate.chordinate;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.media.MediaRecorder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.util.Log;
 import android.media.MediaPlayer;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +33,10 @@ public class RecordActivity extends AppCompatActivity {
     private Button deleteButton;
     private boolean bIsRecording;
     private MediaRecorder mRecorder = null;
+    private long mStartTime;
+    private long mEndTime;
+    private Context context = this;
+    private int mSelected = 0;
 
     //private EditText editRecName;
 
@@ -84,7 +91,7 @@ public class RecordActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RecordActivity.this.onPlayButtonClick(view);
+                RecordActivity.this.onPlayButtonClick(view, playButton);
             }
         });
 
@@ -104,18 +111,56 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
-//                //RecordActivity.this.onRecordingListItemClick(view); // move functionality to this once working...
-//                view.setSelected(true);
-//                SavedRecording listItem = (SavedRecording) listView.getItemAtPosition(position);
-//                //listItem.setRecName("Awesome!");
-//                //mAdapter.notifyDataSetChanged();
-//                //TextView textView = (TextView) view.findViewById() ????
-//            }
-//        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
+                //RecordActivity.this.onRecordingListItemClick(view); // move functionality to this once working...
+                view.setSelected(true);
+                final SavedRecording listItem = (SavedRecording) listView.getItemAtPosition(position);
+
+
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.item_saved_recording_selected);
+
+                final EditText editRecName = (EditText) dialog.findViewById(R.id.recNameEdit);
+                editRecName.setText(listItem.getRecName());
+
+                final Button playSelRec = (Button) dialog.findViewById(R.id.selPlaybackButton);
+
+                playSelRec.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        RecordActivity.this.onPlayButtonClick(view, playSelRec);
+                    }
+                });
+
+                Button exitDialog = (Button) dialog.findViewById(R.id.selExitButton);
+
+                exitDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                Button saveExitDialog = (Button) dialog.findViewById(R.id.selSaveButton);
+
+                saveExitDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listItem.setRecName(editRecName.getText().toString());
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+
+
+
+                //mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void onRecordButtonClick(View view) { // change to use java class methods!!!!!
@@ -138,6 +183,7 @@ public class RecordActivity extends AppCompatActivity {
                 //Log.e(LOG_TAG, "prepare() failed");
             }
 
+            mStartTime = System.currentTimeMillis();
             mRecorder.start();
             Toast.makeText(getApplicationContext(), "Recording started.", Toast.LENGTH_SHORT).show();
             recordButton.setText(R.string.record_rec_button_stop);
@@ -146,15 +192,17 @@ public class RecordActivity extends AppCompatActivity {
         {
             bIsRecording = false;
             mRecorder.stop();
+            mEndTime = System.currentTimeMillis();
             mRecorder.reset();
             mRecorder.release();
             mRecorder = null;
             Toast.makeText(getApplicationContext(), "Recording stopped.", Toast.LENGTH_SHORT).show();
             recordButton.setText(R.string.record_rec_button_rec);
+            mSavedFiles.get(mSavedFiles.size() - 1).setLength(mEndTime - mStartTime);
         }
     }
 
-    public void onPlayButtonClick(View view) {
+    public void onPlayButtonClick(View view, Button playButton) {
 
         if (!bIsPlaying)
         {

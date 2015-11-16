@@ -42,6 +42,8 @@
     <string name="record_playback_button_stop">Stop</string>
     <string name="record_save_button">Save</string>
     <string name="record_delete_button">Delete</string>
+    <string name="record_exit_dialog_button">Close</string>
+    <string name="record_save_dialog_button">Save</string>
     <string name="record_list_title">Saved Recordings</string>
     <string name="record_list_item_name_default">Name</string>
     <string name="record_list_item_date_default">Date</string>

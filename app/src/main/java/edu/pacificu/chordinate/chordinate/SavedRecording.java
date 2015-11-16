@@ -5,7 +5,7 @@ import android.os.Environment;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 
 /**
  * Created by lewe4441 on 11/8/2015.
@@ -18,11 +18,8 @@ public class SavedRecording {
     private long mLength; // what data type? use System.currentTimeMillis()
 
     SavedRecording (int fileNum) {
-        //String fileName;
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         mFileName += "/recording_file_"+Integer.toString(fileNum)+".3gp";
-        //mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        //mFileName += "/recording_file_"+fileNum+".3gp";
         mFile = new File(mFileName);
 
         mRecName = "Recording #"+Integer.toString(fileNum);
@@ -64,6 +61,19 @@ public class SavedRecording {
     public void setRecName (String newName) {
 
         mRecName = newName;
+    }
+
+    public void setLength (long length) {
+        mLength = length;
+    }
+
+    public String getLengthStr () {
+        String lenString = null;
+        SimpleDateFormat lenFormat = new SimpleDateFormat("mm:ss");
+
+        lenString = lenFormat.format(new Date(mLength));
+
+        return lenString;
     }
 
 //    public SavedRecording strToSavedRecording (String line) {
