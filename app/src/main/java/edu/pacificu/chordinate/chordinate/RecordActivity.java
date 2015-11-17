@@ -36,9 +36,6 @@ public class RecordActivity extends AppCompatActivity {
     private long mStartTime;
     private long mEndTime;
     private Context context = this;
-    private int mSelected = 0;
-
-    //private EditText editRecName;
 
     private MediaPlayer mPlayer = null;
     private boolean bIsPlaying;
@@ -91,7 +88,7 @@ public class RecordActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RecordActivity.this.onPlayButtonClick(view, playButton);
+                RecordActivity.this.onPlayButtonClick(view, playButton, mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
             }
         });
 
@@ -107,7 +104,7 @@ public class RecordActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RecordActivity.this.onDeleteButtonClick(view);
+                RecordActivity.this.onDeleteButtonClick(view, mSavedFiles.size() - 1);
             }
         });
 
@@ -119,6 +116,7 @@ public class RecordActivity extends AppCompatActivity {
                 view.setSelected(true);
                 final SavedRecording listItem = (SavedRecording) listView.getItemAtPosition(position);
 
+                final int index = position;
 
                 final Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.item_saved_recording_selected);
@@ -131,7 +129,16 @@ public class RecordActivity extends AppCompatActivity {
                 playSelRec.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        RecordActivity.this.onPlayButtonClick(view, playSelRec);
+                        RecordActivity.this.onPlayButtonClick(view, playSelRec, listItem.getFileName());
+                    }
+                });
+
+                final Button delSelRec = (Button) dialog.findViewById(R.id.selDeleteButton);
+
+                delSelRec.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        RecordActivity.this.onDeleteButtonClick(view, index);
                     }
                 });
 
@@ -150,15 +157,12 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         listItem.setRecName(editRecName.getText().toString());
+                        mAdapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
                 });
 
                 dialog.show();
-
-
-
-                //mAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -202,13 +206,13 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
-    public void onPlayButtonClick(View view, Button playButton) {
+    public void onPlayButtonClick(View view, Button playButton, String fileName) {
 
         if (!bIsPlaying)
         {
             try {
                 mPlayer = new MediaPlayer();
-                mPlayer.setDataSource(mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
+                mPlayer.setDataSource(fileName);//mSavedFiles.get(mSavedFiles.size() - 1).getFileName()
                 mPlayer.prepare();
                 mPlayer.start();
                 bIsPlaying = true;
@@ -246,9 +250,10 @@ public class RecordActivity extends AppCompatActivity {
 
     }
 
-    public void onDeleteButtonClick(View view) {
+    public void onDeleteButtonClick(View view, int index) {
 
-        mSavedFiles.remove(mSavedFiles.size() - 1);
+        //mSavedFiles.remove(mSavedFiles.size() - 1);
+        mSavedFiles.remove(index);
         mAdapter.notifyDataSetChanged();
         Toast.makeText(getBaseContext(),"Recording Deleted",Toast.LENGTH_SHORT).show();
     }
