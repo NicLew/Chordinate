@@ -139,6 +139,7 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         RecordActivity.this.onDeleteButtonClick(view, index);
+                        dialog.dismiss();
                     }
                 });
 
