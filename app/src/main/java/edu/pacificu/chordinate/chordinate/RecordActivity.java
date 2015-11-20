@@ -2,21 +2,13 @@ package edu.pacificu.chordinate.chordinate;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.media.MediaRecorder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
-
-import android.util.Log;
-import android.media.MediaPlayer;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -27,36 +19,25 @@ import java.util.ArrayList;
 
 
 public class RecordActivity extends AppCompatActivity {
-    private Button recordButton;
-    private Button playButton;
-    private Button saveButton;
-    private Button deleteButton;
-    private boolean bIsRecording;
-    private MediaRecorder mRecorder = null;
-    private long mStartTime;
-    private long mEndTime;
-    private Context context = this;
-
-    private MediaPlayer mPlayer = null;
-    private boolean bIsPlaying;
-
+    private Button mRecordButton;
+    private Button mPlayButton;
+    private InputMelody mInput;
+    private Context mContext = this;
     private ArrayList<SavedRecording> mSavedFiles = new ArrayList<SavedRecording>();
-    SavedRecordingsAdapter mAdapter;
+    private SavedRecordingsAdapter mAdapter;
 
 
     //private File mSavedRecFile = new File("saved_rec_file");
-    private String FILENAME = "saved_rec_file";
-    private String mData;
+    //private String FILENAME = "saved_rec_file";
+    //private String mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
+        mInput = new InputMelody();
         mAdapter = new SavedRecordingsAdapter(this, mSavedFiles);
-        // Attach the adapter to a ListView
-        final ListView listView = (ListView) findViewById(R.id.savedRecordingsList);
-        listView.setAdapter(mAdapter);
 
 //        try{
 //            FileInputStream fileInput = openFileInput(FILENAME);
@@ -73,167 +54,21 @@ public class RecordActivity extends AppCompatActivity {
 //        catch(Exception e){
 //        }
 
-        bIsPlaying = false;
-        bIsRecording = false;
-
-        recordButton = (Button) findViewById(R.id.recordButton);
-        recordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RecordActivity.this.onRecordButtonClick(view);
-            }
-        });
-
-        playButton = (Button) findViewById(R.id.playbackButton);
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RecordActivity.this.onPlayButtonClick(view, playButton, mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
-            }
-        });
-
-        saveButton = (Button) findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RecordActivity.this.onSaveButtonClick(view);
-            }
-        });
-
-        deleteButton = (Button) findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RecordActivity.this.onDeleteButtonClick(view, mSavedFiles.size() - 1);
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
-                //RecordActivity.this.onRecordingListItemClick(view); // move functionality to this once working...
-                view.setSelected(true);
-                final SavedRecording listItem = (SavedRecording) listView.getItemAtPosition(position);
-
-                final int index = position;
-
-                final Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.item_saved_recording_selected);
-
-                final EditText editRecName = (EditText) dialog.findViewById(R.id.recNameEdit);
-                editRecName.setText(listItem.getRecName());
-
-                final Button playSelRec = (Button) dialog.findViewById(R.id.selPlaybackButton);
-
-                playSelRec.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        RecordActivity.this.onPlayButtonClick(view, playSelRec, listItem.getFileName());
-                    }
-                });
-
-                final Button delSelRec = (Button) dialog.findViewById(R.id.selDeleteButton);
-
-                delSelRec.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        RecordActivity.this.onDeleteButtonClick(view, index);
-                        dialog.dismiss();
-                    }
-                });
-
-                Button exitDialog = (Button) dialog.findViewById(R.id.selExitButton);
-
-                exitDialog.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                    }
-                });
-
-                Button saveExitDialog = (Button) dialog.findViewById(R.id.selSaveButton);
-
-                saveExitDialog.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        listItem.setRecName(editRecName.getText().toString());
-                        mAdapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-            }
-        });
+        initButtons();
+        initListView();
     }
 
-    public void onRecordButtonClick(View view) { // change to use java class methods!!!!!
+    private void onRecordButtonClick() {
 
-        if (!bIsRecording)
-        {
-            mSavedFiles.add(new SavedRecording(mSavedFiles.size()));
-
-            bIsRecording = true;
-
-            mRecorder = new MediaRecorder();
-            mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            mRecorder.setOutputFile(mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
-            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-            try {
-                mRecorder.prepare();
-            } catch (IOException e) {
-                //Log.e(LOG_TAG, "prepare() failed");
-            }
-
-            mStartTime = System.currentTimeMillis();
-            mRecorder.start();
-            Toast.makeText(getApplicationContext(), "Recording started.", Toast.LENGTH_SHORT).show();
-            recordButton.setText(R.string.record_rec_button_stop);
-        }
-        else
-        {
-            bIsRecording = false;
-            mRecorder.stop();
-            mEndTime = System.currentTimeMillis();
-            mRecorder.reset();
-            mRecorder.release();
-            mRecorder = null;
-            Toast.makeText(getApplicationContext(), "Recording stopped.", Toast.LENGTH_SHORT).show();
-            recordButton.setText(R.string.record_rec_button_rec);
-            mSavedFiles.get(mSavedFiles.size() - 1).setLength(mEndTime - mStartTime);
-        }
+        mInput.record(mSavedFiles, mRecordButton);
     }
 
-    public void onPlayButtonClick(View view, Button playButton, String fileName) {
+    private void onPlayButtonClick(Button playButton, String fileName) {
 
-        if (!bIsPlaying)
-        {
-            try {
-                mPlayer = new MediaPlayer();
-                mPlayer.setDataSource(fileName);//mSavedFiles.get(mSavedFiles.size() - 1).getFileName()
-                mPlayer.prepare();
-                mPlayer.start();
-                bIsPlaying = true;
-                Toast.makeText(getApplicationContext(), "Playback started.", Toast.LENGTH_SHORT).show();
-                playButton.setText(R.string.record_playback_button_stop);
-            } catch (IOException e) {
-                //Log.e(LOG_TAG, "prepare() failed");
-            }
-        }
-        else
-        {
-            bIsPlaying = false;
-            mPlayer.release();
-            mPlayer = null;
-            Toast.makeText(getApplicationContext(), "Playback stopped.", Toast.LENGTH_SHORT).show();
-            playButton.setText(R.string.record_playback_button_play);
-        }
+        mInput.playback(playButton, fileName);
     }
 
-    public void onSaveButtonClick(View view) {
+    private void onSaveButtonClick() {
         //mData = mSavedFiles.get(mSavedFiles.size() - 1).toString(); //ed1.getText().toString();
 
         try {
@@ -243,20 +78,136 @@ public class RecordActivity extends AppCompatActivity {
             mAdapter.notifyDataSetChanged();
             Toast.makeText(getBaseContext(),"Recording Saved",Toast.LENGTH_SHORT).show();
         }
-
         catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
     }
 
-    public void onDeleteButtonClick(View view, int index) {
+    private void onDeleteButtonClick(Dialog dialog, int index) {
 
-        //mSavedFiles.remove(mSavedFiles.size() - 1);
         mSavedFiles.remove(index);
         mAdapter.notifyDataSetChanged();
-        Toast.makeText(getBaseContext(),"Recording Deleted",Toast.LENGTH_SHORT).show();
+
+        if (null != dialog) {
+            dialog.dismiss();
+        }
+    }
+
+    private void initPlayButton (final Button playButton, final String fileName) {
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (null != fileName) {
+                    RecordActivity.this.onPlayButtonClick(playButton, fileName);
+                } else {
+                    RecordActivity.this.onPlayButtonClick(playButton, mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
+                }
+            }
+        });
+    }
+
+    private void initDeleteButton (Button deleteButton, final Dialog dialog, final int index) {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (index >= 0) {
+                    RecordActivity.this.onDeleteButtonClick(dialog, index);
+                }
+                else
+                {
+                    RecordActivity.this.onDeleteButtonClick(dialog, mSavedFiles.size() - 1);
+                }
+            }
+        });
+    }
+
+    private void initRecordButton () {
+        mRecordButton = (Button) findViewById(R.id.recordButton);
+        mRecordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecordActivity.this.onRecordButtonClick();
+            }
+        });
+    }
+
+    private void initSaveButton () {
+        Button saveButton = (Button) findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecordActivity.this.onSaveButtonClick();
+            }
+        });
+    }
+
+    private void initButtons () {
+        initRecordButton();
+
+        mPlayButton = (Button) findViewById(R.id.playbackButton);
+        initPlayButton(mPlayButton, null);
+
+        initSaveButton();
+
+        Button deleteButton = (Button) findViewById(R.id.deleteButton);
+        initDeleteButton(deleteButton, null, -1);
+    }
+
+    private void initExitButton (final Dialog dialog) {
+        Button exitDialog = (Button) dialog.findViewById(R.id.selExitButton);
+        exitDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void initSaveExitButton (final Dialog dialog, final SavedRecording listItem,
+                                     final EditText editRecName) {
+        Button saveExitDialog = (Button) dialog.findViewById(R.id.selSaveButton);
+        saveExitDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listItem.setRecName(editRecName.getText().toString());
+                mAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void initListView () {
+        final ListView listView = (ListView) findViewById(R.id.savedRecordingsList);
+        listView.setAdapter(mAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long unused) {
+                view.setSelected(true);
+
+                final SavedRecording listItem;
+                listItem = (SavedRecording) listView.getItemAtPosition(position);
+
+                final Dialog dialog = new Dialog(mContext);
+                dialog.setContentView(R.layout.item_saved_recording_selected);
+
+                final EditText editRecName = (EditText) dialog.findViewById(R.id.recNameEdit);
+                editRecName.setText(listItem.getRecName());
+
+                final Button playSelRec = (Button) dialog.findViewById(R.id.selPlaybackButton);
+                initPlayButton(playSelRec, listItem.getFileName());
+
+                final Button delSelRec = (Button) dialog.findViewById(R.id.selDeleteButton);
+                initDeleteButton(delSelRec, dialog, position);
+
+                initExitButton(dialog);
+                initSaveExitButton (dialog, listItem, editRecName);
+
+                dialog.show();
+            }
+        });
     }
 
 //    public void onRecordingListItemClick(View view) {
