@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,8 +16,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 public class RecordActivity extends AppCompatActivity {
+    private static final int DFLT_INDEX = -1;
+
     private Button mRecordButton;
     private Button mPlayButton;
     private MicInput mInput;
@@ -31,6 +31,11 @@ public class RecordActivity extends AppCompatActivity {
     //private String FILENAME = "saved_rec_file";
     //private String mData;
 
+    /**
+     * Sets the content view and initializes the buttons and list view.
+     *
+     * @param savedInstanceState    The instance state to create.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,32 +63,54 @@ public class RecordActivity extends AppCompatActivity {
         initListView();
     }
 
+    /**
+     * Performs the proper actions when the record button is pressed. Calls the record
+     * function of MicInput.
+     */
     private void onRecordButtonClick() {
 
         mInput.record(mSavedFiles, mRecordButton);
     }
 
+    /**
+     * Performs the proper actions when a playback button is pressed. Calls the playback
+     * function of MicInput.
+     *
+     * @param playButton    The playback button that was pressed.
+     * @param fileName      The name of the file to be played from.
+     */
     private void onPlayButtonClick(Button playButton, String fileName) {
 
         mInput.playback(playButton, fileName);
     }
 
+    /**
+     * TODO: Only add a recording to the array if the user presses "save"
+     * TODO Doc onSaveButtonClick
+     */
     private void onSaveButtonClick() {
         //mData = mSavedFiles.get(mSavedFiles.size() - 1).toString(); //ed1.getText().toString();
 
-        try {
-//            FileOutputStream fileOutput = openFileOutput(FILENAME, MODE_APPEND);
-//            fileOutput.write(mData.getBytes());
-//            fileOutput.close();
-            mAdapter.notifyDataSetChanged();
-            Toast.makeText(getBaseContext(),"Recording Saved",Toast.LENGTH_SHORT).show();
+        mAdapter.notifyDataSetChanged();
+    /*    try {
+            FileOutputStream fileOutput = openFileOutput(FILENAME, MODE_APPEND);
+            fileOutput.write(mData.getBytes());
+            fileOutput.close();
         }
         catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
+    /**
+     * Performs the proper actions when a delete button is pressed. Removes the recording,
+     * notifies the list view adaptor that there has been a change, and, if dialog is not null,
+     * the dialog is closed.
+     *
+     * @param dialog The dialog to be closed. Will be null if not applicable.
+     * @param index  The position of the recording in the saved recording list to be deleted.
+     */
     private void onDeleteButtonClick(Dialog dialog, int index) {
 
         mSavedFiles.remove(index);
@@ -94,6 +121,12 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initializes a playback button.
+     *
+     * @param playButton    The playback button to be initialized.
+     * @param fileName      The file to be played from.
+     */
     private void initPlayButton (final Button playButton, final String fileName) {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,17 +135,26 @@ public class RecordActivity extends AppCompatActivity {
                 if (null != fileName) {
                     RecordActivity.this.onPlayButtonClick(playButton, fileName);
                 } else {
-                    RecordActivity.this.onPlayButtonClick(playButton, mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
+                    RecordActivity.this.onPlayButtonClick(playButton,
+                            mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
                 }
             }
         });
     }
 
+    /**
+     * Initializes a delete button.
+     *
+     * @param deleteButton  The button to be initialized.
+     * @param dialog        The dialog to be used. Will be null if not applicable.
+     * @param index         The position of the recording in the list of recordings. Will be
+     *                      set to DFLT_INDEX if not applicable.
+     */
     private void initDeleteButton (Button deleteButton, final Dialog dialog, final int index) {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (index >= 0) {
+                if (index > DFLT_INDEX) {
                     RecordActivity.this.onDeleteButtonClick(dialog, index);
                 }
                 else
@@ -123,6 +165,9 @@ public class RecordActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the record button for the main Record Activity page.
+     */
     private void initRecordButton () {
         mRecordButton = (Button) findViewById(R.id.recordButton);
         mRecordButton.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +178,9 @@ public class RecordActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the save recording button for the main Record Activity page.
+     */
     private void initSaveButton () {
         Button saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +191,9 @@ public class RecordActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the buttons for the main Record Activity page.
+     */
     private void initButtons () {
         initRecordButton();
 
@@ -152,9 +203,14 @@ public class RecordActivity extends AppCompatActivity {
         initSaveButton();
 
         Button deleteButton = (Button) findViewById(R.id.deleteButton);
-        initDeleteButton(deleteButton, null, -1);
+        initDeleteButton(deleteButton, null, DFLT_INDEX);
     }
 
+    /**
+     * Initializes the exit without saving button in the edit recording dialog view.
+     *
+     * @param dialog    The dialog to be used.
+     */
     private void initExitButton (final Dialog dialog) {
         Button exitDialog = (Button) dialog.findViewById(R.id.selExitButton);
         exitDialog.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +221,13 @@ public class RecordActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the save and exit button in the edit recording dialog view.
+     *
+     * @param dialog        The dialog to be used.
+     * @param listItem      The list item the dialog is operating upon.
+     * @param editRecName   The edit text field to be saved.
+     */
     private void initSaveExitButton (final Dialog dialog, final SavedRecording listItem,
                                      final EditText editRecName) {
         Button saveExitDialog = (Button) dialog.findViewById(R.id.selSaveButton);
@@ -178,11 +241,24 @@ public class RecordActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the ListView for the list of saved recordings and specifies what should
+     * happen when an item from that list is selected.
+     */
     private void initListView () {
         final ListView listView = (ListView) findViewById(R.id.savedRecordingsList);
         listView.setAdapter(mAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            /**
+             * Specifies what should happen when an item from the list is selected.
+             *
+             * @param parent    Unused, to match parent class signature.
+             * @param view      The view to be used.
+             * @param position  The position in the list of the selected item.
+             * @param unused    An unused argument parameter, to match parent class signature.
+             */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long unused) {
                 view.setSelected(true);

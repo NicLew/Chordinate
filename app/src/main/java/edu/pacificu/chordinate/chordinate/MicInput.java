@@ -12,15 +12,22 @@ public class MicInput {
     private MediaRecorder mRecorder;
     private MediaPlayer mPlayer;
     private boolean mbIsRecording;
-    private boolean mbIsPlaying;
     private long mStartTime;
     private long mEndTime;
 
+    /**
+     * Constructor for MicInput. Initializes boolean for recording to false.
+     */
     MicInput() {
-        mbIsPlaying = false;
         mbIsRecording = false;
     }
 
+    /**
+     * Starts recording or stops recording if a recording is already in process.
+     *
+     * @param savedFiles    The list of saved recordings.
+     * @param recordButton  The record button that was pressed.
+     */
     public void record (ArrayList<SavedRecording> savedFiles, Button recordButton) {
         if (!mbIsRecording)
         {
@@ -34,19 +41,38 @@ public class MicInput {
         }
     }
 
+    /**
+     * Starts playback or stops playback if a playback is already in process.
+     *
+     * @param playButton    The play button that was pressed.
+     * @param fileName      The name of the file to be played from.
+     */
     public void playback (Button playButton, String fileName) {
-        if (!mbIsPlaying)
-        {
-            startPlayback(fileName);
-            playButton.setText(R.string.record_playback_button_stop);
+
+        mPlayer = new MediaPlayer();
+
+        try {
+            mPlayer.setDataSource(fileName);
+            mPlayer.prepare();
+        } catch (IOException e) {
+            Log.e("MediaPlayer", "prepare() failed");
         }
-        else
-        {
-            stopPlayback();
-            playButton.setText(R.string.record_playback_button_play);
-        }
+
+        mPlayer.start();
+
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer player) {
+                stopPlayback();
+            }
+        });
     }
 
+    /**
+     * Sets up the media recorder and starts recording.
+     *
+     * @param savedFiles    The list of saved recordings.
+     */
     private void startRecording (ArrayList<SavedRecording> savedFiles) {
         savedFiles.add(new SavedRecording(savedFiles.size()));
 
@@ -68,6 +94,11 @@ public class MicInput {
         mRecorder.start();
     }
 
+    /**
+     * Stops recording and resets the media recorder.
+     *
+     * @param savedFiles    The list of saved recordings.
+     */
     private void stopRecording (ArrayList<SavedRecording> savedFiles) {
         mbIsRecording = false;
         mRecorder.stop();
@@ -78,22 +109,10 @@ public class MicInput {
         savedFiles.get(savedFiles.size() - 1).setLength(mEndTime - mStartTime);
     }
 
-    private void startPlayback (String fileName) {
-        mPlayer = new MediaPlayer();
-
-        try {
-            mPlayer.setDataSource(fileName);
-            mPlayer.prepare();
-        } catch (IOException e) {
-            Log.e("MediaPlayer", "prepare() failed");
-        }
-
-        mPlayer.start();
-        mbIsPlaying = true;
-    }
-
+    /**
+     * Stops playback and resets the media player.
+     */
     private void stopPlayback () {
-        mbIsPlaying = false;
         mPlayer.release();
         mPlayer = null;
     }
