@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class RecordActivity extends AppCompatActivity {
     private Button mRecordButton;
     private Button mPlayButton;
-    private InputMelody mInput;
+    private MicInput mInput;
     private Context mContext = this;
     private ArrayList<SavedRecording> mSavedFiles = new ArrayList<SavedRecording>();
     private SavedRecordingsAdapter mAdapter;
@@ -36,7 +36,7 @@ public class RecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-        mInput = new InputMelody();
+        mInput = new MicInput();
         mAdapter = new SavedRecordingsAdapter(this, mSavedFiles);
 
 //        try{
