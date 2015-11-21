@@ -48,6 +48,12 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
     private boolean bIsRecording;
     private String recording;
 
+    /**
+     * Sets the content view, initializes buttons and spinner, and loads the sounds for the
+     * keyboard.
+     *
+     * @param savedInstanceState    The instance state to create.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,19 +131,28 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
 
         for (int i = 0; i < SoundFileID.length; i ++)
         {
+            // Loads sounds
             SoundID[i] = KeyboardSoundPool.load (this,SoundFileID[i], 1);
         }
 
         recording = "";
         bIsRecording = false;
     }
-
+    /**
+     * Performs the proper actions when an on touch event occurs based on the button and
+     * the action performed
+     *
+     * @param v         The view being pressed
+     * @param event     The touch event last sensed
+     */
     public boolean onTouch(View v, MotionEvent event)
     {
         int id = v.getId(), keyNum = 0;
         int octNum;
         String sId = (String) OctSpinner.getSelectedItem();
         String newNote = "";
+
+        // Set octave
         switch (sId)
         {
             case "Middle C":
@@ -148,6 +163,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                 octNum = 0;
         }
 
+        // Actions when C, F, or the second C key is pressed
         if (id == R.id.C1_button ||
                 id == R.id.F1_button ||
                 id == R.id.C2_button) {
@@ -183,6 +199,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
             }
         }
 
+        // Actions when D, G, A, or the second D key is pressed
         else if (id == R.id.D1_button ||
                  id == R.id.G1_button ||
                  id == R.id.A1_button ||
@@ -219,6 +236,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
             }
         }
 
+        // Actions when E, B, or the second E key is pressed
         else if (id == R.id.E1_button ||
                  id == R.id.B1_button ||
                  id == R.id.E2_button) {
@@ -252,6 +270,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
             }
         }
 
+        // Actions when a black key is pressed
         else if (id == R.id.CS1_button ||
                  id == R.id.DS1_button ||
                  id == R.id.FS1_button ||
@@ -301,6 +320,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
             }
         }
 
+        // Action when Record button is pressed
         else if (id == R.id.start_record &&
                 (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS ||
                  event.getAction() == MotionEvent.ACTION_DOWN))
@@ -308,6 +328,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
             bIsRecording = true;
         }
 
+        // Action when Stop button is pressed
         else if (id == R.id.stop_record &&
                 (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS ||
                         event.getAction() == MotionEvent.ACTION_DOWN))
