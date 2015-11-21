@@ -1,5 +1,6 @@
 package edu.pacificu.chordinate.chordinate;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 public class KeyboardActivity extends AppCompatActivity implements View.OnTouchListener {
 
+    // Button, Spinner, and TextView objects
     Button C1Button;
     Button CS1Button;
     Button D1Button;
@@ -30,17 +32,21 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
     Button D2Button;
     Button DS2Button;
     Button E2Button;
+    Button startRecord;
+    Button stopRecord;
     Spinner OctSpinner;
     TextView PlayedNote;
-    SoundPool KeyboardSoundPool;
+    public SoundPool KeyboardSoundPool; // Stores sounds to be played
     SoundPool.Builder KeyboardSPBuilder;
-    private int[] SoundID = new int[41];
-    private int[] SoundFileID = {R.raw.c3, R.raw.cs3, R.raw.d3, R.raw.ds3, R.raw.e3, R.raw.f3,
+    public int[] SoundID = new int[41]; // Soundpool ids
+    public int[] SoundFileID = {R.raw.c3, R.raw.cs3, R.raw.d3, R.raw.ds3, R.raw.e3, R.raw.f3,
             R.raw.fs3, R.raw.g3, R.raw.gs3, R.raw.a3, R.raw.as3, R.raw.b3, R.raw.c4, R.raw.cs4,
             R.raw.d4, R.raw.ds4, R.raw.e4, R.raw.f4, R.raw.fs4, R.raw.g4, R.raw.gs4, R.raw.a4,
             R.raw.as4, R.raw.b4, R.raw.c5, R.raw.cs5, R.raw.d5, R.raw.ds5, R.raw.e5, R.raw.f5,
             R.raw.fs5, R.raw.g5, R.raw.gs5, R.raw.a5, R.raw.as5, R.raw.b5, R.raw.c5, R.raw.cs5,
             R.raw.d5, R.raw.ds5, R.raw.e5};
+    private boolean bIsRecording;
+    private String recording;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +108,12 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
         E2Button = (Button) findViewById(R.id.E2_button);
         E2Button.setOnTouchListener(this);
 
+        startRecord = (Button) findViewById (R.id.start_record);
+        startRecord.setOnTouchListener(this);
+
+        stopRecord = (Button) findViewById(R.id.stop_record);
+        stopRecord.setOnTouchListener(this);
+
         OctSpinner = (Spinner) findViewById(R.id.spinner);
         OctSpinner.setAdapter(stringArrayAdapter);
 
@@ -115,13 +127,17 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
         {
             SoundID[i] = KeyboardSoundPool.load (this,SoundFileID[i], 1);
         }
+
+        recording = "";
+        bIsRecording = false;
     }
 
     public boolean onTouch(View v, MotionEvent event)
     {
         int id = v.getId(), keyNum = 0;
-        int octNum = 0;
+        int octNum;
         String sId = (String) OctSpinner.getSelectedItem();
+        String newNote = "";
         switch (sId)
         {
             case "Middle C":
@@ -139,19 +155,26 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                     event.getAction() == MotionEvent.ACTION_DOWN ||
                     event.getAction() == MotionEvent.ACTION_HOVER_ENTER) {
                 v.setBackgroundResource(R.drawable.white_left_key_press);
-                switch (id)
-                {
+                switch (id) {
                     case R.id.C1_button:
-                        PlayedNote.setText("C1");
-                        keyNum = 0; break;
+                        newNote = "C" + octNum;
+                        keyNum = 0;
+                        break;
                     case R.id.F1_button:
-                        PlayedNote.setText("F1");
-                        keyNum = 5; break;
+                        newNote = "F" + octNum;
+                        keyNum = 5;
+                        break;
                     case R.id.C2_button:
-                        PlayedNote.setText("C2");
-                        keyNum = 12; break;
+                        newNote = "C" + (octNum + 1);
+                        keyNum = 12;
+                        break;
                 }
+                PlayedNote.setText(newNote);
                 KeyboardSoundPool.play (SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);
+                if (bIsRecording)
+                {
+                    recording = recording.concat(newNote + ";");
+                }
 
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
@@ -171,19 +194,24 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                 switch (id)
                 {
                     case R.id.D1_button:
-                        PlayedNote.setText("D1");
+                        newNote = "D" + octNum;
                         keyNum = 2; break;
                     case R.id.G1_button:
-                        PlayedNote.setText("G1");
+                        newNote = "G" + octNum;
                         keyNum = 7; break;
                     case R.id.A1_button:
-                        PlayedNote.setText("A1");
+                        newNote = "A" + octNum;
                         keyNum = 9; break;
                     case R.id.D2_button:
-                        PlayedNote.setText("D2");
+                        newNote = "D" + (octNum + 1);
                         keyNum = 14; break;
                 }
+                PlayedNote.setText(newNote);
                 KeyboardSoundPool.play (SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);
+                if (bIsRecording)
+                {
+                    recording = recording.concat(newNote + ";");
+                }
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
                     event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
@@ -201,16 +229,22 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                 switch (id)
                 {
                     case R.id.E1_button:
-                        PlayedNote.setText("E1");
+                        newNote = "E" + octNum;
                         keyNum = 4; break;
                     case R.id.B1_button:
-                        PlayedNote.setText("B1");
+                        newNote = "B" + octNum;
                         keyNum = 11; break;
                     case R.id.E2_button:
-                        PlayedNote.setText("E2");
+                        newNote = "E" + (octNum + 1);
                         keyNum = 16; break;
                 }
+                PlayedNote.setText(newNote);
                 KeyboardSoundPool.play (SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);
+
+                if (bIsRecording)
+                {
+                    recording = recording.concat(newNote + ";");
+                }
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
                     event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
@@ -232,33 +266,60 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                 switch (id)
                 {
                     case R.id.CS1_button:
-                        PlayedNote.setText("C#1");
+                        newNote = "C#" + octNum;
                         keyNum = 1; break;
                     case R.id.DS1_button:
-                        PlayedNote.setText("D#1");
+                        newNote = "D#" + octNum;
                         keyNum = 3; break;
                     case R.id.FS1_button:
-                        PlayedNote.setText("F#1");
+                        newNote = "F#" + octNum;
                         keyNum = 6; break;
                     case R.id.GS1_button:
-                        PlayedNote.setText("G#1");
+                        newNote = "G#" + octNum;
                         keyNum = 8; break;
                     case R.id.AS1_button:
-                        PlayedNote.setText("A#1");
+                        newNote = "A#" + octNum;
                         keyNum = 10; break;
                     case R.id.CS2_button:
-                        PlayedNote.setText("C#2");
+                        newNote = "C#" + (octNum + 1);
                         keyNum = 13; break;
                     case R.id.DS2_button:
-                        PlayedNote.setText("D#2");
+                        newNote = "D#" + (octNum + 1);
                         keyNum = 15; break;
                 }
+                PlayedNote.setText(newNote);
                 KeyboardSoundPool.play (SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);
+
+                if (bIsRecording)
+                {
+                    recording = recording.concat(newNote + ";");
+                }
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
                     event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
                 v.setBackgroundResource(R.drawable.black_key);
             }
+        }
+
+        else if (id == R.id.start_record &&
+                (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS ||
+                 event.getAction() == MotionEvent.ACTION_DOWN))
+        {
+            bIsRecording = true;
+        }
+
+        else if (id == R.id.stop_record &&
+                (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS ||
+                        event.getAction() == MotionEvent.ACTION_DOWN))
+        {
+            bIsRecording = false;
+            recording = recording.concat ("$");
+            Intent reviewIntent = new Intent(KeyboardActivity.this, KeyboardReviewActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString ("recordedSong", recording);
+            reviewIntent.putExtras(bundle);
+            startActivity (reviewIntent);
+            recording = "";
         }
         return false;
     }
