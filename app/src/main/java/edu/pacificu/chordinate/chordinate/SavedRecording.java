@@ -1,6 +1,9 @@
 package edu.pacificu.chordinate.chordinate;
 
+import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -95,5 +98,21 @@ public class SavedRecording {
     public void setLength (long length) {
 
         mLength = length;
+    }
+
+    /**
+     * Returns a string representation of a saved recording in the form:
+     *      Recording Name
+     *      Date (MM/dd/yy)
+     *      Length (mm:ss)
+     *      Name of associated .3gp file
+     *
+     * @return a string representation of a saved recording
+     */
+    public String toString () {
+
+        Log.e("Test ToString method", mRecName + "\n" + this.getDateStr() + "\n" + this.getLengthStr() + "\n" + mFileName);
+
+        return mRecName + "\n" + this.getDateStr() + "\n" + this.getLengthStr() + "\n" + mFileName;
     }
 }

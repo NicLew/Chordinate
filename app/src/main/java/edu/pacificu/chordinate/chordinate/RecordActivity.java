@@ -26,6 +26,8 @@ public class RecordActivity extends AppCompatActivity {
     private ArrayList<SavedRecording> mSavedFiles = new ArrayList<SavedRecording>();
     private SavedRecordingsAdapter mAdapter;
 
+    private SavedRecording mCurrent;
+
 
     //private File mSavedRecFile = new File("saved_rec_file");
     //private String FILENAME = "saved_rec_file";
@@ -92,6 +94,7 @@ public class RecordActivity extends AppCompatActivity {
         //mData = mSavedFiles.get(mSavedFiles.size() - 1).toString(); //ed1.getText().toString();
 
         mAdapter.notifyDataSetChanged();
+        String data = mSavedFiles.get(mSavedFiles.size() - 1).toString();
     /*    try {
             FileOutputStream fileOutput = openFileOutput(FILENAME, MODE_APPEND);
             fileOutput.write(mData.getBytes());
