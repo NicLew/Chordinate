@@ -1,5 +1,6 @@
 package edu.pacificu.chordinate.chordinate;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.SoundPool;
 import android.os.SystemClock;
@@ -8,9 +9,16 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class KeyboardReviewActivity extends KeyboardActivity implements View.OnTouchListener {
 
@@ -18,6 +26,7 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
     Button saveAsButton;
     Button chordinateButton;
     Button playButton;
+    EditText compName;
     String recordedSong = "";
 
     /**
@@ -45,6 +54,8 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
         chordinateButton = (Button) findViewById(R.id.chordinateButton);
         chordinateButton.setOnTouchListener(this);
 
+        compName = (EditText) findViewById(R.id.newCompName);
+
     }
 
     /**
@@ -56,15 +67,44 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
     public boolean onTouch (View v, MotionEvent event)
     {
         int id = v.getId();
+        String filename = "newComposition";
+        String contents = "";
         if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
             switch (id)
             {
                 case R.id.saveAsIsButton:
+                    filename = compName.getText().toString();
+                    contents = filename + "$" + recordedSong;
+                    OutputStreamWriter fOut;
 
+                    try {
+                        fOut = new OutputStreamWriter(openFileOutput(filename + ".chd", MODE_APPEND));
+                        fOut.write(contents);
+                        fOut.close();
+                        Toast.makeText(getApplicationContext(), filename + ".chd saved",
+                                Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        Toast.makeText(getApplicationContext(), filename + ".chd not saved",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    finish ();
                     break;
 
                 case R.id.chordinateButton:
+                    /*
+                    filename = compName.getText().toString();
+                    String line = " ";
+                    try {
+                        InputStreamReader isr = new InputStreamReader(openFileInput(filename + ".txt"));
+                        BufferedReader bReader = new BufferedReader(isr);
+                        line = bReader.readLine();
+                        Toast.makeText(getApplicationContext(), line, Toast.LENGTH_SHORT).show();
+                    }catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                    */
 
                     break;
                 case R.id.redoButton:
