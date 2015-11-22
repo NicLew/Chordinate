@@ -75,11 +75,11 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
             {
                 case R.id.saveAsIsButton:
                     filename = compName.getText().toString();
-                    contents = filename + "$" + recordedSong;
+                    contents = recordedSong;
                     OutputStreamWriter fOut;
 
                     try {
-                        fOut = new OutputStreamWriter(openFileOutput(filename + ".chd", MODE_APPEND));
+                        fOut = new OutputStreamWriter(openFileOutput(filename + ".chd", MODE_PRIVATE));
                         fOut.write(contents);
                         fOut.close();
                         Toast.makeText(getApplicationContext(), filename + ".chd saved",
@@ -111,17 +111,18 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
 
                     break;
                 case R.id.reviewPlay:
-                    playComposition (recordedSong);
+                    KPlayback.playComposition (recordedSong);
                     break;
             }
         }
         return true;
     }
+    /*
     /**
      * Parses a string of notes and plays them
      *
      * @param comp      the composition to be played
-     */
+     *
     public void playComposition (String comp)
     {
         char current;
@@ -169,11 +170,11 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
 
                 if (Character.isDigit(current))
                 {
-                    octNum = current - '0';
+                    octNum = current - '1';
                 }
 
                 index ++;
             } while (current != '$');
         }
-    }
+    }*/
 }

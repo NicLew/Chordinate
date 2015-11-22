@@ -107,8 +107,8 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void onCompsButtonClick(View view) {
         view.setBackgroundResource(R.drawable.middle_button2_press);
-        //Intent myIntent = new Intent(MainMenuActivity.this, NewActivity.class);
-        //startActivity(myIntent);
+        Intent myIntent = new Intent(MainMenuActivity.this, CompositionsActivity.class);
+        startActivity(myIntent);
     }
 
     public void onInstrButtonClick(View view) {

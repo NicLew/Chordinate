@@ -44,7 +44,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/newCompName"
         android:text="NewRecording"
         android:layout_above="@+id/reviewPlay"
         android:layout_centerHorizontal="true" />

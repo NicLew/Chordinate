@@ -17,11 +17,17 @@ public class CompositionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_compositions);
         String[] files;
         files = this.getFilesDir().list();
-        String line = "nope";
+        String line = "";
         try {
-            InputStreamReader isr = new InputStreamReader(openFileInput("NewRecording.chd"));
-            BufferedReader bReader = new BufferedReader(isr);
-            line = bReader.readLine();
+            for (int i = 0; i < files.length; i ++)
+            {
+                if (files[i].endsWith(".chd")) {
+                    InputStreamReader isr = new InputStreamReader(openFileInput(files[i]));
+                    BufferedReader bReader = new BufferedReader(isr);
+                    line = line.concat(files[i] + "\n" + bReader.readLine() + "\n");
+                }
+            }
+
             tv = (TextView) findViewById(R.id.textView2);
             tv.setText(line);
         }catch (Exception e) {
