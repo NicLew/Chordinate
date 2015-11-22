@@ -21,11 +21,12 @@ public class RecordActivity extends AppCompatActivity {
 
     private Button mRecordButton;
     private Button mPlayButton;
+    private Button mSaveButton;
+    private Button mDeleteButton;
     private MicInput mInput;
     private Context mContext = this;
     private ArrayList<SavedRecording> mSavedFiles = new ArrayList<SavedRecording>();
     private SavedRecordingsAdapter mAdapter;
-
     private SavedRecording mCurrent;
     private boolean mbIsRecording;
 
@@ -87,6 +88,10 @@ public class RecordActivity extends AppCompatActivity {
             mbIsRecording = false;
             mInput.stopRecording(mCurrent);
             mRecordButton.setText(R.string.record_rec_button_rec);
+            mRecordButton.setEnabled(false);
+            mPlayButton.setEnabled(true);
+            mSaveButton.setEnabled(true);
+            mDeleteButton.setEnabled(true);
         }
     }
 
@@ -103,16 +108,19 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     /**
-     * TODO: Only add a recording to the array if the user presses "save"
-     * TODO Doc onSaveButtonClick
+     * Saves the current recording to the array.
      */
     private void onSaveButtonClick() {
-        //mData = mSavedFiles.get(mSavedFiles.size() - 1).toString(); //ed1.getText().toString();
 
         String data = mCurrent.toString();
         mSavedFiles.add(mCurrent);
         mCurrent = null;
         mAdapter.notifyDataSetChanged();
+
+        mRecordButton.setEnabled(true);
+        mPlayButton.setEnabled(false);
+        mSaveButton.setEnabled(false);
+        mDeleteButton.setEnabled(false);
 
     /*    try {
             FileOutputStream fileOutput = openFileOutput(FILENAME, MODE_APPEND);
@@ -122,7 +130,6 @@ public class RecordActivity extends AppCompatActivity {
         catch (Exception e) {
             e.printStackTrace();
         }*/
-
     }
 
     /**
@@ -135,11 +142,18 @@ public class RecordActivity extends AppCompatActivity {
      */
     private void onDeleteButtonClick(Dialog dialog, int index) {
 
-        mSavedFiles.remove(index);
-        mAdapter.notifyDataSetChanged();
-
         if (null != dialog) {
+            mSavedFiles.remove(index);
+            mAdapter.notifyDataSetChanged();
             dialog.dismiss();
+        }
+        else
+        {
+            mCurrent = null;
+            mRecordButton.setEnabled(true);
+            mPlayButton.setEnabled(false);
+            mSaveButton.setEnabled(false);
+            mDeleteButton.setEnabled(false);
         }
     }
 
@@ -157,8 +171,7 @@ public class RecordActivity extends AppCompatActivity {
                 if (null != fileName) {
                     RecordActivity.this.onPlayButtonClick(playButton, fileName);
                 } else {
-                    RecordActivity.this.onPlayButtonClick(playButton,
-                            mSavedFiles.get(mSavedFiles.size() - 1).getFileName());
+                    RecordActivity.this.onPlayButtonClick(playButton, mCurrent.getFileName());
                 }
             }
         });
@@ -192,6 +205,8 @@ public class RecordActivity extends AppCompatActivity {
      */
     private void initRecordButton () {
         mRecordButton = (Button) findViewById(R.id.recordButton);
+        mRecordButton.setEnabled(true);
+
         mRecordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -204,8 +219,9 @@ public class RecordActivity extends AppCompatActivity {
      * Initializes the save recording button for the main Record Activity page.
      */
     private void initSaveButton () {
-        Button saveButton = (Button) findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        mSaveButton = (Button) findViewById(R.id.saveButton);
+        mSaveButton.setEnabled(false);
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 RecordActivity.this.onSaveButtonClick();
@@ -216,16 +232,18 @@ public class RecordActivity extends AppCompatActivity {
     /**
      * Initializes the buttons for the main Record Activity page.
      */
-    private void initButtons () {
+    private void initButtons() { // TODO: Make functions consistent between main buttons and dialog buttons
         initRecordButton();
 
         mPlayButton = (Button) findViewById(R.id.playbackButton);
+        mPlayButton.setEnabled(false);
         initPlayButton(mPlayButton, null);
 
         initSaveButton();
 
-        Button deleteButton = (Button) findViewById(R.id.deleteButton);
-        initDeleteButton(deleteButton, null, DFLT_INDEX);
+        mDeleteButton = (Button) findViewById(R.id.deleteButton);
+        mDeleteButton.setEnabled(false);
+        initDeleteButton(mDeleteButton, null, DFLT_INDEX);
     }
 
     /**
