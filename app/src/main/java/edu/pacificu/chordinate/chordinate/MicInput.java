@@ -11,34 +11,13 @@ import java.util.ArrayList;
 public class MicInput {
     private MediaRecorder mRecorder;
     private MediaPlayer mPlayer;
-    private boolean mbIsRecording;
     private long mStartTime;
     private long mEndTime;
 
     /**
-     * Constructor for MicInput. Initializes boolean for recording to false.
+     * Constructor for MicInput.
      */
     MicInput() {
-        mbIsRecording = false;
-    }
-
-    /**
-     * Starts recording or stops recording if a recording is already in process.
-     *
-     * @param savedFiles    The list of saved recordings.
-     * @param recordButton  The record button that was pressed.
-     */
-    public void record (ArrayList<SavedRecording> savedFiles, Button recordButton) {
-        if (!mbIsRecording)
-        {
-            startRecording(savedFiles);
-            recordButton.setText(R.string.record_rec_button_stop);
-        }
-        else
-        {
-            stopRecording(savedFiles);
-            recordButton.setText(R.string.record_rec_button_rec);
-        }
     }
 
     /**
@@ -71,17 +50,14 @@ public class MicInput {
     /**
      * Sets up the media recorder and starts recording.
      *
-     * @param savedFiles    The list of saved recordings.
+     * @param current The recording to start.
      */
-    private void startRecording (ArrayList<SavedRecording> savedFiles) {
-        savedFiles.add(new SavedRecording(savedFiles.size()));
-
-        mbIsRecording = true;
+    public void startRecording (SavedRecording current) {
 
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mRecorder.setOutputFile(savedFiles.get(savedFiles.size() - 1).getFileName());
+        mRecorder.setOutputFile(current.getFileName());
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
@@ -97,16 +73,15 @@ public class MicInput {
     /**
      * Stops recording and resets the media recorder.
      *
-     * @param savedFiles    The list of saved recordings.
+     * @param current The recording to stop.
      */
-    private void stopRecording (ArrayList<SavedRecording> savedFiles) {
-        mbIsRecording = false;
+    public void stopRecording (SavedRecording current) {
         mRecorder.stop();
         mEndTime = System.currentTimeMillis();
         mRecorder.reset();
         mRecorder.release();
         mRecorder = null;
-        savedFiles.get(savedFiles.size() - 1).setLength(mEndTime - mStartTime);
+        current.setLength(mEndTime - mStartTime);
     }
 
     /**

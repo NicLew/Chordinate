@@ -27,6 +27,7 @@ public class RecordActivity extends AppCompatActivity {
     private SavedRecordingsAdapter mAdapter;
 
     private SavedRecording mCurrent;
+    private boolean mbIsRecording;
 
 
     //private File mSavedRecFile = new File("saved_rec_file");
@@ -45,6 +46,9 @@ public class RecordActivity extends AppCompatActivity {
 
         mInput = new MicInput();
         mAdapter = new SavedRecordingsAdapter(this, mSavedFiles);
+
+        mCurrent = null;
+        mbIsRecording = false;
 
 //        try{
 //            FileInputStream fileInput = openFileInput(FILENAME);
@@ -66,12 +70,24 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     /**
-     * Performs the proper actions when the record button is pressed. Calls the record
-     * function of MicInput.
+     * Performs the proper actions when the record button is pressed. Calls the start recording
+     * and stop recording methods of MicInput.
      */
     private void onRecordButtonClick() {
 
-        mInput.record(mSavedFiles, mRecordButton);
+        if (!mbIsRecording)
+        {
+            mbIsRecording = true;
+            mCurrent = new SavedRecording(mSavedFiles.size());
+            mInput.startRecording(mCurrent);
+            mRecordButton.setText(R.string.record_rec_button_stop);
+        }
+        else
+        {
+            mbIsRecording = false;
+            mInput.stopRecording(mCurrent);
+            mRecordButton.setText(R.string.record_rec_button_rec);
+        }
     }
 
     /**
@@ -93,8 +109,11 @@ public class RecordActivity extends AppCompatActivity {
     private void onSaveButtonClick() {
         //mData = mSavedFiles.get(mSavedFiles.size() - 1).toString(); //ed1.getText().toString();
 
+        String data = mCurrent.toString();
+        mSavedFiles.add(mCurrent);
+        mCurrent = null;
         mAdapter.notifyDataSetChanged();
-        String data = mSavedFiles.get(mSavedFiles.size() - 1).toString();
+
     /*    try {
             FileOutputStream fileOutput = openFileOutput(FILENAME, MODE_APPEND);
             fileOutput.write(mData.getBytes());
