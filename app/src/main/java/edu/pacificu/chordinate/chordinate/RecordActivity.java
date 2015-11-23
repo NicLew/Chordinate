@@ -2,6 +2,7 @@ package edu.pacificu.chordinate.chordinate;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,12 +13,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class RecordActivity extends AppCompatActivity {
     private static final int DFLT_INDEX = -1;
+    private static final String SAVED_REC_EXT = ".sr";
 
     private Button mRecordButton;
     private Button mPlayButton;
@@ -29,6 +31,7 @@ public class RecordActivity extends AppCompatActivity {
     private SavedRecordingsAdapter mAdapter;
     private SavedRecording mCurrent;
     private boolean mbIsRecording;
+    private ContextWrapper mContextWrapper = this;
 
     /**
      * Sets the content view and initializes the buttons and list view.
@@ -48,6 +51,33 @@ public class RecordActivity extends AppCompatActivity {
 
         initButtons();
         initListView();
+        readFilesToArray();
+    }
+
+    /**
+     * Calls the functions to reset the array with the saved files.
+     */
+    @Override
+    protected void onStart () {
+        super.onStart();
+        readFilesToArray();
+    }
+
+    /**
+     * Calls the functions to reset the array with the saved files.
+     */
+    @Override
+    protected void onRestart () {
+        super.onRestart();
+        readFilesToArray();
+    }
+
+    /**
+     * Calls the functions to reset the array with the saved files.
+     */
+    @Override
+    protected void onResume () {
+        super.onResume();
         readFilesToArray();
     }
 
@@ -89,17 +119,7 @@ public class RecordActivity extends AppCompatActivity {
      * Saves the current recording to the array.
      */
     private void onSaveButtonClick() {
-
-        OutputStreamWriter fOutput;
-        String filename = mCurrent.getFileNameBody();
-
-        try {
-            fOutput = new OutputStreamWriter(openFileOutput(filename + ".sr", MODE_PRIVATE));
-            fOutput.write(mCurrent.toString());
-            fOutput.close();
-        } catch (Exception e) {
-            Log.e("Save exception", e.toString());
-        }
+        mCurrent.writeItemToFile(mContextWrapper);
 
         mSavedFiles.add(mCurrent);
         mCurrent = null;
@@ -109,39 +129,6 @@ public class RecordActivity extends AppCompatActivity {
         mPlayButton.setEnabled(false);
         mSaveButton.setEnabled(false);
         mDeleteButton.setEnabled(false);
-    }
-
-    /**
-     * Reads in the saved files to the saved recordings array.
-     */
-    private void readFilesToArray() {
-
-        if (0 == mSavedFiles.size()) {
-            String fileName, recName, dateStr, lengthStr;
-
-            String[] files;
-            files = this.getFilesDir().list();
-
-            try {
-                for (int i = 0; i < files.length; i++) {
-                    if (files[i].endsWith(".sr")) {
-                        InputStreamReader fInput = new InputStreamReader(openFileInput(files[i]));
-                        BufferedReader buffReader = new BufferedReader(fInput);
-
-                        recName = buffReader.readLine();
-                        dateStr = buffReader.readLine();
-                        lengthStr = buffReader.readLine();
-                        fileName = buffReader.readLine();
-
-                        mSavedFiles.add(new SavedRecording(fileName, recName, dateStr, lengthStr));
-                    }
-                }
-            } catch (Exception e) {
-                Log.d("readFilesToArray()", e.toString());
-            }
-
-            mAdapter.notifyDataSetChanged();
-        }
     }
 
     /**
@@ -155,6 +142,10 @@ public class RecordActivity extends AppCompatActivity {
     private void onDeleteButtonClick(Dialog dialog, int index) {
 
         if (null != dialog) {
+            File dir = getFilesDir();
+            File file = new File(dir, mSavedFiles.get(index).getFileNameBody() + SAVED_REC_EXT);
+            file.delete();
+
             mSavedFiles.remove(index);
             mAdapter.notifyDataSetChanged();
             dialog.dismiss();
@@ -164,6 +155,40 @@ public class RecordActivity extends AppCompatActivity {
             mPlayButton.setEnabled(false);
             mSaveButton.setEnabled(false);
             mDeleteButton.setEnabled(false);
+        }
+    }
+
+    /**
+     * Reads in the saved files to the saved recordings array.
+     */
+    private void readFilesToArray() {
+
+        if (0 == mSavedFiles.size()) {
+            String fileName, fileNameBody, recName, dateStr, lengthStr;
+
+            String[] files;
+            files = this.getFilesDir().list();
+
+            try {
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].endsWith(SAVED_REC_EXT)) {
+                        InputStreamReader fInput = new InputStreamReader(openFileInput(files[i]));
+                        BufferedReader buffReader = new BufferedReader(fInput);
+
+                        recName = buffReader.readLine();
+                        dateStr = buffReader.readLine();
+                        lengthStr = buffReader.readLine();
+                        fileName = buffReader.readLine();
+                        fileNameBody = buffReader.readLine();
+
+                        mSavedFiles.add(new SavedRecording(fileName, fileNameBody, recName, dateStr, lengthStr));
+                    }
+                }
+            } catch (Exception e) {
+                Log.d("readFilesToArray()", e.toString());
+            }
+
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -279,11 +304,13 @@ public class RecordActivity extends AppCompatActivity {
     private void initSaveExitButton(final Dialog dialog, final SavedRecording listItem,
                                     final EditText editRecName) {
         Button saveExitDialog = (Button) dialog.findViewById(R.id.selSaveButton);
+
         saveExitDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listItem.setRecName(editRecName.getText().toString());
                 mAdapter.notifyDataSetChanged();
+                listItem.writeItemToFile(mContextWrapper);
                 dialog.dismiss();
             }
         });
@@ -332,32 +359,5 @@ public class RecordActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
-    }
-
-    /**
-     * Calls the functions to reset the array with the saved files.
-     */
-    @Override
-    protected void onStart () {
-        super.onStart();
-        readFilesToArray();
-    }
-
-    /**
-     * Calls the functions to reset the array with the saved files.
-     */
-    @Override
-    protected void onRestart () {
-        super.onRestart();
-        readFilesToArray();
-    }
-
-    /**
-     * Calls the functions to reset the array with the saved files.
-     */
-    @Override
-    protected void onResume () {
-        super.onResume();
-        readFilesToArray();
     }
 }

@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.Button;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class MicInput {
     private MediaRecorder mRecorder;

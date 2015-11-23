@@ -1,7 +1,10 @@
 package edu.pacificu.chordinate.chordinate;
 
+import android.content.ContextWrapper;
 import android.os.Environment;
+import android.util.Log;
 
+import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,11 +36,17 @@ public class SavedRecording {
     }
 
     /**
-     * TODO: Doc
+     * Constructor for an existing saved recording.
+     *
+     * @param fileName      The file name for the recording.
+     * @param fileNameBody  The file name for the recording without the path or extension.
+     * @param recName       The name of the recording.
+     * @param dateStr       The date the recording was made.
+     * @param lengthStr     The length of the recording.
      */
-    SavedRecording (String fileName, String recName, String dateStr, String lengthStr) {
+    SavedRecording (String fileName, String fileNameBody, String recName, String dateStr, String lengthStr) {
         mFileName = fileName;
-        mFileNameBody = "temp_str"; // TODO: Fix!!
+        mFileNameBody = fileNameBody;
         mRecName = recName;
 
         DateFormat format = new SimpleDateFormat("MM/dd/yy", Locale.ENGLISH);
@@ -139,11 +148,29 @@ public class SavedRecording {
      *      Date (MM/dd/yy)
      *      Length (mm:ss)
      *      Name of associated .3gp file
+     *      Name of associated .3gp file without the extension
      *
      * @return a string representation of a saved recording
      */
     public String toString () {
 
-        return mRecName + "\n" + this.getDateStr() + "\n" + this.getLengthStr() + "\n" + mFileName;
+        return mRecName + "\n" + this.getDateStr() + "\n" + this.getLengthStr() + "\n" + mFileName + "\n" + mFileNameBody;
+    }
+
+    /**
+     * Writes a saved recording item to a file for internal storage.
+     *
+     * @param cw The context wrapper.
+     */
+    public void writeItemToFile (ContextWrapper cw) {
+        OutputStreamWriter fOutput;
+
+        try {
+            fOutput = new OutputStreamWriter(cw.openFileOutput(mFileNameBody + ".sr", cw.MODE_PRIVATE));
+            fOutput.write(this.toString());
+            fOutput.close();
+        } catch (Exception e) {
+            Log.e("Save exception", e.toString());
+        }
     }
 }
