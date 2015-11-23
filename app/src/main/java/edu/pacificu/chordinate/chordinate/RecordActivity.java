@@ -3,6 +3,7 @@ package edu.pacificu.chordinate.chordinate;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -142,9 +143,12 @@ public class RecordActivity extends AppCompatActivity {
     private void onDeleteButtonClick(Dialog dialog, int index) {
 
         if (null != dialog) {
-            File dir = getFilesDir();
-            File file = new File(dir, mSavedFiles.get(index).getFileNameBody() + SAVED_REC_EXT);
-            file.delete();
+            File infoFile = new File(getFilesDir(),
+                    mSavedFiles.get(index).getFileNameBody() + SAVED_REC_EXT);
+            File audioFile = new File(mSavedFiles.get(index).getFileName());
+
+            infoFile.delete();
+            audioFile.delete();
 
             mSavedFiles.remove(index);
             mAdapter.notifyDataSetChanged();
