@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\lewe4441\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jar="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
-        <dex dex="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-3aeaf0aab7b16aee77088d572dba8e92a3d4780b.jar" />
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-313543227570c12900b68a0816e625994c7587e7.jar" />
     </item>
     <item
         jar="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\exploded-aar\com.android.support\design\23.0.1\jars\classes.jar"
@@ -16,11 +16,18 @@
         <dex dex="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\pre-dexed\debug\classes-15430405b321bf64a6ba6511122c17172acc0b3d.jar" />
     </item>
     <item
-        jar="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jar="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
-        <dex dex="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-313543227570c12900b68a0816e625994c7587e7.jar" />
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\pre-dexed\debug\classes-f10ca6d301586328125291d8770b5a81df45cd07.jar" />
+    </item>
+    <item
+        jar="C:\Users\lewe4441\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-3aeaf0aab7b16aee77088d572dba8e92a3d4780b.jar" />
     </item>
     <item
         jar="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
@@ -28,13 +35,6 @@
         revision="23.0.1"
         sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
         <dex dex="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\pre-dexed\debug\classes-f96c4db4c6c75c57ad98f5760927dfb3bff6a1f9.jar" />
-    </item>
-    <item
-        jar="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="C:\Users\lewe4441\AndroidStudioProjects\Chordinate\app\build\intermediates\pre-dexed\debug\classes-f10ca6d301586328125291d8770b5a81df45cd07.jar" />
     </item>
 
 </items>

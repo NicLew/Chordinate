@@ -30,6 +30,16 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".KeyboardReviewActivity"
+            android:label="@string/title_activity_keyboard_review"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".CompositionsActivity"
+            android:label="@string/title_activity_compositions"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
         <activity android:name=".RecordActivity" >
         </activity>
     </application>
