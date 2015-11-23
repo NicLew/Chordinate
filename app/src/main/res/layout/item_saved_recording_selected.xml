@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:columnCount="5"
+    android:rowCount="7">
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:id="@+id/recNameEdit"
+        android:text="@string/record_list_item_name_default"
+        android:inputType="text"
+        android:maxLength="19"
+        android:layout_marginTop="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/selPlaybackButton"
+        android:text="@string/record_playback_button_play"
+        android:layout_alignTop="@+id/selDeleteButton"
+        android:layout_alignLeft="@+id/recNameEdit"
+        android:layout_alignStart="@+id/recNameEdit" />
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:text="@string/record_delete_button"
+        android:id="@+id/selDeleteButton"
+        android:layout_marginTop="42dp"
+        android:layout_below="@+id/recNameEdit"
+        android:layout_alignRight="@+id/recNameEdit"
+        android:layout_alignEnd="@+id/recNameEdit" />
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/selSaveButton"
+        android:text="@string/record_save_dialog_button"
+        android:layout_marginTop="36dp"
+        android:layout_below="@+id/selPlaybackButton"
+        android:layout_alignLeft="@+id/selPlaybackButton"
+        android:layout_alignStart="@+id/selPlaybackButton"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/selExitButton"
+        android:text="@string/record_exit_dialog_button"
+        android:layout_alignTop="@+id/selSaveButton"
+        android:layout_alignLeft="@+id/selDeleteButton"
+        android:layout_alignStart="@+id/selDeleteButton"
+        android:layout_marginBottom="20dp" />
+
+</RelativeLayout>
