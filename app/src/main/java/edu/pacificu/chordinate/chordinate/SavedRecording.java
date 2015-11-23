@@ -1,20 +1,20 @@
 package edu.pacificu.chordinate.chordinate;
 
-import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
-import android.widget.Toast;
 
-import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class SavedRecording {
-    private File mFile;
+
     private String mFileName;
+    private String mFileNameBody;
     private String mRecName;
     private Date mDate;
-    private long mLength;
+    private Date mLength;
 
     /**
      * Saved recording constructor. Determines filename and recording name and date.
@@ -23,23 +23,56 @@ public class SavedRecording {
      */
     SavedRecording (int fileNum) {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/recording_file_"+Integer.toString(fileNum)+".3gp";
-        mFile = new File(mFileName);
+        mFileName += "/recording_file_" + Integer.toString(fileNum) + ".3gp";
+        mFileNameBody = "recording_file_" + Integer.toString(fileNum);
 
-        mRecName = "Recording #"+Integer.toString(fileNum);
+        mRecName = "Recording #" + Integer.toString(fileNum);
 
         mDate = new Date ();
-        mLength = 0;
+        mLength = new Date(0);
     }
 
     /**
-     * Returns the file name of the saved recording.
+     * TODO: Doc
+     */
+    SavedRecording (String fileName, String recName, String dateStr, String lengthStr) {
+        mFileName = fileName;
+        mFileNameBody = "temp_str"; // TODO: Fix!!
+        mRecName = recName;
+
+        DateFormat format = new SimpleDateFormat("MM/dd/yy", Locale.ENGLISH);
+        try {
+            mDate = format.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat lengthFormat = new SimpleDateFormat("mm:ss", Locale.ENGLISH);
+        try {
+            mLength = lengthFormat.parse(lengthStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Returns the file name of the saved recording with the .3gp extension.
 
      * @return  The file name.
      */
     public String getFileName () {
 
         return mFileName;
+    }
+
+    /**
+     * Returns the file name of the saved recording without the directory path or .3gp extension.
+
+     * @return  The file name.
+     */
+    public String getFileNameBody () {
+
+        return mFileNameBody;
     }
 
     /**
@@ -75,7 +108,7 @@ public class SavedRecording {
         String lenString = null;
         SimpleDateFormat lenFormat = new SimpleDateFormat("mm:ss");
 
-        lenString = lenFormat.format(new Date(mLength));
+        lenString = lenFormat.format(mLength);
 
         return lenString;
     }
@@ -97,7 +130,7 @@ public class SavedRecording {
      */
     public void setLength (long length) {
 
-        mLength = length;
+        mLength = new Date(length);
     }
 
     /**
@@ -110,8 +143,6 @@ public class SavedRecording {
      * @return a string representation of a saved recording
      */
     public String toString () {
-
-        Log.e("Test ToString method", mRecName + "\n" + this.getDateStr() + "\n" + this.getLengthStr() + "\n" + mFileName);
 
         return mRecName + "\n" + this.getDateStr() + "\n" + this.getLengthStr() + "\n" + mFileName;
     }

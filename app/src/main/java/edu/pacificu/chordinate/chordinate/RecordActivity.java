@@ -4,16 +4,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class RecordActivity extends AppCompatActivity {
@@ -30,15 +30,10 @@ public class RecordActivity extends AppCompatActivity {
     private SavedRecording mCurrent;
     private boolean mbIsRecording;
 
-
-    //private File mSavedRecFile = new File("saved_rec_file");
-    //private String FILENAME = "saved_rec_file";
-    //private String mData;
-
     /**
      * Sets the content view and initializes the buttons and list view.
      *
-     * @param savedInstanceState    The instance state to create.
+     * @param savedInstanceState The instance state to create.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +46,9 @@ public class RecordActivity extends AppCompatActivity {
         mCurrent = null;
         mbIsRecording = false;
 
-//        try{
-//            FileInputStream fileInput = openFileInput(FILENAME);
-//            int c;
-//            String temp="";
-//
-//            while( (c = fileInput.read()) != -1){
-//                temp = temp + Character.toString((char)c);
-//            }
-//            //tv.setText(temp);
-//
-//            Toast.makeText(getBaseContext(),temp,Toast.LENGTH_LONG).show();
-//        }
-//        catch(Exception e){
-//        }
-
         initButtons();
         initListView();
+        readFilesToArray();
     }
 
     /**
@@ -76,15 +57,12 @@ public class RecordActivity extends AppCompatActivity {
      */
     private void onRecordButtonClick() {
 
-        if (!mbIsRecording)
-        {
+        if (!mbIsRecording) {
             mbIsRecording = true;
             mCurrent = new SavedRecording(mSavedFiles.size());
             mInput.startRecording(mCurrent);
             mRecordButton.setText(R.string.record_rec_button_stop);
-        }
-        else
-        {
+        } else {
             mbIsRecording = false;
             mInput.stopRecording(mCurrent);
             mRecordButton.setText(R.string.record_rec_button_rec);
@@ -99,8 +77,8 @@ public class RecordActivity extends AppCompatActivity {
      * Performs the proper actions when a playback button is pressed. Calls the playback
      * function of MicInput.
      *
-     * @param playButton    The playback button that was pressed.
-     * @param fileName      The name of the file to be played from.
+     * @param playButton The playback button that was pressed.
+     * @param fileName   The name of the file to be played from.
      */
     private void onPlayButtonClick(Button playButton, String fileName) {
 
@@ -112,7 +90,17 @@ public class RecordActivity extends AppCompatActivity {
      */
     private void onSaveButtonClick() {
 
-        String data = mCurrent.toString();
+        OutputStreamWriter fOutput;
+        String filename = mCurrent.getFileNameBody();
+
+        try {
+            fOutput = new OutputStreamWriter(openFileOutput(filename + ".sr", MODE_PRIVATE));
+            fOutput.write(mCurrent.toString());
+            fOutput.close();
+        } catch (Exception e) {
+            Log.e("Save exception", e.toString());
+        }
+
         mSavedFiles.add(mCurrent);
         mCurrent = null;
         mAdapter.notifyDataSetChanged();
@@ -121,15 +109,39 @@ public class RecordActivity extends AppCompatActivity {
         mPlayButton.setEnabled(false);
         mSaveButton.setEnabled(false);
         mDeleteButton.setEnabled(false);
+    }
 
-    /*    try {
-            FileOutputStream fileOutput = openFileOutput(FILENAME, MODE_APPEND);
-            fileOutput.write(mData.getBytes());
-            fileOutput.close();
+    /**
+     * Reads in the saved files to the saved recordings array.
+     */
+    private void readFilesToArray() {
+
+        if (0 == mSavedFiles.size()) {
+            String fileName, recName, dateStr, lengthStr;
+
+            String[] files;
+            files = this.getFilesDir().list();
+
+            try {
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].endsWith(".sr")) {
+                        InputStreamReader fInput = new InputStreamReader(openFileInput(files[i]));
+                        BufferedReader buffReader = new BufferedReader(fInput);
+
+                        recName = buffReader.readLine();
+                        dateStr = buffReader.readLine();
+                        lengthStr = buffReader.readLine();
+                        fileName = buffReader.readLine();
+
+                        mSavedFiles.add(new SavedRecording(fileName, recName, dateStr, lengthStr));
+                    }
+                }
+            } catch (Exception e) {
+                Log.d("readFilesToArray()", e.toString());
+            }
+
+            mAdapter.notifyDataSetChanged();
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
     /**
@@ -146,9 +158,7 @@ public class RecordActivity extends AppCompatActivity {
             mSavedFiles.remove(index);
             mAdapter.notifyDataSetChanged();
             dialog.dismiss();
-        }
-        else
-        {
+        } else {
             mCurrent = null;
             mRecordButton.setEnabled(true);
             mPlayButton.setEnabled(false);
@@ -160,10 +170,10 @@ public class RecordActivity extends AppCompatActivity {
     /**
      * Initializes a playback button.
      *
-     * @param playButton    The playback button to be initialized.
-     * @param fileName      The file to be played from.
+     * @param playButton The playback button to be initialized.
+     * @param fileName   The file to be played from.
      */
-    private void initPlayButton (final Button playButton, final String fileName) {
+    private void initPlayButton(final Button playButton, final String fileName) {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,20 +190,18 @@ public class RecordActivity extends AppCompatActivity {
     /**
      * Initializes a delete button.
      *
-     * @param deleteButton  The button to be initialized.
-     * @param dialog        The dialog to be used. Will be null if not applicable.
-     * @param index         The position of the recording in the list of recordings. Will be
-     *                      set to DFLT_INDEX if not applicable.
+     * @param deleteButton The button to be initialized.
+     * @param dialog       The dialog to be used. Will be null if not applicable.
+     * @param index        The position of the recording in the list of recordings. Will be
+     *                     set to DFLT_INDEX if not applicable.
      */
-    private void initDeleteButton (Button deleteButton, final Dialog dialog, final int index) {
+    private void initDeleteButton(Button deleteButton, final Dialog dialog, final int index) {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (index > DFLT_INDEX) {
                     RecordActivity.this.onDeleteButtonClick(dialog, index);
-                }
-                else
-                {
+                } else {
                     RecordActivity.this.onDeleteButtonClick(dialog, mSavedFiles.size() - 1);
                 }
             }
@@ -203,7 +211,7 @@ public class RecordActivity extends AppCompatActivity {
     /**
      * Initializes the record button for the main Record Activity page.
      */
-    private void initRecordButton () {
+    private void initRecordButton() {
         mRecordButton = (Button) findViewById(R.id.recordButton);
         mRecordButton.setEnabled(true);
 
@@ -218,7 +226,7 @@ public class RecordActivity extends AppCompatActivity {
     /**
      * Initializes the save recording button for the main Record Activity page.
      */
-    private void initSaveButton () {
+    private void initSaveButton() {
         mSaveButton = (Button) findViewById(R.id.saveButton);
         mSaveButton.setEnabled(false);
         mSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -249,9 +257,9 @@ public class RecordActivity extends AppCompatActivity {
     /**
      * Initializes the exit without saving button in the edit recording dialog view.
      *
-     * @param dialog    The dialog to be used.
+     * @param dialog The dialog to be used.
      */
-    private void initExitButton (final Dialog dialog) {
+    private void initExitButton(final Dialog dialog) {
         Button exitDialog = (Button) dialog.findViewById(R.id.selExitButton);
         exitDialog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,12 +272,12 @@ public class RecordActivity extends AppCompatActivity {
     /**
      * Initializes the save and exit button in the edit recording dialog view.
      *
-     * @param dialog        The dialog to be used.
-     * @param listItem      The list item the dialog is operating upon.
-     * @param editRecName   The edit text field to be saved.
+     * @param dialog      The dialog to be used.
+     * @param listItem    The list item the dialog is operating upon.
+     * @param editRecName The edit text field to be saved.
      */
-    private void initSaveExitButton (final Dialog dialog, final SavedRecording listItem,
-                                     final EditText editRecName) {
+    private void initSaveExitButton(final Dialog dialog, final SavedRecording listItem,
+                                    final EditText editRecName) {
         Button saveExitDialog = (Button) dialog.findViewById(R.id.selSaveButton);
         saveExitDialog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,7 +293,7 @@ public class RecordActivity extends AppCompatActivity {
      * Initializes the ListView for the list of saved recordings and specifies what should
      * happen when an item from that list is selected.
      */
-    private void initListView () {
+    private void initListView() {
         final ListView listView = (ListView) findViewById(R.id.savedRecordingsList);
         listView.setAdapter(mAdapter);
 
@@ -319,98 +327,37 @@ public class RecordActivity extends AppCompatActivity {
                 initDeleteButton(delSelRec, dialog, position);
 
                 initExitButton(dialog);
-                initSaveExitButton (dialog, listItem, editRecName);
+                initSaveExitButton(dialog, listItem, editRecName);
 
                 dialog.show();
             }
         });
     }
 
-//    public void onRecordingListItemClick(View view) {
-//        //view.setSelected(true);
-//        Saved
-//    }
-//
-//    protected void onPause() {
-//        super.onPause();
-//
-//        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-//        //fos.write(mSavedFiles.toString().getBytes());
-//        fos.close();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();  // Always call the superclass method first
-//
-//        String FILENAME = "hello_file";
-//        String string = "hello world!";
-//
-//        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-//        fos.write(string.getBytes());
-//        fos.close();
-//
-//        // Save the note's current draft, because the activity is stopping
-//        // and we want to be sure the current note progress isn't lost.
-//       // ContentValues values = new ContentValues();
-//        //values.put("NumSavedFiles", mSavedFiles.size());
-//        //values.put(NotePad.Notes.COLUMN_NAME_TITLE, getCurrentNoteTitle());
-//
-//
-////        getContentResolver().update(
-////                mUri,    // The URI for the note to update.
-////                values,  // The map of column names and new values to apply to them.
-////                null,    // No SELECT criteria are used.
-////                null     // No WHERE columns are used.
-////        );
-//    }
+    /**
+     * Calls the functions to reset the array with the saved files.
+     */
+    @Override
+    protected void onStart () {
+        super.onStart();
+        readFilesToArray();
+    }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();  // Always call the superclass method first
-//
-//        // The activity is either being restarted or started for the first time
-//        // so this is where we should make sure that GPS is enabled
-////            LocationManager locationManager =
-////                    (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-////            boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-////
-////            if (!gpsEnabled) {
-////                // Create a dialog here that requests the user to enable GPS, and use an intent
-////                // with the android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS action
-////                // to take the user to the Settings screen to enable GPS when they click "OK"
-////            }
-//    }
-//
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();  // Always call the superclass method first
-//
-//        // Activity being restarted from stopped state
-//    }
+    /**
+     * Calls the functions to reset the array with the saved files.
+     */
+    @Override
+    protected void onRestart () {
+        super.onRestart();
+        readFilesToArray();
+    }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle savedInstanceState) {
-//        super.onSaveInstanceState(savedInstanceState);
-//        // Save UI state changes to the savedInstanceState.
-//        // This bundle will be passed to onCreate if the process is
-//        // killed and restarted.
-//        savedInstanceState.putBoolean("MyBoolean", true);
-//        savedInstanceState.putDouble("myDouble", 1.9);
-//        savedInstanceState.putInt("MyInt", 1);
-//        savedInstanceState.putString("MyString", "Welcome back to Android");
-//        // etc.
-//    }
-//
-//    @Override
-//    public void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//        // Restore UI state from the savedInstanceState.
-//        // This bundle has also been passed to onCreate.
-//        boolean myBoolean = savedInstanceState.getBoolean("MyBoolean");
-//        double myDouble = savedInstanceState.getDouble("myDouble");
-//        int myInt = savedInstanceState.getInt("MyInt");
-//        String myString = savedInstanceState.getString("MyString");
-//    }
-
+    /**
+     * Calls the functions to reset the array with the saved files.
+     */
+    @Override
+    protected void onResume () {
+        super.onResume();
+        readFilesToArray();
+    }
 }
