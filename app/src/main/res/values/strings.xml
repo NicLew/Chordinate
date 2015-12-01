@@ -49,6 +49,9 @@
     <string name="record_list_item_date_default">Date</string>
     <string name="record_list_item_length_default">Length</string>
 
+    <string name="comps_list_item_name_default">Name</string>
+    <string name="comps_list_item_date_default">Date</string>
+
     <string name="action_settings">Settings</string>
     <string name="title_activity_about">About Chordinate</string>
     <string name="title_activity_keyboard">KeyboardActivity</string>

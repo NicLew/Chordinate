@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 public class KeyboardReviewActivity extends KeyboardActivity implements View.OnTouchListener {
 
@@ -28,6 +29,9 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
     Button playButton;
     EditText compName;
     String recordedSong = "";
+
+    // TODO: Test and refactor
+    private ArrayList<SavedComposition> mSavedFiles = new ArrayList<SavedComposition>();
 
     /**
      * Creates the view for the Keyboard Review Activity
@@ -74,18 +78,20 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
             switch (id)
             {
                 case R.id.saveAsIsButton:
-                    filename = compName.getText().toString();
-                    contents = recordedSong;
+                    SavedComposition current = new SavedComposition(mSavedFiles.size() - 1, compName.getText().toString(), recordedSong);
+                    mSavedFiles.add(current);
+                    //filename = compName.getText().toString();
+                    //contents = recordedSong;
                     OutputStreamWriter fOut;
 
                     try {
-                        fOut = new OutputStreamWriter(openFileOutput(filename + ".chd", MODE_PRIVATE));
-                        fOut.write(contents);
+                        fOut = new OutputStreamWriter(openFileOutput(current.getFileName() + ".chd", MODE_PRIVATE));
+                        fOut.write(current.toString());
                         fOut.close();
-                        Toast.makeText(getApplicationContext(), filename + ".chd saved",
+                        Toast.makeText(getApplicationContext(), ".chd saved",
                                 Toast.LENGTH_SHORT).show();
                     }catch (Exception e){
-                        Toast.makeText(getApplicationContext(), filename + ".chd not saved",
+                        Toast.makeText(getApplicationContext(), ".chd not saved",
                                 Toast.LENGTH_SHORT).show();
                     }
 
