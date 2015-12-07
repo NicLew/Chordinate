@@ -1,7 +1,6 @@
 package edu.pacificu.chordinate.chordinate;
 
 import android.content.ContextWrapper;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.OutputStreamWriter;
@@ -11,16 +10,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by lewe4441 on 12/1/2015.
- */
-public class SavedComposition {
 
-    private String mFileName; // to store name of saved file in internal memory
+public class SavedComposition {
+    private String mFileName;
     private String mCompName;
     private String mNotesStr;
     private Date mDate;
-    /*private Date mLength;*/
 
     /**
      * Saved recording constructor. Determines filename and recording name and date.
@@ -34,13 +29,28 @@ public class SavedComposition {
         mDate = new Date ();
     }
 
-    SavedComposition (int fileNum, String compName, String notes) {
+    /**
+     * Constructor for a partial saved composition.
+     *
+     * @param fileNum       The file number to assign.
+     * @param compName      The name of the composition.
+     * @param notesStr      The string of notes for the composition.
+     */
+    SavedComposition (int fileNum, String compName, String notesStr) {
         mFileName = "comp_file_" + Integer.toString(fileNum);
         mCompName = compName;
-        mNotesStr = notes;
+        mNotesStr = notesStr;
         mDate = new Date ();
     }
 
+    /**
+     * Constructor for an existing saved composition.
+     *
+     * @param compName      The name of the composition.
+     * @param dateStr       The date the recording was made.
+     * @param notesStr      The string of notes for the composition.
+     * @param fileName      The file name where information is stored.
+     */
     SavedComposition(String compName, String dateStr, String notesStr, String fileName) {
         mFileName = fileName;
         mCompName = compName;
@@ -53,49 +63,10 @@ public class SavedComposition {
             e.printStackTrace();
         }
     }
-    /*SavedRecording (int fileNum) {
-        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/recording_file_" + Integer.toString(fileNum) + ".3gp";
-        mFileNameBody = "recording_file_" + Integer.toString(fileNum);
-
-        mRecName = "Recording #" + Integer.toString(fileNum);
-
-        mDate = new Date ();
-        mLength = new Date(0);
-    }*/
 
     /**
-     * Constructor for an existing saved recording.
+     * Returns the file name where this compositions information is stored in memory.
      *
-     * @param fileName      The file name for the recording.
-     * @param fileNameBody  The file name for the recording without the path or extension.
-     * @param recName       The name of the recording.
-     * @param dateStr       The date the recording was made.
-     * @param lengthStr     The length of the recording.
-     */
-    /*SavedRecording (String fileName, String fileNameBody, String recName, String dateStr, String lengthStr) {
-        mFileName = fileName;
-        mFileNameBody = fileNameBody;
-        mRecName = recName;
-
-        DateFormat format = new SimpleDateFormat("MM/dd/yy", Locale.ENGLISH);
-        try {
-            mDate = format.parse(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        SimpleDateFormat lengthFormat = new SimpleDateFormat("mm:ss", Locale.ENGLISH);
-        try {
-            mLength = lengthFormat.parse(lengthStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    /**
-     * TODO
-
      * @return  The file name.
      */
     public String getFileName () {
@@ -104,24 +75,14 @@ public class SavedComposition {
     }
 
     /**
-     * TODO
-
-     * @return  The file name.
+     * Returns the notes string for a composition.
+     *
+     * @return  The string of notes.
      */
     public String getNotes () {
 
         return mNotesStr;
     }
-
-    /**
-     * Returns the file name of the saved recording without the directory path or .3gp extension.
-
-     * @return  The file name.
-     */
-    /*public String getFileNameBody () {
-
-        return mFileNameBody;
-    }*/
 
     /**
      * Returns the date string formatted mm/dd/yy.
@@ -148,49 +109,14 @@ public class SavedComposition {
     }
 
     /**
-     * Returns the composition name. TODO Check all docs in this file
+     * Sets the composition name.
      *
-     * @return  The composition name.
+     * @param name  The name the composition is to be given.
      */
     public void setCompName (String name) {
 
         mCompName = name;
     }
-
-
-    /**
-     * Returns the length string formatted like mm:ss.
-     *
-     * @return  The formatted length string.
-     */
-    /*public String getLengthStr () {
-        String lenString = null;
-        SimpleDateFormat lenFormat = new SimpleDateFormat("mm:ss");
-
-        lenString = lenFormat.format(mLength);
-
-        return lenString;
-    }*/
-
-    /**
-     * Sets the recording name.
-     *
-     * @param newName   The new recording name to be assigned.
-     */
-    /*public void setRecName (String newName) {
-
-        mRecName = newName;
-    }*/
-
-    /**
-     * Sets the length of the recording.
-     *
-     * @param length   The length of the recording to be assigned.
-     */
-    /*public void setLength (long length) {
-
-        mLength = new Date(length);
-    }*/
 
     /**
      * Returns a string representation of a saved recording in the form:
@@ -199,7 +125,7 @@ public class SavedComposition {
      *      The string of notes
      *      Name of the file
      *
-     * @return a string representation of a saved recording
+     * @return a string representation of a saved composition
      */
     public String toString () {
 
@@ -207,7 +133,7 @@ public class SavedComposition {
     }
 
     /**
-     * Writes a saved recording item to a file for internal storage.
+     * Writes a saved composition item to a file for internal storage.
      *
      * @param cw The context wrapper.
      */

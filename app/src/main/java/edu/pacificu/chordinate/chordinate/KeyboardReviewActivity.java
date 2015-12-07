@@ -19,7 +19,6 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
     private EditText mCompName;
     private String mRecordedSong = "";
 
-    // TODO: Test and refactor
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     private int mNumComps;
     private ContextWrapper mContextWrapper = this;
@@ -59,6 +58,9 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
 
     }
 
+    /**
+     * Saves the total number of compositions in a shared preferences variable.
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -72,12 +74,12 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
     /**
      * Performs the proper actions when a button is pressed
      *
-     * @param v         The view being pressed
+     * @param view      The view being pressed
      * @param event     The touch event last sensed
      */
-    public boolean onTouch (View v, MotionEvent event)
+    public boolean onTouch (View view, MotionEvent event)
     {
-        int id = v.getId();
+        int id = view.getId();
 
         if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
@@ -117,64 +119,4 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
         }
         return true;
     }
-    /*
-    /**
-     * Parses a string of notes and plays them
-     *
-     * @param comp      the composition to be played
-     *
-    public void playComposition (String comp)
-    {
-        char current;
-        int index = 0, keyNum = 0, octNum = 0;
-
-        if (comp.length() > 1)
-        {
-            do {
-                current = comp.charAt(index);
-
-                switch (current)
-                {
-                    case 'C':
-                        keyNum = 0;
-                        break;
-                    case 'D':
-                        keyNum = 2;
-                        break;
-                    case 'E':
-                        keyNum = 4;
-                        break;
-                    case 'F':
-                        keyNum = 5;
-                        break;
-                    case 'G':
-                        keyNum = 7;
-                        break;
-                    case 'A':
-                        keyNum = 9;
-                        break;
-                    case 'B':
-                        keyNum = 11;
-                        break;
-                    case '#':
-                        keyNum ++;
-                        break;
-                    case ';':
-                        try {
-                            Thread.sleep (500);
-                        } catch (Exception E){}
-
-                        KeyboardSoundPool.play(SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);
-                        break;
-                }
-
-                if (Character.isDigit(current))
-                {
-                    octNum = current - '1';
-                }
-
-                index ++;
-            } while (current != '$');
-        }
-    }*/
 }

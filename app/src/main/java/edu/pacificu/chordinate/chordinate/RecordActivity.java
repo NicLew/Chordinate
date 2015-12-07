@@ -271,7 +271,7 @@ public class RecordActivity extends AppCompatActivity {
     /**
      * Initializes the buttons for the main Record Activity page.
      */
-    private void initButtons() { // TODO: Make functions consistent between main buttons and dialog buttons
+    private void initButtons() {
         initRecordButton();
 
         mPlayButton = (Button) findViewById(R.id.playbackButton);

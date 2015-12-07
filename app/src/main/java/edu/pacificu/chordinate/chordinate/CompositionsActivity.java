@@ -11,8 +11,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,6 +26,12 @@ public class CompositionsActivity extends AppCompatActivity {
     private ArrayList<SavedComposition> mSavedFiles = new ArrayList<SavedComposition>();
     private KeyPlayback mPlayback;
 
+    /**
+     * Creates the page, initializes the list view, reads in the saved files to an array,
+     * and loads the sound pool needed for playback.
+     *
+     * @param savedInstanceState    The instance state to be created.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +45,7 @@ public class CompositionsActivity extends AppCompatActivity {
     }
 
     /**
-     * Reads in the saved files to the saved recordings array.
+     * Reads in the saved files to the saved compositions array.
      */
     private void readFilesToArray() {
 
@@ -127,20 +131,20 @@ public class CompositionsActivity extends AppCompatActivity {
      * Initializes a playback button.
      *
      * @param playButton The playback button to be initialized.
-     * @param fileName   The file to be played from.
+     * @param notes      The notes to be played.
      */
-    private void initPlayButton(final Button playButton, final String fileName) {
+    private void initPlayButton(final Button playButton, final String notes) {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CompositionsActivity.this.onPlayButtonClick(playButton, fileName);
+                CompositionsActivity.this.onPlayButtonClick(playButton, notes);
             }
         });
     }
 
     /**
      * Performs the proper actions when a playback button is pressed. Calls the playback
-     * function of MicInput.
+     * function of KeyPlayback.
      *
      * @param playButton The playback button that was pressed.
      * @param notes      The notes to be played back
@@ -153,9 +157,8 @@ public class CompositionsActivity extends AppCompatActivity {
      * Initializes a delete button.
      *
      * @param deleteButton The button to be initialized.
-     * @param dialog       The dialog to be used. Will be null if not applicable.
-     * @param index        The position of the recording in the list of recordings. Will be
-     *                     set to DFLT_INDEX if not applicable.
+     * @param dialog       The dialog to be used.
+     * @param index        The position of the item in the list of compositions.
      */
     private void initDeleteButton(Button deleteButton, final Dialog dialog, final int index) {
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -167,16 +170,16 @@ public class CompositionsActivity extends AppCompatActivity {
     }
 
     /**
-     * Performs the proper actions when a delete button is pressed. Removes the recording,
-     * notifies the list view adaptor that there has been a change, and, if dialog is not null,
-     * the dialog is closed. TODO All docs in this file need to be checked
+     * Performs the proper actions when a delete button is pressed. Removes the composition,
+     * notifies the list view adaptor that there has been a change, and the dialog is closed.
      *
-     * @param dialog The dialog to be closed. Will be null if not applicable.
-     * @param index  The position of the recording in the saved recording list to be deleted.
+     * @param dialog The dialog to be closed.
+     * @param index  The position of the item in the saved compositions list to be deleted.
      */
     private void onDeleteButtonClick(Dialog dialog, int index) {
 
-        File infoFile = new File(getFilesDir(), mSavedFiles.get(index).getFileName() + SAVED_COMP_EXT);
+        File infoFile = new File(getFilesDir(),
+                mSavedFiles.get(index).getFileName() + SAVED_COMP_EXT);
 
         infoFile.delete();
         mSavedFiles.remove(index);
@@ -185,7 +188,7 @@ public class CompositionsActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializes the exit without saving button in the edit recording dialog view.
+     * Initializes the exit without saving button in the edit composition dialog view.
      *
      * @param dialog The dialog to be used.
      */
@@ -200,7 +203,7 @@ public class CompositionsActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializes the save and exit button in the edit recording dialog view.
+     * Initializes the save and exit button in the edit composition dialog view.
      *
      * @param dialog      The dialog to be used.
      * @param listItem    The list item the dialog is operating upon.
