@@ -9,37 +9,38 @@
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="65dp"
         android:text="Redo"
         android:id="@+id/redoButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="65dp"
         android:text="Chordinate"
         android:id="@+id/chordinateButton"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/chordinate_button" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save As Is"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:id="@+id/saveAsIsButton"
         android:layout_alignBottom="@+id/redoButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/save_button" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Play"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:id="@+id/reviewPlay"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/play_button" />
 
     <EditText
         android:layout_width="wrap_content"

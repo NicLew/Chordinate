@@ -92,10 +92,12 @@ public class RecordActivity extends AppCompatActivity {
             mbIsRecording = true;
             mCurrent = new SavedRecording(mSavedFiles.size());
             mInput.startRecording(mCurrent);
+            mRecordButton.setBackgroundResource(R.drawable.stop_button);
             mRecordButton.setText(R.string.record_rec_button_stop);
         } else {
             mbIsRecording = false;
             mInput.stopRecording(mCurrent);
+            mRecordButton.setBackgroundResource(R.drawable.record_button);
             mRecordButton.setText(R.string.record_rec_button_rec);
             mRecordButton.setEnabled(false);
             mPlayButton.setEnabled(true);

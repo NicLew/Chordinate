@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <TextView
+        android:id="@+id/compName"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="@string/comps_list_item_name_default"
+        android:textSize="20sp"
+        android:gravity="start"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/compDate"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="@string/comps_list_item_date_default"
+        android:textSize="15sp"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:layout_marginRight="10dp"/>
+</LinearLayout>

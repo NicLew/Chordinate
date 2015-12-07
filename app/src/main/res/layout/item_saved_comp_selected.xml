@@ -8,7 +8,7 @@
     <EditText
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:id="@+id/recNameEdit"
+        android:id="@+id/compNameEdit"
         android:text="@string/record_list_item_name_default"
         android:inputType="text"
         android:maxLength="19"
@@ -22,8 +22,8 @@
         android:id="@+id/selPlaybackButton"
         android:text="@string/record_playback_button_play"
         android:layout_alignTop="@+id/selDeleteButton"
-        android:layout_alignLeft="@+id/recNameEdit"
-        android:layout_alignStart="@+id/recNameEdit"
+        android:layout_alignLeft="@+id/compNameEdit"
+        android:layout_alignStart="@+id/compNameEdit"
         android:background="@drawable/play_button" />
 
     <Button
@@ -32,9 +32,9 @@
         android:text="@string/record_delete_button"
         android:id="@+id/selDeleteButton"
         android:layout_marginTop="42dp"
-        android:layout_below="@+id/recNameEdit"
-        android:layout_alignRight="@+id/recNameEdit"
-        android:layout_alignEnd="@+id/recNameEdit"
+        android:layout_below="@+id/compNameEdit"
+        android:layout_alignRight="@+id/compNameEdit"
+        android:layout_alignEnd="@+id/compNameEdit"
         android:background="@drawable/delete_button" />
 
     <Button

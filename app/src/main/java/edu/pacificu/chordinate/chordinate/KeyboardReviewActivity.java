@@ -1,37 +1,28 @@
 package edu.pacificu.chordinate.chordinate;
 
-import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
-import android.media.SoundPool;
-import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 
 public class KeyboardReviewActivity extends KeyboardActivity implements View.OnTouchListener {
 
-    Button redoButton;
-    Button saveAsButton;
-    Button chordinateButton;
-    Button playButton;
-    EditText compName;
-    String recordedSong = "";
+    private Button mRedoButton;
+    private Button mSaveAsButton;
+    private Button mChordinateButton;
+    private Button mPlayButton;
+    private EditText mCompName;
+    private String mRecordedSong = "";
 
     // TODO: Test and refactor
-    private ArrayList<SavedComposition> mSavedFiles = new ArrayList<SavedComposition>();
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+    private int mNumComps;
+    private ContextWrapper mContextWrapper = this;
 
     /**
      * Creates the view for the Keyboard Review Activity
@@ -42,25 +33,41 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_keyboard_review);
+
         Intent reviewIntent = getIntent();
         Bundle extras = reviewIntent.getExtras();
-        recordedSong = extras.getString("recordedSong");
+        mRecordedSong = extras.getString("recordedSong");
 
-        redoButton = (Button) findViewById(R.id.redoButton);
-        redoButton.setOnTouchListener(this);
+        mNumComps = 0;
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        mNumComps = prefs.getInt("numComps", 0); //0 is the default value
 
-        saveAsButton = (Button) findViewById(R.id.saveAsIsButton);
-        saveAsButton.setOnTouchListener(this);
+        mRedoButton = (Button) findViewById(R.id.redoButton);
+        mRedoButton.setOnTouchListener(this);
 
-        playButton = (Button) findViewById(R.id.reviewPlay);
-        playButton.setOnTouchListener(this);
+        mSaveAsButton = (Button) findViewById(R.id.saveAsIsButton);
+        mSaveAsButton.setOnTouchListener(this);
 
-        chordinateButton = (Button) findViewById(R.id.chordinateButton);
-        chordinateButton.setOnTouchListener(this);
+        mPlayButton = (Button) findViewById(R.id.reviewPlay);
+        mPlayButton.setOnTouchListener(this);
 
-        compName = (EditText) findViewById(R.id.newCompName);
+        mChordinateButton = (Button) findViewById(R.id.chordinateButton);
+        mChordinateButton.setOnTouchListener(this);
+
+        mCompName = (EditText) findViewById(R.id.newCompName);
+        mCompName.setText("Composition #" + Integer.toString(mNumComps));
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putInt("numComps", mNumComps);
+        editor.commit();
+    }
+
 
     /**
      * Performs the proper actions when a button is pressed
@@ -71,29 +78,16 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
     public boolean onTouch (View v, MotionEvent event)
     {
         int id = v.getId();
-        String filename = "newComposition";
-        String contents = "";
+
         if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
             switch (id)
             {
                 case R.id.saveAsIsButton:
-                    SavedComposition current = new SavedComposition(mSavedFiles.size() - 1, compName.getText().toString(), recordedSong);
-                    mSavedFiles.add(current);
-                    //filename = compName.getText().toString();
-                    //contents = recordedSong;
-                    OutputStreamWriter fOut;
-
-                    try {
-                        fOut = new OutputStreamWriter(openFileOutput(current.getFileName() + ".chd", MODE_PRIVATE));
-                        fOut.write(current.toString());
-                        fOut.close();
-                        Toast.makeText(getApplicationContext(), ".chd saved",
-                                Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){
-                        Toast.makeText(getApplicationContext(), ".chd not saved",
-                                Toast.LENGTH_SHORT).show();
-                    }
+                    SavedComposition current = new SavedComposition(mNumComps, mCompName.getText().toString(), mRecordedSong);
+                    current.writeItemToFile(mContextWrapper);
+                    ++mNumComps;
+                    Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
 
                     finish ();
                     break;
@@ -117,7 +111,7 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
 
                     break;
                 case R.id.reviewPlay:
-                    KPlayback.playComposition (recordedSong);
+                    KPlayback.playComposition (mRecordedSong);
                     break;
             }
         }
