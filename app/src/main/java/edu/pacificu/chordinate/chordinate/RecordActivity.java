@@ -145,8 +145,8 @@ public class RecordActivity extends AppCompatActivity {
     private void onDeleteButtonClick(Dialog dialog, int index) {
 
         if (null != dialog) {
-            File infoFile = new File(getFilesDir(),
-                    mSavedFiles.get(index).getFileNameBody() + SAVED_REC_EXT);
+            //File infoFile = new File(getFilesDir(), mSavedFiles.get(index).getFileNameBody() + SAVED_REC_EXT);
+            File infoFile = new File(getFilesDir(), mSavedFiles.get(index).getFileName() + SAVED_REC_EXT);
             File audioFile = new File(mSavedFiles.get(index).getFileName());
 
             infoFile.delete();
@@ -314,7 +314,8 @@ public class RecordActivity extends AppCompatActivity {
         saveExitDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listItem.setRecName(editRecName.getText().toString());
+                //listItem.setRecName(editRecName.getText().toString());
+                listItem.setName(editRecName.getText().toString());
                 mAdapter.notifyDataSetChanged();
                 listItem.writeItemToFile(mContextWrapper);
                 dialog.dismiss();
@@ -351,7 +352,8 @@ public class RecordActivity extends AppCompatActivity {
                 dialog.setContentView(R.layout.item_saved_recording_selected);
 
                 final EditText editRecName = (EditText) dialog.findViewById(R.id.recNameEdit);
-                editRecName.setText(listItem.getRecName());
+                //editRecName.setText(listItem.getRecName());
+                editRecName.setText(listItem.getName());
 
                 final Button playSelRec = (Button) dialog.findViewById(R.id.selPlaybackButton);
                 initPlayButton(playSelRec, listItem.getFileName());

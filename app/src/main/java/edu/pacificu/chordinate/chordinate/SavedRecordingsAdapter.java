@@ -46,7 +46,8 @@ public class SavedRecordingsAdapter extends ArrayAdapter<SavedRecording> {
         TextView tvRecLength = (TextView) convertView.findViewById(R.id.tvRecLength);
 
         // Populate the data into the template view using the data object
-        tvRecName.setText(savedRecording.getRecName());
+        //tvRecName.setText(savedRecording.getRecName());
+        tvRecName.setText(savedRecording.getName());
         tvRecDate.setText(savedRecording.getDateStr());
         tvRecLength.setText(savedRecording.getLengthStr());
 

@@ -45,7 +45,8 @@ public class CompositionsAdapter extends ArrayAdapter<SavedComposition> {
         TextView compDate = (TextView) convertView.findViewById(R.id.compDate);
 
         // Populate the data into the template view using the data object
-        compName.setText(savedComposition.getCompName());
+        //compName.setText(savedComposition.getCompName());
+        compName.setText(savedComposition.getName());
         compDate.setText(savedComposition.getDateStr());
 
         // Return the completed view to render on screen

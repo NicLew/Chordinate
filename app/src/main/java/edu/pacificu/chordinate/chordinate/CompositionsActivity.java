@@ -111,7 +111,8 @@ public class CompositionsActivity extends AppCompatActivity {
                 dialog.setContentView(R.layout.item_saved_comp_selected);
 
                 final EditText editCompName = (EditText) dialog.findViewById(R.id.compNameEdit);
-                editCompName.setText(listItem.getCompName());
+                //editCompName.setText(listItem.getCompName());
+                editCompName.setText(listItem.getName());
 
                 final Button playSelRec = (Button) dialog.findViewById(R.id.selPlaybackButton);
                 initPlayButton(playSelRec, listItem.getNotes());
@@ -216,7 +217,8 @@ public class CompositionsActivity extends AppCompatActivity {
         saveExitDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listItem.setCompName(editRecName.getText().toString());
+                //listItem.setCompName(editRecName.getText().toString());
+                listItem.setName(editRecName.getText().toString());
                 mAdapter.notifyDataSetChanged();
                 listItem.writeItemToFile(mContextWrapper);
                 dialog.dismiss();
