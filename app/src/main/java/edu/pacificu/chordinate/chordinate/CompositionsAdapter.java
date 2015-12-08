@@ -9,19 +9,19 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class SavedRecordingsAdapter extends ArrayAdapter<SavedRecording> {
+public class CompositionsAdapter extends ArrayAdapter<SavedComposition> {
 
-    /**
+    /*
      * The constructor.
      *
-     * @param context           The context to create.
-     * @param savedRecordings   The list of saved recordings.
+     * @param context             The context to create.
+     * @param savedCompositions   The list of saved compositions.
      */
-    public SavedRecordingsAdapter(Context context, ArrayList<SavedRecording> savedRecordings) {
-        super(context, 0, savedRecordings);
+    public CompositionsAdapter(Context context, ArrayList<SavedComposition> savedCompositions) {
+        super(context, 0, savedCompositions);
     }
 
-    /**
+     /*
      * Gets an item from the list and sets the text views appropriately.
      *
      * @param position      The position of the selected item in the list.
@@ -33,22 +33,20 @@ public class SavedRecordingsAdapter extends ArrayAdapter<SavedRecording> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the data item for this position
-        SavedRecording savedRecording = getItem(position);
+        SavedComposition savedComposition = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_saved_recording, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_saved_comp, parent, false);
         }
 
         // Lookup view for data population
-        TextView tvRecName = (TextView) convertView.findViewById(R.id.tvRecName);
-        TextView tvRecDate = (TextView) convertView.findViewById(R.id.tvRecDate);
-        TextView tvRecLength = (TextView) convertView.findViewById(R.id.tvRecLength);
+        TextView compName = (TextView) convertView.findViewById(R.id.compName);
+        TextView compDate = (TextView) convertView.findViewById(R.id.compDate);
 
         // Populate the data into the template view using the data object
-        tvRecName.setText(savedRecording.getName());
-        tvRecDate.setText(savedRecording.getDateStr());
-        tvRecLength.setText(savedRecording.getLengthStr());
+        compName.setText(savedComposition.getName());
+        compDate.setText(savedComposition.getDateStr());
 
         // Return the completed view to render on screen
         return convertView;

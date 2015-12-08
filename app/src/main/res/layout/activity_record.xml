@@ -9,21 +9,25 @@
     tools:context="edu.pacificu.chordinate.chordinate.RecordActivity">
 
     <Button
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:text="@string/record_rec_button_rec"
         android:id="@+id/recordButton"
-        android:layout_alignTop="@+id/playbackButton"
-        android:layout_alignParentLeft="true"
+        android:background="@drawable/record_button"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignTop="@+id/saveButton"
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:id="@+id/playbackButton"
         android:text="@string/record_playback_button_play"
-        android:layout_alignTop="@+id/saveButton"
-        android:layout_toRightOf="@+id/recordButton"
+        android:background="@drawable/play_button"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignTop="@+id/recordButton"
         android:layout_toEndOf="@+id/recordButton" />
 
     <ListView
@@ -57,8 +61,8 @@
         android:layout_marginLeft="0dp" />
 
     <Button
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:text="@string/record_save_button"
         android:id="@+id/saveButton"
         android:layout_marginTop="21dp"
@@ -66,15 +70,19 @@
         android:layout_toRightOf="@+id/playbackButton"
         android:layout_toEndOf="@+id/playbackButton"
         android:layout_marginLeft="36dp"
-        android:layout_marginStart="36dp" />
+        android:layout_marginStart="36dp"
+        android:background="@drawable/save_button"
+        android:layout_margin="10dp" />
 
     <Button
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:text="@string/record_delete_button"
         android:id="@+id/deleteButton"
+        android:background="@drawable/delete_button"
         android:layout_alignTop="@+id/saveButton"
-        android:layout_toRightOf="@+id/saveButton"
-        android:layout_toEndOf="@+id/saveButton" />
+        android:layout_toEndOf="@+id/saveButton"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp" />
 
 </RelativeLayout>
