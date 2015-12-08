@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CompositionsActivity extends AppCompatActivity {
     private static final String SAVED_COMP_EXT = ".chd";
@@ -55,12 +56,9 @@ public class CompositionsActivity extends AppCompatActivity {
             String[] files;
             files = this.getFilesDir().list();
 
-            Log.d ("numFiles", Integer.toString(files.length));
-
             try {
                 for (int i = 0; i < files.length; i++) {
                     if (files[i].endsWith(SAVED_COMP_EXT)) {
-                        Log.d ("fileNames", files[i]);
                         InputStreamReader fInput = new InputStreamReader(openFileInput(files[i]));
                         BufferedReader buffReader = new BufferedReader(fInput);
 
@@ -69,10 +67,10 @@ public class CompositionsActivity extends AppCompatActivity {
                         notesStr = buffReader.readLine();
                         fileName = buffReader.readLine();
 
-                        SavedComposition temp = new SavedComposition(compName, dateStr, notesStr, fileName);
                         mSavedFiles.add(new SavedComposition(compName, dateStr, notesStr, fileName));
-                        Log.d("CompReadIn", temp.toString());
                     }
+
+                    Collections.sort(mSavedFiles, SavedFile.Comparators.DATE);
                 }
             } catch (Exception e) {
                 Log.d("readFilesToArray()", e.toString());
@@ -111,7 +109,6 @@ public class CompositionsActivity extends AppCompatActivity {
                 dialog.setContentView(R.layout.item_saved_comp_selected);
 
                 final EditText editCompName = (EditText) dialog.findViewById(R.id.compNameEdit);
-                //editCompName.setText(listItem.getCompName());
                 editCompName.setText(listItem.getName());
 
                 final Button playSelRec = (Button) dialog.findViewById(R.id.selPlaybackButton);
@@ -138,7 +135,7 @@ public class CompositionsActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CompositionsActivity.this.onPlayButtonClick(playButton, notes);
+                CompositionsActivity.this.onPlayButtonClick(notes);
             }
         });
     }
@@ -147,10 +144,9 @@ public class CompositionsActivity extends AppCompatActivity {
      * Performs the proper actions when a playback button is pressed. Calls the playback
      * function of KeyPlayback.
      *
-     * @param playButton The playback button that was pressed.
      * @param notes      The notes to be played back
      */
-    private void onPlayButtonClick(Button playButton, String notes) {
+    private void onPlayButtonClick(String notes) {
         mPlayback.playComposition(notes);
     }
 
@@ -206,19 +202,18 @@ public class CompositionsActivity extends AppCompatActivity {
     /**
      * Initializes the save and exit button in the edit composition dialog view.
      *
-     * @param dialog      The dialog to be used.
-     * @param listItem    The list item the dialog is operating upon.
-     * @param editRecName The edit text field to be saved.
+     * @param dialog        The dialog to be used.
+     * @param listItem      The list item the dialog is operating upon.
+     * @param editCompName  The edit text field to be saved.
      */
     private void initSaveExitButton(final Dialog dialog, final SavedComposition listItem,
-                                    final EditText editRecName) {
+                                    final EditText editCompName) {
         Button saveExitDialog = (Button) dialog.findViewById(R.id.selSaveButton);
 
         saveExitDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //listItem.setCompName(editRecName.getText().toString());
-                listItem.setName(editRecName.getText().toString());
+                listItem.setName(editCompName.getText().toString());
                 mAdapter.notifyDataSetChanged();
                 listItem.writeItemToFile(mContextWrapper);
                 dialog.dismiss();

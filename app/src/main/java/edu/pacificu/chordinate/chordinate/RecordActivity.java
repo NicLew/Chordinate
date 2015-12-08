@@ -3,7 +3,7 @@ package edu.pacificu.chordinate.chordinate;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.os.Environment;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +17,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class RecordActivity extends AppCompatActivity {
     private static final int DFLT_INDEX = -1;
     private static final String SAVED_REC_EXT = ".sr";
+    public static final String MY_PREFS_NAME = "MyRecordPrefs";
 
     private Button mRecordButton;
     private Button mPlayButton;
@@ -33,6 +35,7 @@ public class RecordActivity extends AppCompatActivity {
     private SavedRecording mCurrent;
     private boolean mbIsRecording;
     private ContextWrapper mContextWrapper = this;
+    private int mNumRecs;
 
     /**
      * Sets the content view and initializes the buttons and list view.
@@ -50,9 +53,25 @@ public class RecordActivity extends AppCompatActivity {
         mCurrent = null;
         mbIsRecording = false;
 
+        mNumRecs = 0;
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        mNumRecs = prefs.getInt("numRecs", 0); //0 is the default value
+
         initButtons();
         initListView();
         readFilesToArray();
+    }
+
+    /**
+     * Saves the total number of recordings in a shared preferences variable.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putInt("numRecs", mNumRecs);
+        editor.commit();
     }
 
     /**
@@ -90,7 +109,7 @@ public class RecordActivity extends AppCompatActivity {
 
         if (!mbIsRecording) {
             mbIsRecording = true;
-            mCurrent = new SavedRecording(mSavedFiles.size());
+            mCurrent = new SavedRecording(mNumRecs);
             mInput.startRecording(mCurrent);
             mRecordButton.setBackgroundResource(R.drawable.stop_button);
             mRecordButton.setText(R.string.record_rec_button_stop);
@@ -125,6 +144,7 @@ public class RecordActivity extends AppCompatActivity {
         mCurrent.writeItemToFile(mContextWrapper);
 
         mSavedFiles.add(mCurrent);
+        ++mNumRecs;
         mCurrent = null;
         mAdapter.notifyDataSetChanged();
 
@@ -145,9 +165,8 @@ public class RecordActivity extends AppCompatActivity {
     private void onDeleteButtonClick(Dialog dialog, int index) {
 
         if (null != dialog) {
-            //File infoFile = new File(getFilesDir(), mSavedFiles.get(index).getFileNameBody() + SAVED_REC_EXT);
             File infoFile = new File(getFilesDir(), mSavedFiles.get(index).getFileName() + SAVED_REC_EXT);
-            File audioFile = new File(mSavedFiles.get(index).getFileName());
+            File audioFile = new File(mSavedFiles.get(index).getFilePath());
 
             infoFile.delete();
             audioFile.delete();
@@ -190,6 +209,9 @@ public class RecordActivity extends AppCompatActivity {
                         mSavedFiles.add(new SavedRecording(fileName, fileNameBody, recName, dateStr, lengthStr));
                     }
                 }
+
+                Collections.sort(mSavedFiles, SavedFile.Comparators.DATE);
+
             } catch (Exception e) {
                 Log.d("readFilesToArray()", e.toString());
             }
@@ -212,7 +234,7 @@ public class RecordActivity extends AppCompatActivity {
                 if (null != fileName) {
                     RecordActivity.this.onPlayButtonClick(playButton, fileName);
                 } else {
-                    RecordActivity.this.onPlayButtonClick(playButton, mCurrent.getFileName());
+                    RecordActivity.this.onPlayButtonClick(playButton, mCurrent.getFilePath());
                 }
             }
         });
@@ -223,18 +245,13 @@ public class RecordActivity extends AppCompatActivity {
      *
      * @param deleteButton The button to be initialized.
      * @param dialog       The dialog to be used. Will be null if not applicable.
-     * @param index        The position of the recording in the list of recordings. Will be
-     *                     set to DFLT_INDEX if not applicable.
+     * @param index        The position of the recording in the list of recordings.
      */
     private void initDeleteButton(Button deleteButton, final Dialog dialog, final int index) {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (index > DFLT_INDEX) {
-                    RecordActivity.this.onDeleteButtonClick(dialog, index);
-                } else {
-                    RecordActivity.this.onDeleteButtonClick(dialog, mSavedFiles.size() - 1);
-                }
+                RecordActivity.this.onDeleteButtonClick(dialog, index);
             }
         });
     }
@@ -314,7 +331,6 @@ public class RecordActivity extends AppCompatActivity {
         saveExitDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //listItem.setRecName(editRecName.getText().toString());
                 listItem.setName(editRecName.getText().toString());
                 mAdapter.notifyDataSetChanged();
                 listItem.writeItemToFile(mContextWrapper);
@@ -352,11 +368,10 @@ public class RecordActivity extends AppCompatActivity {
                 dialog.setContentView(R.layout.item_saved_recording_selected);
 
                 final EditText editRecName = (EditText) dialog.findViewById(R.id.recNameEdit);
-                //editRecName.setText(listItem.getRecName());
                 editRecName.setText(listItem.getName());
 
                 final Button playSelRec = (Button) dialog.findViewById(R.id.selPlaybackButton);
-                initPlayButton(playSelRec, listItem.getFileName());
+                initPlayButton(playSelRec, listItem.getFilePath());
 
                 final Button delSelRec = (Button) dialog.findViewById(R.id.selDeleteButton);
                 initDeleteButton(delSelRec, dialog, position);

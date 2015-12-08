@@ -19,7 +19,7 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
     private EditText mCompName;
     private String mRecordedSong = "";
 
-    public static final String MY_PREFS_NAME = "MyPrefsFile";
+    public static final String MY_PREFS_NAME = "MyKeyReviewPrefs";
     private int mNumComps;
     private ContextWrapper mContextWrapper = this;
 
