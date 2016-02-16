@@ -3,6 +3,8 @@
 
     <string name="hello_world">Hello World!</string>
 
+    <string name="load_screen">Loading</string>
+
     <string name="main_menu_title">Chordinate</string>
     <string name="main_menu_title_art">Chordinate Title Art</string>
     <string name="main_menu_subtitle">Create your own compositions!</string>
