@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 
-public class MainMenuActivity extends AppCompatActivity {
+public class MainMenuActivity extends ChordinateActivity {
     Button mKeyboardButton;
     Button mRecordButton;
     Button mCompsButton;

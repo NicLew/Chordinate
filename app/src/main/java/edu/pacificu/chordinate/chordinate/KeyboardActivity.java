@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class KeyboardActivity extends AppCompatActivity implements View.OnTouchListener {
+public class KeyboardActivity extends ChordinateActivity implements View.OnTouchListener {
 
     // Button, Spinner, and TextView objects
     Button C1Button;
@@ -36,8 +36,8 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
     Button stopRecord;
     Spinner OctSpinner;
     TextView PlayedNote;
-    public SoundPool KeyboardSoundPool; // Stores sounds to be played
-    SoundPool.Builder KeyboardSPBuilder;
+    //public SoundPool KeyboardSoundPool; // Stores sounds to be played
+    //SoundPool.Builder KeyboardSPBuilder;
    /* public int[] SoundID = new int[84]; // Soundpool ids
     public int[] SoundFileID = {R.raw.c1, R.raw.cs1, R.raw.d1, R.raw.ds1, R.raw.e1, R.raw.f1,
             R.raw.fs1, R.raw.g1, R.raw.gs1, R.raw.a1, R.raw.as1, R.raw.b1, R.raw.c2, R.raw.cs2,
@@ -52,7 +52,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
             R.raw.fs7, R.raw.g7, R.raw.gs7, R.raw.a7, R.raw.as7, R.raw.b7};*/
     private boolean bIsRecording;
     private String recording;
-    public KeyPlayback KPlayback;
+   // public KeyPlayback KPlayback;
 
     /**
      * Sets the content view, initializes buttons and spinner, and loads the sounds for the
@@ -130,8 +130,8 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
         OctSpinner.setAdapter(stringArrayAdapter);
 
         PlayedNote = (TextView) findViewById(R.id.textView);
-        KPlayback = new KeyPlayback();
-        KPlayback.loadSounds(this);
+       // KPlayback = new KeyPlayback();
+       // KPlayback.loadSounds(this);
 
         /*
         KeyboardSPBuilder = new SoundPool.Builder();
@@ -187,7 +187,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                         break;
                 }
                 PlayedNote.setText(newNote);
-                KPlayback.play (KPlayback.SoundID[keyNum + ((octNum - 1) * 12)], 1, 1, 0, 0, 1);
+                this.getTheKPlayback().play (this.getTheKPlayback().SoundID[keyNum + ((octNum - 1) * 12)], 1, 1, 0, 0, 1);
                 if (bIsRecording)
                 {
                     recording = recording.concat(newNote + ";");
@@ -225,7 +225,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                         keyNum = 14; break;
                 }
                 PlayedNote.setText(newNote);
-                KPlayback.play (KPlayback.SoundID[keyNum + ((octNum - 1) * 12)], 1, 1, 0, 0, 1);
+                this.getTheKPlayback().play(this.getTheKPlayback().SoundID[keyNum + ((octNum - 1) * 12)], 1, 1, 0, 0, 1);
                 if (bIsRecording)
                 {
                     recording = recording.concat(newNote + ";");
@@ -258,7 +258,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                         keyNum = 16; break;
                 }
                 PlayedNote.setText(newNote);
-                KPlayback.play (KPlayback.SoundID[keyNum + ((octNum - 1) * 12)], 1, 1, 0, 0, 1);
+                this.getTheKPlayback().play(this.getTheKPlayback().SoundID[keyNum + ((octNum - 1) * 12)], 1, 1, 0, 0, 1);
 
                 if (bIsRecording)
                 {
@@ -308,7 +308,7 @@ public class KeyboardActivity extends AppCompatActivity implements View.OnTouchL
                         keyNum = 15; break;
                 }
                 PlayedNote.setText(newNote);
-                KPlayback.play (KPlayback.SoundID[keyNum + ((octNum - 1) * 12)], 1, 1, 0, 0, 1);
+                this.getTheKPlayback().play (this.getTheKPlayback().SoundID[keyNum + ((octNum - 1) * 12)], 1, 1, 0, 0, 1);
 
                 if (bIsRecording)
                 {

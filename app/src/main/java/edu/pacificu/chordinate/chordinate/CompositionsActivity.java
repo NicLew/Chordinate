@@ -18,14 +18,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class CompositionsActivity extends AppCompatActivity {
+public class CompositionsActivity extends ChordinateActivity {
     private static final String SAVED_COMP_EXT = ".chd";
 
     private Context mContext = this;
     private ContextWrapper mContextWrapper = this;
     private CompositionsAdapter mAdapter;
     private ArrayList<SavedComposition> mSavedFiles = new ArrayList<SavedComposition>();
-    private KeyPlayback mPlayback;
+    //private KeyPlayback mPlayback;
 
     /**
      * Creates the page, initializes the list view, reads in the saved files to an array,
@@ -41,8 +41,8 @@ public class CompositionsActivity extends AppCompatActivity {
         mAdapter = new CompositionsAdapter(this, mSavedFiles);
         initListView();
         readFilesToArray();
-        mPlayback = new KeyPlayback();
-        mPlayback.loadSounds(this);
+        //mPlayback = new KeyPlayback();
+        //mPlayback.loadSounds(this);
     }
 
     /**
@@ -147,7 +147,7 @@ public class CompositionsActivity extends AppCompatActivity {
      * @param notes      The notes to be played back
      */
     private void onPlayButtonClick(String notes) {
-        mPlayback.playComposition(notes);
+        this.getTheKPlayback().playComposition(notes);
     }
 
     /**

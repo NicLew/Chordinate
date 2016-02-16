@@ -3,7 +3,7 @@ package edu.pacificu.chordinate.chordinate;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends ChordinateActivity {
 
     /**
      * Creates the view for the about activity.
