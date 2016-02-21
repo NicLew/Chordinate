@@ -2,6 +2,9 @@ package edu.pacificu.chordinate.chordinate;
 
 import android.content.Context;
 import android.media.SoundPool;
+import android.os.Handler;
+
+import java.util.ArrayList;
 
 /**
  * Created by lund3481 on 11/22/2015.
@@ -22,11 +25,17 @@ public class KeyPlayback {
             R.raw.as6, R.raw.b6, R.raw.c7, R.raw.cs7, R.raw.d7, R.raw.ds7, R.raw.e7, R.raw.f7,
             R.raw.fs7, R.raw.g7, R.raw.gs7, R.raw.a7, R.raw.as7, R.raw.b7};
     private static boolean isLoaded;
+    private int soundIndex;
+    private static int playbackSpeed = 300;
+    private ArrayList compNotes = new ArrayList();
+    private Handler handler = new Handler ();
 
     KeyPlayback(){
         KeySPBuilder = new SoundPool.Builder();
         KeySPBuilder.setMaxStreams(1);
         KeySoundPool = KeySPBuilder.build();
+
+
     }
 
     public void loadSounds (Context context){
@@ -37,15 +46,44 @@ public class KeyPlayback {
         }
     }
 
+    private Runnable playLoop = new Runnable()
+    {
+        public void run()
+        {
+            int note = -1, chordIndex = 0;
+            ArrayList chord = new ArrayList();
+
+            if (soundIndex < compNotes.size())
+            {
+                note = (int) compNotes.get(soundIndex);
+
+                while (note > -1)
+                {
+                    chord.add(note);
+                    soundIndex ++;
+                    note = (int) compNotes.get(soundIndex);
+                }
+                soundIndex ++;
+
+                for (chordIndex = 0; chordIndex < chord.size(); chordIndex ++) {
+                    KeySoundPool.play(SoundID[(int)chord.get(chordIndex)], 1, 1, 0, 0, 1);
+                }
+                handler.postDelayed(this, playbackSpeed);
+            }
+        }
+    };
+
     public void play (int id, int lVolume, int rVolume, int priority, int loop, float rate)
     {
         KeySoundPool.play(id, lVolume, rVolume, priority, loop, rate);
     }
 
-    public void playComposition (String comp)
+    public void playComposition (String comp, int startNote)
     {
         char current;
         int index = 0, keyNum = 0, octNum = 0;
+        soundIndex = startNote;
+        compNotes.clear();
 
         if (comp.length() > 1)
         {
@@ -79,21 +117,25 @@ public class KeyPlayback {
                         keyNum ++;
                         break;
                     case ';':
+                        compNotes.add(-1);
+                        /*
                         try {
                             Thread.sleep (500);
                         } catch (Exception E){}
 
-                        KeySoundPool.play(SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);
+                        KeySoundPool.play(SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);*/
                         break;
                 }
 
                 if (Character.isDigit(current))
                 {
                     octNum = current - '1';
+                    compNotes.add(keyNum + (octNum * 12));
                 }
 
                 index ++;
             } while (current != '$');
+            playLoop.run();
         }
     }
 }

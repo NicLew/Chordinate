@@ -113,7 +113,7 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
 
                     break;
                 case R.id.reviewPlay:
-                    this.getTheKPlayback().playComposition (mRecordedSong);
+                    this.getTheKPlayback().playComposition (mRecordedSong, 0);
                     break;
             }
         }

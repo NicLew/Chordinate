@@ -147,7 +147,7 @@ public class CompositionsActivity extends ChordinateActivity {
      * @param notes      The notes to be played back
      */
     private void onPlayButtonClick(String notes) {
-        this.getTheKPlayback().playComposition(notes);
+        this.getTheKPlayback().playComposition(notes,0);
     }
 
     /**
