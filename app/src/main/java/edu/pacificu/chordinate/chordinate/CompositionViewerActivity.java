@@ -1,3 +1,4 @@
+/*
 package edu.pacificu.chordinate.chordinate;
 
 import android.content.Intent;
@@ -65,12 +66,14 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                         break;
                     case ';':
                         compNotes.add(-1000);
-                        /*
+                        */
+/*
                         try {
                             Thread.sleep (500);
                         } catch (Exception E){}
 
-                        KeySoundPool.play(SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);*/
+                        KeySoundPool.play(SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);*//*
+
                         break;
                 }
 
@@ -136,3 +139,4 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         }
     }
 }
+*/

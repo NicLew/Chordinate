@@ -147,6 +147,12 @@ public class Note {
      * @return a string representation of a note
      */
     public String toString () {
-        return Character.toString(mValue) + Character.toString(mAccidental) + Character.toString(mOctave);
+        if (SHARP == mAccidental) {
+            return Character.toString(mValue) + Character.toString(mAccidental) + Character.toString(mOctave);
+        }
+        else {
+            return Character.toString(mValue) + Character.toString(mOctave);
+        }
+
     }
 }

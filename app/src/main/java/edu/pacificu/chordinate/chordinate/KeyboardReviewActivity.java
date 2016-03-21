@@ -112,9 +112,9 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                     }
                     */
 
-                    String composition = Algorithm.compose(mRecordedSong, Scale.ScaleType.MAJOR);// TODO: allow user to choose scale type
+                    String composition = Algorithm.compose(mRecordedSong, Scale.ScaleType.HARMONIC_MINOR);// TODO: allow user to choose scale type
                     Log.d("Composition", composition);
-                    this.getTheKPlayback().playComposition (composition);// For testing purposes
+                    this.getTheKPlayback().playComposition (composition, 0);// For testing purposes
 
                     break;
                 case R.id.redoButton:
@@ -122,12 +122,12 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                     break;
                 case R.id.reviewPlay:
                     //this.getTheKPlayback().playComposition (mRecordedSong, 0);
-                    Intent reviewViewIntent = new Intent(KeyboardReviewActivity.this,
+                    /*Intent reviewViewIntent = new Intent(KeyboardReviewActivity.this, // TODO: I commented this out b/c of missing files
                             CompositionViewerActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString ("recordedSong", mRecordedSong);
                     reviewViewIntent.putExtras(bundle);
-                    startActivity (reviewViewIntent);
+                    startActivity (reviewViewIntent);*/
                     break;
             }
         }

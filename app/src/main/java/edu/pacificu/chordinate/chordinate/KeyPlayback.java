@@ -26,13 +26,13 @@ public class KeyPlayback {
             R.raw.fs7, R.raw.g7, R.raw.gs7, R.raw.a7, R.raw.as7, R.raw.b7};
     private static boolean isLoaded;
     private int soundIndex;
-    private static int playbackSpeed = 300;
+    private static int playbackSpeed = 600;
     private ArrayList compNotes = new ArrayList();
     private Handler handler = new Handler ();
 
     KeyPlayback(){
         KeySPBuilder = new SoundPool.Builder();
-        KeySPBuilder.setMaxStreams(1);
+        KeySPBuilder.setMaxStreams(4);
         KeySoundPool = KeySPBuilder.build();
 
 

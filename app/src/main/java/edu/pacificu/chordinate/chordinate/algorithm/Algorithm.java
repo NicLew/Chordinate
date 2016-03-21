@@ -7,8 +7,8 @@ import java.util.Vector;
  */
 public class Algorithm {
 
-    private static String mMelodyStr = "G4;A5;B5;G4;F4;G4;"; /* user input melody */
-    private static Scale.ScaleType mScaleType = Scale.ScaleType.MAJOR; /* user input scale type */
+    private static String mMelodyStr;// = "G4;A5;B5;G4;F4;G4;"; /* user input melody */
+    private static Scale.ScaleType mScaleType;// = Scale.ScaleType.MAJOR; /* user input scale type */
     private static Note mKey; // TODO: let user choose key
     private static Vector<Note> mMelody = new Vector<Note>();
     private static Vector<Chord> mChords = new Vector<Chord>();
@@ -20,6 +20,12 @@ public class Algorithm {
     public static String compose (String melodyStr, Scale.ScaleType scaleType /*, Note/String key*/) {
         Chord.AbstractChord abstractChord;
         String composition = "";
+
+        mMelody.clear();
+        mChords.clear();
+
+        mMelodyStr = melodyStr;
+        mScaleType = scaleType;
 
         /* Load notes from input string into vector. */
         getNotes();
@@ -60,7 +66,7 @@ public class Algorithm {
             composition += mChords.get(i).toString();
         }
 
-        return composition;
+        return composition + "$";
     }
 
     /**
@@ -89,7 +95,7 @@ public class Algorithm {
         mChords.set(mChords.size() - 1, lastChord);
     }
 
-    private static void assignOctaves () {
+    private static void assignOctaves () {// TODO: Make sure octave number doesn't fall below/above what's possible
         for (int i = 0; i < mChords.size(); ++i) {
             mChords.get(i).assignOctave(mMelody.get(i));
         }
@@ -102,7 +108,7 @@ public class Algorithm {
         String note;
         int i = 0;
 
-        while (i < mMelodyStr.length()) {
+        while ('$' != mMelodyStr.charAt(i) && i < mMelodyStr.length()) {
             note = "";
 
             while (i < mMelodyStr.length() && ';' != mMelodyStr.charAt(i)) {// fix magic consts
