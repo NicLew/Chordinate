@@ -2,18 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\lund3481\Chordinate\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
+        jar="C:\Users\lund3481\Chordinate\app\build\intermediates\exploded-aar\com.android.support\design\23.0.1\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
-        <dex dex="C:\Users\lund3481\Chordinate\app\build\intermediates\pre-dexed\debug\classes-9f085aaae47ff55582e1f4e350d2711153cafd03.jar" />
-    </item>
-    <item
-        jar="C:\Users\lund3481\Chordinate\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="C:\Users\lund3481\Chordinate\app\build\intermediates\pre-dexed\debug\classes-8b626e493c809fac16f0ba60afeba873fbfac192.jar" />
+        sha1="e5c61a3169221a89654ffcaaed47bba51cf071ad">
+        <dex dex="C:\Users\lund3481\Chordinate\app\build\intermediates\pre-dexed\debug\classes-9500e01791e76dd3523c3304911834769c485b6c.jar" />
     </item>
     <item
         jar="C:\Users\lund3481\Chordinate\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
@@ -23,18 +16,25 @@
         <dex dex="C:\Users\lund3481\Chordinate\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-ad79292a59b2f8775958dd59694f0975f762d8e7.jar" />
     </item>
     <item
+        jar="C:\Users\lund3481\Chordinate\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\lund3481\Chordinate\app\build\intermediates\pre-dexed\debug\classes-8b626e493c809fac16f0ba60afeba873fbfac192.jar" />
+    </item>
+    <item
+        jar="C:\Users\lund3481\Chordinate\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="C:\Users\lund3481\Chordinate\app\build\intermediates\pre-dexed\debug\classes-9f085aaae47ff55582e1f4e350d2711153cafd03.jar" />
+    </item>
+    <item
         jar="C:\Users\lund3481\AppData\Local\Android\sdk1\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
         <dex dex="C:\Users\lund3481\Chordinate\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-7b71cd436d6d821a68ad64d7e27df06cff95b609.jar" />
-    </item>
-    <item
-        jar="C:\Users\lund3481\Chordinate\app\build\intermediates\exploded-aar\com.android.support\design\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="e5c61a3169221a89654ffcaaed47bba51cf071ad">
-        <dex dex="C:\Users\lund3481\Chordinate\app\build\intermediates\pre-dexed\debug\classes-9500e01791e76dd3523c3304911834769c485b6c.jar" />
     </item>
 
 </items>

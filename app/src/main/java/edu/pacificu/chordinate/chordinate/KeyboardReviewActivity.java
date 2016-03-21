@@ -121,7 +121,13 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
 
                     break;
                 case R.id.reviewPlay:
-                    this.getTheKPlayback().playComposition (mRecordedSong);
+                    //this.getTheKPlayback().playComposition (mRecordedSong, 0);
+                    Intent reviewViewIntent = new Intent(KeyboardReviewActivity.this,
+                            CompositionViewerActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString ("recordedSong", mRecordedSong);
+                    reviewViewIntent.putExtras(bundle);
+                    startActivity (reviewViewIntent);
                     break;
             }
         }
