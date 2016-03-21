@@ -372,14 +372,14 @@ public class Chord {
      *
      * @return the string representation of a chord
      */
-    public String toString() {// TODO: Modify to reflect formatting that app reads... (C4D#4E4;)
+    public String toString() {
         String str = "";
 
         for (int i = 0; i < mChord.size(); ++i) {
-            str += mChord.get(i).toString() + " ";
+            str += mChord.get(i).toString();
         }
 
-        return str;
+        return str + ";";
     }
 
     /**

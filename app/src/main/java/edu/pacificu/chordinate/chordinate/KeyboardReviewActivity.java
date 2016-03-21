@@ -4,11 +4,15 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import edu.pacificu.chordinate.chordinate.algorithm.Algorithm;
+import edu.pacificu.chordinate.chordinate.algorithm.Scale;
 
 public class KeyboardReviewActivity extends KeyboardActivity implements View.OnTouchListener {
 
@@ -107,6 +111,10 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                         Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
                     }
                     */
+
+                    String composition = Algorithm.compose(mRecordedSong, Scale.ScaleType.MAJOR);// TODO: allow user to choose scale type
+                    Log.d("Composition", composition);
+                    this.getTheKPlayback().playComposition (composition);// For testing purposes
 
                     break;
                 case R.id.redoButton:

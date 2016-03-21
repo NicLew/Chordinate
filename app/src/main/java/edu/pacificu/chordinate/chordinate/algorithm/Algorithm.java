@@ -14,18 +14,19 @@ public class Algorithm {
     private static Vector<Chord> mChords = new Vector<Chord>();
 
     /**
-     * The main method that runs the composition algorithm. TODO: Funct signiture will need to be modified when integrating with the app
-     * @param args unused
+     * The main method that runs the composition algorithm.
+     * @return the string of notes that make up the composition
      */
-    public static void mainXXX (String args[]) {
+    public static String compose (String melodyStr, Scale.ScaleType scaleType /*, Note/String key*/) {
         Chord.AbstractChord abstractChord;
+        String composition = "";
 
         /* Load notes from input string into vector. */
         getNotes();
 
         /* Determine the key. */
         getKey();
-        System.out.println("Key: " + mKey);
+        //System.out.println("Key: " + mKey);
 
 
         /* Determine chords based on the melody. */
@@ -52,11 +53,14 @@ public class Algorithm {
         assignOctaves();
 
         /* Print chords to the screen TODO: Create string/file? when integrating with app */
-        System.out.println();
-        System.out.println("Chords:");
+        //System.out.println();
+        //System.out.println("Chords:");
         for (int i = 0; i < mChords.size(); ++i) {
-            System.out.println(mChords.get(i).toString());
+            //System.out.println(mChords.get(i).toString());
+            composition += mChords.get(i).toString();
         }
+
+        return composition;
     }
 
     /**
