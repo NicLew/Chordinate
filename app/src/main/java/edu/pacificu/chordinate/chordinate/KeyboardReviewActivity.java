@@ -112,7 +112,7 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                     }
                     */
 
-                    String composition = Algorithm.compose(mRecordedSong, Scale.ScaleType.HARMONIC_MINOR);// TODO: allow user to choose scale type
+                    String composition = Algorithm.compose(mRecordedSong, Scale.ScaleType.MAJOR);// TODO: allow user to choose scale type
                     Log.d("Composition", composition);
                     this.getTheKPlayback().playComposition (composition, 0);// For testing purposes
 
