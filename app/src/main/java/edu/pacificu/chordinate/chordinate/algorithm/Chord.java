@@ -26,6 +26,8 @@ public class Chord {
     private static final int SEVENTH = 3;
     private static final int NUM_ATTEMPTS = 2;
 
+    private static final char MIN_OCTAVE = '1';
+
     private Vector<Note> mChord = new Vector<Note>();
     private AbstractChord mAbstract;
     private Inversion mInversion;
@@ -97,7 +99,9 @@ public class Chord {
         for (int i = 0; i < mChord.size(); ++i) {
 
             /* If less than or equal to in chromatic scale use same octave, otherwise subtract one */
-            if (mChord.get(i).bIsNoteLessThen(melodyNote) || mChord.get(i).bAreNotesEqual(melodyNote)) {
+            if (MIN_OCTAVE == melodyNote.getOctave() || mChord.get(i).bIsNoteLessThen(melodyNote) ||
+                    mChord.get(i).bAreNotesEqual(melodyNote))
+            {
                 mChord.get(i).assignOctave(melodyNote.getOctave());
             }
             else {

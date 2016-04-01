@@ -1,5 +1,7 @@
 package edu.pacificu.chordinate.chordinate.algorithm;
 
+import android.util.Log;
+
 import java.util.Vector;
 
 /**
@@ -7,9 +9,9 @@ import java.util.Vector;
  */
 public class Algorithm {
 
-    private static String mMelodyStr;// = "G4;A5;B5;G4;F4;G4;"; /* user input melody */
-    private static Scale.ScaleType mScaleType;// = Scale.ScaleType.MAJOR; /* user input scale type */
-    private static Note mKey; // TODO: let user choose key
+    private static String mMelodyStr;
+    private static Scale.ScaleType mScaleType;
+    private static Note mKey;
     private static Vector<Note> mMelody = new Vector<Note>();
     private static Vector<Chord> mChords = new Vector<Chord>();
 
@@ -17,7 +19,7 @@ public class Algorithm {
      * The main method that runs the composition algorithm.
      * @return the string of notes that make up the composition
      */
-    public static String compose (String melodyStr, Scale.ScaleType scaleType /*, Note/String key*/) {
+    public static String compose (String melodyStr, String key, String scaleType) {
         Chord.AbstractChord abstractChord;
         String composition = "";
 
@@ -25,13 +27,13 @@ public class Algorithm {
         mChords.clear();
 
         mMelodyStr = melodyStr;
-        mScaleType = scaleType;
+        mScaleType = getUserScaleType(scaleType);
 
         /* Load notes from input string into vector. */
         getNotes();
 
         /* Determine the key. */
-        getKey();
+        getKey(key);
         //System.out.println("Key: " + mKey);
 
 
@@ -58,11 +60,8 @@ public class Algorithm {
         /* Make sure all notes/chords are within the proper octaves. */
         assignOctaves();
 
-        /* Print chords to the screen TODO: Create string/file? when integrating with app */
-        //System.out.println();
-        //System.out.println("Chords:");
+        /* Print chords to the screen */
         for (int i = 0; i < mChords.size(); ++i) {
-            //System.out.println(mChords.get(i).toString());
             composition += mChords.get(i).toString();
         }
 
@@ -111,7 +110,7 @@ public class Algorithm {
         while ('$' != mMelodyStr.charAt(i) && i < mMelodyStr.length()) {
             note = "";
 
-            while (i < mMelodyStr.length() && ';' != mMelodyStr.charAt(i)) {// fix magic consts
+            while (i < mMelodyStr.length() && ';' != mMelodyStr.charAt(i)) {// TODO: fix magic consts
                 note += mMelodyStr.charAt(i);
                 ++i;
             }
@@ -125,8 +124,41 @@ public class Algorithm {
     /**
      * Determines the key of the composition based on the melody notes.
      */
-    private static void getKey () {
-        //mKey = mMelody.get(mMelody.size() - 1);// get key from last note
-        mKey = Scale.getRootFromFifth(mMelody.get(mMelody.size() - 1), mScaleType);// TODO: Should it be a fifth down from the last note????? so last chord is always tonic
+    private static void getKey (String userKey) {
+
+        if (0 == userKey.compareTo("Let us decide")) {// TODO Fix magic const
+            //mKey = mMelody.get(mMelody.size() - 1);// get key from last note
+            mKey = Scale.getRootFromFifth(mMelody.get(mMelody.size() - 1), mScaleType);// TODO: Should it be a fifth down from the last note????? so last chord is always tonic
+        }
+        else {
+
+            if (1 == userKey.length()) {
+                userKey += "0";
+            }
+
+            mKey = new Note(userKey, false);
+            Log.d ("KeyValue", mKey.toString());
+        }
+
+    }
+
+    /**
+     * Determines the scale type the user wishes to use.
+     */
+    private static Scale.ScaleType getUserScaleType (String scaleType) {
+        if (0 == scaleType.compareTo("Major")) {
+            return Scale.ScaleType.MAJOR;
+        }
+        else if (0 == scaleType.compareTo("Natural Minor")) {
+            return Scale.ScaleType.NATURAL_MINOR;
+        }
+        else if (0 == scaleType.compareTo("Harmonic Minor")) {
+            return Scale.ScaleType.HARMONIC_MINOR;
+        }
+        else if (0 == scaleType.compareTo("Melodic Minor")) {
+            return Scale.ScaleType.MELODIC_MINOR;
+        }
+
+        return Scale.ScaleType.MAJOR;
     }
 }

@@ -1,5 +1,6 @@
 package edu.pacificu.chordinate.chordinate;
 
+import android.app.Dialog;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,9 +8,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 import edu.pacificu.chordinate.chordinate.algorithm.Algorithm;
 import edu.pacificu.chordinate.chordinate.algorithm.Scale;
@@ -99,8 +105,56 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                     break;
 
                 case R.id.chordinateButton:
-                    /*
-                    filename = compName.getText().toString();
+                    final Dialog chooseOpts = new Dialog(mContextWrapper);
+                    chooseOpts.setContentView(R.layout.choose_comp_options);
+                    chooseOpts.show();
+
+                    String[] keys = {"Let us decide", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"};
+                    ArrayAdapter<String> keysAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, keys);
+                    final Spinner keysSpin = (Spinner) chooseOpts.findViewById(R.id.spin_choose_key);
+                    keysSpin.setAdapter(keysAdapter);
+
+                    String[] scaleTypes = {"Major", "Natural Minor", "Harmonic Minor", "Melodic Minor"};
+                    ArrayAdapter<String> scaleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, scaleTypes);
+                    final Spinner scaleSpin = (Spinner) chooseOpts.findViewById(R.id.spin_choose_scale);
+                    scaleSpin.setAdapter(scaleAdapter);
+
+                    Button doneBtn = (Button) chooseOpts.findViewById(R.id.btn_done);
+                    doneBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            String key = (String) keysSpin.getSelectedItem();
+                            String scaleType = (String) scaleSpin.getSelectedItem();
+
+                            chooseOpts.dismiss();
+
+                            String composition = Algorithm.compose(mRecordedSong, key, scaleType);
+                            Log.d("Composition", composition);
+
+                            SavedComposition compToSave = new SavedComposition(mNumComps, mCompName.getText().toString(), composition);
+                            compToSave.writeItemToFile(mContextWrapper);
+                            ++mNumComps;
+                            Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
+                            finish();
+
+                            Intent reviewCompIntent = new Intent(KeyboardReviewActivity.this,
+                                    CompositionViewerActivity.class);
+                            Bundle compBundle = new Bundle();
+                            compBundle.putString("recordedSong", composition);
+                            reviewCompIntent.putExtras(compBundle);
+                            startActivity(reviewCompIntent);
+                        }
+                    });
+
+                    /*SavedComposition compToSave = new SavedComposition(mNumComps, mCompName.getText().toString(), composition);
+                    compToSave.writeItemToFile(mContextWrapper);
+                    ++mNumComps;
+                    Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
+
+                    finish();*/
+
+                    /*String filename = compName.getText().toString();
                     String line = " ";
                     try {
                         InputStreamReader isr = new InputStreamReader(openFileInput(filename + ".txt"));
@@ -109,23 +163,13 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                         Toast.makeText(getApplicationContext(), line, Toast.LENGTH_SHORT).show();
                     }catch (Exception e) {
                         Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                    */
-
-                    String composition = Algorithm.compose(mRecordedSong, Scale.ScaleType.MAJOR);// TODO: allow user to choose scale type
-                    Log.d("Composition", composition);
-                    Intent reviewCompIntent = new Intent(KeyboardReviewActivity.this,
-                            CompositionViewerActivity.class);
-                    Bundle compBundle = new Bundle();
-                    compBundle.putString("recordedSong", composition);
-                    reviewCompIntent.putExtras(compBundle);
-                    startActivity(reviewCompIntent);
-                    //this.getTheKPlayback().playComposition (composition, 0);// For testing purposes
+                    }*/
 
                     break;
+
                 case R.id.redoButton:
-
                     break;
+
                 case R.id.reviewPlay:
                     //this.getTheKPlayback().playComposition (mRecordedSong, 0);
                     Intent reviewViewIntent = new Intent(KeyboardReviewActivity.this,
