@@ -3,6 +3,7 @@ package edu.pacificu.chordinate.chordinate;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -147,7 +148,12 @@ public class CompositionsActivity extends ChordinateActivity {
      * @param notes      The notes to be played back
      */
     private void onPlayButtonClick(String notes) {
-        this.getTheKPlayback().playComposition(notes,0);
+        //this.getTheKPlayback().playComposition(notes, 0);
+        Intent reviewCompIntent = new Intent(CompositionsActivity.this, CompositionViewerActivity.class);
+        Bundle compBundle = new Bundle();
+        compBundle.putString("recordedSong", notes);
+        reviewCompIntent.putExtras(compBundle);
+        startActivity(reviewCompIntent);
     }
 
     /**
