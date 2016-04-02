@@ -78,6 +78,11 @@ public class KeyPlayback {
         KeySoundPool.play(id, lVolume, rVolume, priority, loop, rate);
     }
 
+    public void stopPlayback ()
+    {
+        handler.removeCallbacks(playLoop);
+    }
+
     public void playComposition (String comp, int startNote)
     {
         char current;
