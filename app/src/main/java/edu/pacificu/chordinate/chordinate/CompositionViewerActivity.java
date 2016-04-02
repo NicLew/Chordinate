@@ -1,18 +1,14 @@
 package edu.pacificu.chordinate.chordinate;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import java.lang.Math;
-import android.widget.ScrollView;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -27,10 +23,12 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         mRecordedSong = extras.getString("recordedSong");
         char current;
         int index = 0, keyNum = 0, octNum = 0, chordNum = 0;
+        boolean bNextChord = true;
         ArrayList compNotes = new ArrayList();
         LinearLayout parentLayout = (LinearLayout) findViewById(R.id.parentLayout);
         LayoutInflater layoutInflater = getLayoutInflater();
         View view;
+        RelativeLayout chord = (RelativeLayout) this.findViewById(R.id.childLayout);
 
         if (mRecordedSong.length() > 1)
         {
@@ -93,34 +91,46 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         for (int i = 0; i < compNotes.size(); i ++)
         {
             if ((int) compNotes.get(i) != -1000) { // TODO: Magic constant
-                view = layoutInflater.inflate(R.layout.comp_view_item, parentLayout, false);
-                RelativeLayout child = (RelativeLayout) view.findViewById(R.id.childLayout);
-                Button button = new Button(child.getContext());
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams
+
+                if (bNextChord == true) {
+                    view = layoutInflater.inflate(R.layout.comp_view_item, parentLayout, false);
+                    chord = (RelativeLayout) view.findViewById(R.id.childLayout);
+                }
+                ImageView singleNote = new ImageView(chord.getContext());
+                RelativeLayout.LayoutParams noteLayoutParams = new RelativeLayout.LayoutParams
                         (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                layoutParams.width = 20;
-                layoutParams.height = 20;
-                child.setPadding(0, 0, 0, 48 + Math.abs(18 *(int) compNotes.get(i)));
+                //noteLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                //noteLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+                noteLayoutParams.width = 20;
+                noteLayoutParams.height = 20;
+                noteLayoutParams.setMargins(10,(48 + Math.abs(18 * (int) compNotes.get(i))), 0, 0);
+                //buttonLayoutParams.bottomMargin = 48 + Math.abs(18 *(int) compNotes.get(i));
+                //child.setPadding(0, 0, 0, 48 + Math.abs(18 *(int) compNotes.get(i)));
                 if ((int) compNotes.get(i) < 0)
                 {
                     //button.setText("S");
-                    button.setBackgroundResource(R.drawable.note_s);
+                    singleNote.setBackgroundResource(R.drawable.note_s);
                 }
                 else {
                     //button.setText("N");
-                    button.setBackgroundResource(R.drawable.note);
+                    singleNote.setBackgroundResource(R.drawable.note);
                 }
-                child.setTag("Note" + chordNum);
-                button.setTag("Note" + chordNum);
-                child.setOnClickListener(this);
-                button.setOnClickListener(this);
-                child.addView(button, layoutParams);
-                parentLayout.addView(child);
+
+                singleNote.setTag("Note" + chordNum);
+                singleNote.setOnClickListener(this);
+                chord.addView(singleNote, noteLayoutParams);
+
+                if (bNextChord == true) {
+                    chord.setTag("Note" + chordNum);
+                    chord.setOnClickListener(this);
+                    parentLayout.addView(chord);
+                    bNextChord = false;
+                }
             }
             else
             {
                 chordNum = i + 1;
+                bNextChord = true;
             }
         }
     }
