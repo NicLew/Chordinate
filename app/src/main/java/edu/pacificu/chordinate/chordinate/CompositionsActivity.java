@@ -148,7 +148,6 @@ public class CompositionsActivity extends ChordinateActivity {
      * @param notes      The notes to be played back
      */
     private void onPlayButtonClick(String notes) {
-        //this.getTheKPlayback().playComposition(notes, 0);
         Intent reviewCompIntent = new Intent(CompositionsActivity.this, CompositionViewerActivity.class);
         Bundle compBundle = new Bundle();
         compBundle.putString("recordedSong", notes);

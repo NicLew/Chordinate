@@ -30,6 +30,8 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
     private String mRecordedSong = "";
 
     public static final String MY_PREFS_NAME = "MyKeyReviewPrefs";
+    private static final int START_INDEX = 0;
+
     private int mNumComps;
     private ContextWrapper mContextWrapper = this;
 
@@ -129,7 +131,7 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
 
                             chooseOpts.dismiss();
 
-                            String composition = Algorithm.compose(mRecordedSong, key, scaleType);
+                            String composition = Algorithm.compose(mRecordedSong, key, scaleType, START_INDEX);
                             Log.d("Composition", composition);
 
                             SavedComposition compToSave = new SavedComposition(mNumComps, mCompName.getText().toString(), composition);

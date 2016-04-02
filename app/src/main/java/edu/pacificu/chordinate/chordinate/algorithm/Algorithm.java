@@ -19,7 +19,7 @@ public class Algorithm {
      * The main method that runs the composition algorithm.
      * @return the string of notes that make up the composition
      */
-    public static String compose (String melodyStr, String key, String scaleType) {
+    public static String compose (String melodyStr, String key, String scaleType, int startingIndex) {
         Chord.AbstractChord abstractChord;
         String composition = "";
 
@@ -30,7 +30,7 @@ public class Algorithm {
         mScaleType = getUserScaleType(scaleType);
 
         /* Load notes from input string into vector. */
-        getNotes();
+        getNotes(startingIndex);
 
         /* Determine the key. */
         getKey(key);
@@ -52,13 +52,13 @@ public class Algorithm {
         }
 
         /* Try to make first chord a tonic chord */ // TODO: Should we do this or not???
-        mChords.get(0).changeChord(mKey, mScaleType, Chord.AbstractChord.I);
+        //mChords.get(0).changeChord(mKey, mScaleType, Chord.AbstractChord.I);
 
         /* Try to create a proper cadence for a stronger ending. */
         cadenceEnding();
 
         /* Make sure all notes/chords are within the proper octaves. */
-        assignOctaves();
+        assignOctaves(0);
 
         /* Print chords to the screen */
         for (int i = 0; i < mChords.size(); ++i) {
@@ -73,7 +73,7 @@ public class Algorithm {
      * a V-I (Authentic cadence) or IV-I (Plagal cadence). If the chords cannot be changed, they are left
      * as they were.
      */
-    private static void cadenceEnding () {
+    private static void cadenceEnding () { // TODO: bound checking
         Chord penultChord = new Chord(mChords.get(mChords.size() - 2));
         Chord lastChord = new Chord(mChords.get(mChords.size() - 1));
 
@@ -94,8 +94,8 @@ public class Algorithm {
         mChords.set(mChords.size() - 1, lastChord);
     }
 
-    private static void assignOctaves () {// TODO: Make sure octave number doesn't fall below/above what's possible
-        for (int i = 0; i < mChords.size(); ++i) {
+    private static void assignOctaves (int startingIndex) {// TODO: Make sure octave number doesn't fall below/above what's possible
+        for (int i = startingIndex; i < mChords.size(); ++i) {
             mChords.get(i).assignOctave(mMelody.get(i));
         }
     }
@@ -103,11 +103,32 @@ public class Algorithm {
     /**
      * Parses the melody string into note objects and adds those notes to a melody vector.
      */
-    private static void getNotes () {
+    private static void getNotes (int index) {// TODO: change so gets note right before semi-colon so works with string of chords too
         String note;
-        int i = 0;
+        int i = getStringIndex(index);
 
         while ('$' != mMelodyStr.charAt(i) && i < mMelodyStr.length()) {
+            note = "";
+
+            if (';' == mMelodyStr.charAt(i)) {// TODO: fix magic consts
+
+                if (i - 3 < 0 || !Character.isLetter(mMelodyStr.charAt(i - 3)))
+                {
+                    note += mMelodyStr.charAt(i - 2); // value
+                }
+                else {
+                    note += mMelodyStr.charAt(i - 3); // value
+                    note += mMelodyStr.charAt(i - 2); // accidental (opt)
+                }
+
+                note += mMelodyStr.charAt(i - 1); // octave number
+                mMelody.add(new Note(note, true));
+            }
+
+            ++i;
+        }
+
+        /*while ('$' != mMelodyStr.charAt(i) && i < mMelodyStr.length()) {
             note = "";
 
             while (i < mMelodyStr.length() && ';' != mMelodyStr.charAt(i)) {// TODO: fix magic consts
@@ -117,7 +138,7 @@ public class Algorithm {
 
             mMelody.add(new Note(note, true));
             ++i;
-        }
+        }*/
         System.out.println("Melody: " + mMelody.toString());// TODO: Remove after debugging
     }
 
@@ -160,5 +181,25 @@ public class Algorithm {
         }
 
         return Scale.ScaleType.MAJOR;
+    }
+
+    /**
+     * Finds the index of the string to start reading from.
+     *
+     * @param startingIndex the array index of the chord to begin with
+     * @return the index in the melody string to start at
+     */
+    private static int getStringIndex (int startingIndex) {
+        int strIndex = 0;
+        int semicolonCount = 0;
+
+        while (startingIndex != semicolonCount && '$' != mMelodyStr.charAt(strIndex) && strIndex < mMelodyStr.length()) {
+            if (';' == mMelodyStr.charAt(strIndex)) {// TODO: fix magic consts
+                ++semicolonCount;
+            }
+            ++strIndex;
+        }
+
+        return strIndex;
     }
 }

@@ -1,5 +1,7 @@
 package edu.pacificu.chordinate.chordinate.algorithm;
 
+import android.util.Log;
+
 import java.util.Random;
 import java.util.Vector;
 
@@ -240,7 +242,14 @@ public class Chord {
         }
 
         /* From the remaining valid chords, choose one at random. */
-        chord = validChords.get(rand.nextInt(validChords.size()));
+        if (validChords.size() > 0) {
+            chord = validChords.get(rand.nextInt(validChords.size()));
+        }
+        else
+        {
+            Log.e("ValidChordSize", "No valid chords found.");
+            chord = null; // TODO: what chord?
+        }
 
         return chord;
     }
