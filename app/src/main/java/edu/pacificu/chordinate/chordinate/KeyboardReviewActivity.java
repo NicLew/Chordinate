@@ -146,25 +146,6 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                             startActivity(reviewCompIntent);
                         }
                     });
-
-                    /*SavedComposition compToSave = new SavedComposition(mNumComps, mCompName.getText().toString(), composition);
-                    compToSave.writeItemToFile(mContextWrapper);
-                    ++mNumComps;
-                    Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
-
-                    finish();*/
-
-                    /*String filename = compName.getText().toString();
-                    String line = " ";
-                    try {
-                        InputStreamReader isr = new InputStreamReader(openFileInput(filename + ".txt"));
-                        BufferedReader bReader = new BufferedReader(isr);
-                        line = bReader.readLine();
-                        Toast.makeText(getApplicationContext(), line, Toast.LENGTH_SHORT).show();
-                    }catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                    }*/
-
                     break;
 
                 case R.id.redoButton:
