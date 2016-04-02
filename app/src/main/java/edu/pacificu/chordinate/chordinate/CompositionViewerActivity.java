@@ -1,7 +1,10 @@
 package edu.pacificu.chordinate.chordinate;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -22,13 +25,18 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         Bundle extras = reviewIntent.getExtras();
         mRecordedSong = extras.getString("recordedSong");
         char current;
-        int index = 0, keyNum = 0, octNum = 0, chordNum = 0;
+        int index = 0, keyNum = 0, octNum = 0, chordNum = 0, noteGap = 0, lineGap = 0;
         boolean bNextChord = true;
         ArrayList compNotes = new ArrayList();
         LinearLayout parentLayout = (LinearLayout) findViewById(R.id.parentLayout);
         LayoutInflater layoutInflater = getLayoutInflater();
         View view;
         RelativeLayout chord = (RelativeLayout) this.findViewById(R.id.childLayout);
+        Point screenSize = new Point();
+        Display display = getWindowManager().getDefaultDisplay();
+        display.getSize(screenSize);
+        noteGap = (screenSize.y - 20) / 48;
+        lineGap = (screenSize.y - 20) / 24;
 
         if (mRecordedSong.length() > 1)
         {
@@ -95,17 +103,31 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 if (bNextChord == true) {
                     view = layoutInflater.inflate(R.layout.comp_view_item, parentLayout, false);
                     chord = (RelativeLayout) view.findViewById(R.id.childLayout);
+
+                    for (int j = 0; j < 24; j ++)
+                    {
+                        RelativeLayout.LayoutParams lineLayoutParams = new RelativeLayout.LayoutParams
+                                (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        ImageView singleLine = new ImageView(chord.getContext());
+                        lineLayoutParams.setMargins(0,(lineGap * j) + 7, 0, 0);
+                        if (j != 12) {
+                            singleLine.setBackgroundResource(R.drawable.music_staff_line);
+                        }
+                        else
+                        {
+                            singleLine.setBackgroundResource(R.drawable.music_staff_line_mid_c);
+                        }
+                        chord.addView(singleLine, lineLayoutParams);
+                    }
                 }
                 ImageView singleNote = new ImageView(chord.getContext());
                 RelativeLayout.LayoutParams noteLayoutParams = new RelativeLayout.LayoutParams
                         (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                //noteLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-                //noteLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+
                 noteLayoutParams.width = 20;
                 noteLayoutParams.height = 20;
-                noteLayoutParams.setMargins(10,(48 + Math.abs(18 * (int) compNotes.get(i))), 0, 0);
-                //buttonLayoutParams.bottomMargin = 48 + Math.abs(18 *(int) compNotes.get(i));
-                //child.setPadding(0, 0, 0, 48 + Math.abs(18 *(int) compNotes.get(i)));
+                noteLayoutParams.setMargins(10, (screenSize.y - 90) -
+                        (noteGap * (Math.abs((int) compNotes.get(i)) - 1)), 0, 0);
                 if ((int) compNotes.get(i) < 0)
                 {
                     //button.setText("S");
@@ -121,7 +143,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 chord.addView(singleNote, noteLayoutParams);
 
                 if (bNextChord == true) {
-                    chord.setTag("Note" + chordNum);
+                    chord.setTag("Chord" + chordNum);
                     chord.setOnClickListener(this);
                     parentLayout.addView(chord);
                     bNextChord = false;
@@ -136,11 +158,28 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     }
 
     @Override
+    protected void onPause()
+    {
+        super.onPause();
+
+        this.getTheKPlayback().stopPlayback();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        this.getTheKPlayback().stopPlayback();
+    }
+
+    @Override
     public void onClick (View v)
     {
         int startNote = 0;
-        if (((String) v.getTag()).contains ("Note"))
+        if (((String) v.getTag()).contains ("Chord"))
         {
+            this.getTheKPlayback().stopPlayback();
             startNote = Integer.parseInt (((String)v.getTag()).substring(4));
             this.getTheKPlayback().playComposition (mRecordedSong, startNote);
         }
