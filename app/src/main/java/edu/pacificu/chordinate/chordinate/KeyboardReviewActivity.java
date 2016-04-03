@@ -140,10 +140,15 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                             Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
                             finish();
 
+                            Bundle compBundle = new Bundle();
+                            compBundle.putString("compName", compToSave.getName());
+                            compBundle.putString("dateStr", compToSave.getWholeDateStr());
+                            compBundle.putString("recordedSong", compToSave.getNotes());
+                            compBundle.putString("fileName", compToSave.getFileName());
+                            compBundle.putBoolean("enableEditMode", true);
+
                             Intent reviewCompIntent = new Intent(KeyboardReviewActivity.this,
                                     CompositionViewerActivity.class);
-                            Bundle compBundle = new Bundle();
-                            compBundle.putString("recordedSong", composition);
                             reviewCompIntent.putExtras(compBundle);
                             startActivity(reviewCompIntent);
                         }
@@ -154,13 +159,18 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                     break;
 
                 case R.id.reviewPlay:
-                    //this.getTheKPlayback().playComposition (mRecordedSong, 0);
-                    Intent reviewViewIntent = new Intent(KeyboardReviewActivity.this,
+                    Bundle compBundle = new Bundle();
+                    compBundle.putString("compName", mCompName.getText().toString());
+                    compBundle.putString("dateStr", "160402190427-0700");
+                    compBundle.putString("recordedSong", mRecordedSong);
+                    compBundle.putString("fileName", "bogus");
+                    compBundle.putBoolean("enableEditMode", false);
+                    // TODO: Create method for this block of code...
+
+                    Intent reviewCompIntent = new Intent(KeyboardReviewActivity.this,
                             CompositionViewerActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString ("recordedSong", mRecordedSong);
-                    reviewViewIntent.putExtras(bundle);
-                    startActivity (reviewViewIntent);
+                    reviewCompIntent.putExtras(compBundle);
+                    startActivity(reviewCompIntent);
                     break;
             }
         }

@@ -86,8 +86,9 @@ public class KeyPlayback {
     public void playComposition (String comp, int startNote)
     {
         char current;
-        int index = 0, keyNum = 0, octNum = 0;
-        soundIndex = startNote;
+        int /*index = 0,*/ keyNum = 0, octNum = 0;
+        int index = startNote;
+        soundIndex = 0;
         compNotes.clear();
 
         if (comp.length() > 1)
@@ -140,6 +141,7 @@ public class KeyPlayback {
 
                 index ++;
             } while (current != '$');
+
             playLoop.run();
         }
     }

@@ -113,7 +113,7 @@ public class CompositionsActivity extends ChordinateActivity {
                 editCompName.setText(listItem.getName());
 
                 final Button playSelRec = (Button) dialog.findViewById(R.id.selPlaybackButton);
-                initPlayButton(playSelRec, listItem.getNotes());
+                initPlayButton(playSelRec, listItem);
 
                 final Button delSelRec = (Button) dialog.findViewById(R.id.selDeleteButton);
                 initDeleteButton(delSelRec, dialog, position);
@@ -130,13 +130,13 @@ public class CompositionsActivity extends ChordinateActivity {
      * Initializes a playback button.
      *
      * @param playButton The playback button to be initialized.
-     * @param notes      The notes to be played.
+     * @param listItem   The list item to be played.
      */
-    private void initPlayButton(final Button playButton, final String notes) {
+    private void initPlayButton(final Button playButton, final SavedComposition listItem) {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CompositionsActivity.this.onPlayButtonClick(notes);
+                CompositionsActivity.this.onPlayButtonClick(listItem);
             }
         });
     }
@@ -145,12 +145,18 @@ public class CompositionsActivity extends ChordinateActivity {
      * Performs the proper actions when a playback button is pressed. Calls the playback
      * function of KeyPlayback.
      *
-     * @param notes      The notes to be played back
+     * @param listItem the list item to be played back
      */
-    private void onPlayButtonClick(String notes) {
-        Intent reviewCompIntent = new Intent(CompositionsActivity.this, CompositionViewerActivity.class);
+    private void onPlayButtonClick(SavedComposition listItem) {
         Bundle compBundle = new Bundle();
-        compBundle.putString("recordedSong", notes);
+        compBundle.putString("compName", listItem.getName());
+        compBundle.putString("dateStr", listItem.getWholeDateStr());
+        compBundle.putString("recordedSong", listItem.getNotes());
+        compBundle.putString("fileName", listItem.getFileName());
+        compBundle.putBoolean("enableEditMode", true);
+
+        Intent reviewCompIntent = new Intent(CompositionsActivity.this,
+                CompositionViewerActivity.class);
         reviewCompIntent.putExtras(compBundle);
         startActivity(reviewCompIntent);
     }

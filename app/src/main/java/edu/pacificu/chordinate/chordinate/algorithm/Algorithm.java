@@ -73,28 +73,42 @@ public class Algorithm {
      * a V-I (Authentic cadence) or IV-I (Plagal cadence). If the chords cannot be changed, they are left
      * as they were.
      */
-    private static void cadenceEnding () { // TODO: bound checking
-        Chord penultChord = new Chord(mChords.get(mChords.size() - 2));
-        Chord lastChord = new Chord(mChords.get(mChords.size() - 1));
+    private static void cadenceEnding () {
+        if (mChords.size() > 1) {
+            Chord penultChord = new Chord(mChords.get(mChords.size() - 2));
+            Chord lastChord = new Chord(mChords.get(mChords.size() - 1));
 
-        if (Chord.AbstractChord.I != lastChord.getAbstractChord()) {
-            lastChord.changeChord(mKey, mScaleType, Chord.AbstractChord.I);
-        }
-
-        if (Chord.AbstractChord.V != penultChord.getAbstractChord() && Chord.AbstractChord.IV != penultChord.getAbstractChord()) {
-            if (!penultChord.changeChord(mKey, mScaleType, Chord.AbstractChord.V)) {
-                penultChord.changeChord(mKey, mScaleType, Chord.AbstractChord.IV);
+            if (Chord.AbstractChord.I != lastChord.getAbstractChord()) {
+                lastChord.changeChord(mKey, mScaleType, Chord.AbstractChord.I);
             }
+
+            if (Chord.AbstractChord.V != penultChord.getAbstractChord() && Chord.AbstractChord.IV != penultChord.getAbstractChord()) {
+                if (!penultChord.changeChord(mKey, mScaleType, Chord.AbstractChord.V)) {
+                    penultChord.changeChord(mKey, mScaleType, Chord.AbstractChord.IV);
+                }
+            }
+
+            System.out.println("Penult: " + penultChord.getAbstractChord());// TODO: Remove after debugging
+            System.out.println("Last: " + lastChord.getAbstractChord());
+
+            mChords.set(mChords.size() - 2, penultChord);
+            mChords.set(mChords.size() - 1, lastChord);
         }
+        else if (mChords.size() > 0) {
+            Chord lastChord = new Chord(mChords.get(mChords.size() - 1));
 
-        System.out.println("Penult: " + penultChord.getAbstractChord());// TODO: Remove after debugging
-        System.out.println("Last: " + lastChord.getAbstractChord());
+            if (Chord.AbstractChord.I != lastChord.getAbstractChord()) {
+                lastChord.changeChord(mKey, mScaleType, Chord.AbstractChord.I);
+            }
 
-        mChords.set(mChords.size() - 2, penultChord);
-        mChords.set(mChords.size() - 1, lastChord);
+            // TODO: Remove after debugging
+            System.out.println("Last: " + lastChord.getAbstractChord());
+
+            mChords.set(mChords.size() - 1, lastChord);
+        }
     }
 
-    private static void assignOctaves (int startingIndex) {// TODO: Make sure octave number doesn't fall below/above what's possible
+    private static void assignOctaves (int startingIndex) {
         for (int i = startingIndex; i < mChords.size(); ++i) {
             mChords.get(i).assignOctave(mMelody.get(i));
         }
@@ -103,9 +117,9 @@ public class Algorithm {
     /**
      * Parses the melody string into note objects and adds those notes to a melody vector.
      */
-    private static void getNotes (int index) {// TODO: change so gets note right before semi-colon so works with string of chords too
+    private static void getNotes (int index) {
         String note;
-        int i = getStringIndex(index);
+        int i = index;
 
         while ('$' != mMelodyStr.charAt(i) && i < mMelodyStr.length()) {
             note = "";
@@ -128,17 +142,6 @@ public class Algorithm {
             ++i;
         }
 
-        /*while ('$' != mMelodyStr.charAt(i) && i < mMelodyStr.length()) {
-            note = "";
-
-            while (i < mMelodyStr.length() && ';' != mMelodyStr.charAt(i)) {// TODO: fix magic consts
-                note += mMelodyStr.charAt(i);
-                ++i;
-            }
-
-            mMelody.add(new Note(note, true));
-            ++i;
-        }*/
         System.out.println("Melody: " + mMelody.toString());// TODO: Remove after debugging
     }
 
@@ -181,25 +184,5 @@ public class Algorithm {
         }
 
         return Scale.ScaleType.MAJOR;
-    }
-
-    /**
-     * Finds the index of the string to start reading from.
-     *
-     * @param startingIndex the array index of the chord to begin with
-     * @return the index in the melody string to start at
-     */
-    private static int getStringIndex (int startingIndex) {
-        int strIndex = 0;
-        int semicolonCount = 0;
-
-        while (startingIndex != semicolonCount && '$' != mMelodyStr.charAt(strIndex) && strIndex < mMelodyStr.length()) {
-            if (';' == mMelodyStr.charAt(strIndex)) {// TODO: fix magic consts
-                ++semicolonCount;
-            }
-            ++strIndex;
-        }
-
-        return strIndex;
     }
 }

@@ -1,6 +1,7 @@
 package edu.pacificu.chordinate.chordinate;
 
 import android.app.Dialog;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.lang.Math;
 import java.util.ArrayList;
@@ -22,16 +24,27 @@ import edu.pacificu.chordinate.chordinate.algorithm.Algorithm;
 
 public class CompositionViewerActivity extends ChordinateActivity implements View.OnClickListener {
     private String mRecordedSong = "";
+    private SavedComposition mComposition;
     private Button mEditModeBtn;
     private boolean mbIsEditMode;
+    private boolean mbEnableEditMode;
+    private ContextWrapper mContextWrapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_composition_viewer);
+
         Intent reviewIntent = getIntent();
         Bundle extras = reviewIntent.getExtras();
         mRecordedSong = extras.getString("recordedSong");
+        mComposition = new SavedComposition(extras.getString("compName"),
+                                            extras.getString("dateStr"),
+                                            mRecordedSong, extras.getString("fileName"));
+
+        mbEnableEditMode = extras.getBoolean("enableEditMode");
+        mContextWrapper = this;
+
         char current;
         int index = 0, keyNum = 0, octNum = 0, chordNum = 0, noteNum = 0, noteGap = 0, lineGap = 0;
         boolean bNextChord = true;
@@ -41,10 +54,15 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         View view;
         RelativeLayout chord = (RelativeLayout) this.findViewById(R.id.childLayout);
 
-        mEditModeBtn = (Button) findViewById(R.id.editModeButton);
-        mEditModeBtn.setOnClickListener(this);
-        mEditModeBtn.setTag("editMode");
         mbIsEditMode = false;
+        mEditModeBtn = (Button) findViewById(R.id.editModeButton);
+        if (!mbEnableEditMode) {
+            mEditModeBtn.setEnabled(false);
+        }
+        else {
+            mEditModeBtn.setOnClickListener(this);
+            mEditModeBtn.setTag("editMode");
+        }
 
         Point screenSize = new Point();
         Display display = getWindowManager().getDefaultDisplay();
@@ -193,28 +211,11 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     @Override
     public void onClick (View v)
     {
-        Log.d("what is the tag?", (String) v.getTag());
-
-
-        int startNote = 0; // TODO: this is by note, not chord right now, fix
         if (((String) v.getTag()).contains("Chord"))
         {
-            startNote = Integer.parseInt (((String)v.getTag()).substring(5));// TODO Fix magic constant
-
-            int strIndex = 0;
-            int semicolonCount = 0;
-
-            while (startNote != semicolonCount && '$' != mRecordedSong.charAt(strIndex) && strIndex < mRecordedSong.length()) {
-                if (';' == mRecordedSong.charAt(strIndex)) {// TODO: fix magic consts
-                    ++semicolonCount;
-                }
-                ++strIndex;
-            }
-
-            final int startIndex = strIndex;
+            final int startIndex = getStringIndex(mRecordedSong, Integer.parseInt (((String)v.getTag()).substring(5)));// TODO Fix magic constant
 
             if (mbIsEditMode) {
-                // bring up edit dialog
 
                 final Dialog chooseOpts = new Dialog(this);
                 chooseOpts.setContentView(R.layout.choose_comp_options);
@@ -239,23 +240,24 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                         String scaleType = (String) scaleSpin.getSelectedItem();
 
                         chooseOpts.dismiss();
+                        mbIsEditMode = false;
+                        mEditModeBtn.setText("EDIT MODE"); //TODO: Change button to toggle??
 
                         String composition = Algorithm.compose(mRecordedSong, key, scaleType, startIndex);
                         Log.d("Composition", composition);
 
-                        // TODO: figure out how to save changes to the string
-                        /*SavedComposition compToSave = new SavedComposition(mNumComps, mCompName.getText().toString(), composition);
-                        compToSave.writeItemToFile(mContextWrapper);
-                        ++mNumComps;
-                        Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
-                        finish();*/
+                        mComposition.setNotesString(mRecordedSong.substring(0, startIndex) + composition);
 
-                       /* Intent reviewCompIntent = new Intent(KeyboardReviewActivity.this,
-                                CompositionViewerActivity.class);
-                        Bundle compBundle = new Bundle();
-                        compBundle.putString("recordedSong", composition);
-                        reviewCompIntent.putExtras(compBundle);
-                        startActivity(reviewCompIntent);*/
+                        Log.d("Original Comp:", mRecordedSong);
+                        Log.d("Edited Comp:", mComposition.getNotes());
+                        mRecordedSong = mComposition.getNotes();//??????????????????????????????????????????????????????????????? TODO working here
+
+                        mComposition.writeItemToFile(mContextWrapper); // TODO: Should overwrite existing file.... double check
+
+                        view.refreshDrawableState();//???????????????????????????????????????????????????????????????
+                        // TODO: reposition notes, ask Jacob about this
+                        Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
+                        //finish();
                     }
                 });
 
@@ -264,7 +266,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
 
             }
             else {
-                this.getTheKPlayback().playComposition (mRecordedSong, startNote);
+                this.getTheKPlayback().playComposition (mRecordedSong, startIndex);
             }
         }
         else if (((String) v.getTag()).contains("editMode"))
@@ -278,5 +280,25 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 mEditModeBtn.setText("EDIT MODE");
             }
         }
+    }
+
+    /**
+     * Finds the index of the string to start reading from.
+     *
+     * @param startingIndex the array index of the chord to begin with
+     * @return the index in the melody string to start at
+     */
+    private static int getStringIndex (String comp, int startingIndex) {
+        int strIndex = 0;
+        int semicolonCount = 0;
+
+        while (startingIndex != semicolonCount && '$' != comp.charAt(strIndex) && strIndex < comp.length()) {
+            if (';' == comp.charAt(strIndex)) {// TODO: fix magic consts
+                ++semicolonCount;
+            }
+            ++strIndex;
+        }
+
+        return strIndex;
     }
 }
