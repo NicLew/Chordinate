@@ -22,5 +22,12 @@
             android:layout_height="wrap_content"
             android:text="Edit Mode"
             android:id="@+id/editModeButton" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Undo"
+            android:id="@+id/undoButton" />
     </LinearLayout>
 </HorizontalScrollView>

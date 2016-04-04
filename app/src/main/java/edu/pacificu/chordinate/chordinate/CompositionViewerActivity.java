@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.lang.Math;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import edu.pacificu.chordinate.chordinate.algorithm.Algorithm;
@@ -26,10 +27,12 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private String mRecordedSong = "";
     private SavedComposition mComposition;
     private Button mEditModeBtn;
+    private Button mUndoBtn;
     private boolean mbIsEditMode;
     private boolean mbEnableEditMode;
     private ContextWrapper mContextWrapper;
     private LinearLayout mParentLayout;
+    private ArrayList<String> mPrevComps; /* will save all of the composition strings from this session */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +46,12 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                                             extras.getString("dateStr"),
                                             mRecordedSong, extras.getString("fileName"));
 
+        mPrevComps = new ArrayList<String>();
+
         mbEnableEditMode = extras.getBoolean("enableEditMode");
         mContextWrapper = this;
 
         mParentLayout = (LinearLayout) findViewById(R.id.parentLayout);
-        Log.d("Comp String coming in:", mRecordedSong);
 
         mbIsEditMode = false;
         mEditModeBtn = (Button) findViewById(R.id.editModeButton);
@@ -57,6 +61,13 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         else {
             mEditModeBtn.setOnClickListener(this);
             mEditModeBtn.setTag("editMode");
+        }
+
+        mUndoBtn = (Button) findViewById(R.id.undoButton);
+        mUndoBtn.setOnClickListener(this);
+        mUndoBtn.setTag("undo");
+        if (mPrevComps.size() <= 0) {
+            mUndoBtn.setEnabled(false);
         }
 
         displayNotes();
@@ -71,7 +82,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         View view;
         RelativeLayout chord = (RelativeLayout) this.findViewById(R.id.childLayout);
 
-        mParentLayout.removeViews(1, mParentLayout.getChildCount() - 1);
+        mParentLayout.removeViews(2, mParentLayout.getChildCount() - 2);// TODO: fix magic const
 
         Point screenSize = new Point();
         Display display = getWindowManager().getDefaultDisplay();
@@ -259,6 +270,9 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
 
                         Log.d("Original Comp:", mRecordedSong);
                         Log.d("Edited Comp:", mComposition.getNotes());
+
+                        mPrevComps.add(mRecordedSong);
+                        mUndoBtn.setEnabled(true);
                         mRecordedSong = mComposition.getNotes();
 
                         mComposition.writeItemToFile(mContextWrapper);
@@ -285,6 +299,17 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
             else {
                 mbIsEditMode = false;
                 mEditModeBtn.setText("EDIT MODE");
+            }
+        }
+        else if (((String) v.getTag()).contains("undo")) {
+            if (mPrevComps.size() > 0) {
+                mRecordedSong = mPrevComps.get(mPrevComps.size() - 1);
+                mPrevComps.remove(mPrevComps.size() - 1);
+                displayNotes();
+            }
+
+            if (mPrevComps.size() <= 0) {
+                mUndoBtn.setEnabled(false);
             }
         }
     }
