@@ -14,11 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
 import edu.pacificu.chordinate.chordinate.algorithm.Algorithm;
-import edu.pacificu.chordinate.chordinate.algorithm.Scale;
 
 public class KeyboardReviewActivity extends KeyboardActivity implements View.OnTouchListener {
 
@@ -137,9 +133,11 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                             SavedComposition compToSave = new SavedComposition(mNumComps, mCompName.getText().toString(), composition);
                             compToSave.writeItemToFile(mContextWrapper);
                             ++mNumComps;
-                            Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();// TODO: Fix magic constants
 
-                            startReviewActivity(compToSave.getName(), compToSave.getWholeDateStr(), compToSave.getNotes(), compToSave.getFileName(), true);
+                            startCompReviewActivity(compToSave.getName(),
+                                    compToSave.getWholeDateStr(), compToSave.getNotes(),
+                                    compToSave.getFileName(), true);
                         }
                     });
                     break;
@@ -148,14 +146,25 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                     break;
 
                 case R.id.reviewPlay:
-                    startReviewActivity(mCompName.getText().toString(), "160402190427-0700", mRecordedSong, "bogus", false);
+                    startCompReviewActivity(mCompName.getText().toString(), "160402190427-0700", mRecordedSong, "bogus", false);
                     break;
             }
         }
         return true;
     }
 
-    private void startReviewActivity (String compName, String dateStr, String recordedSong, String fileName, boolean bEnableEditMode) {
+    /**
+     * Bundles up necessary variables to pass to the composition review activity and starts that
+     * activity.
+     *
+     * @param compName the name of the composition to be viewed
+     * @param dateStr the date of the composition to be viewed
+     * @param recordedSong the notes string of the composition to be viewed
+     * @param fileName the file name of the composition to be viewed
+     * @param bEnableEditMode whether or not edit mode should be enabled in the next activity
+     */
+    private void startCompReviewActivity(String compName, String dateStr, String recordedSong,
+                                         String fileName, boolean bEnableEditMode) {
         Bundle compBundle = new Bundle();
         compBundle.putString("compName", compName);
         compBundle.putString("dateStr", dateStr);

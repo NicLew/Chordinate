@@ -182,17 +182,8 @@ public class CompositionsActivity extends ChordinateActivity {
         mbDoReload = true;
         mCurrentIndex = position;
 
-        Bundle compBundle = new Bundle();
-        compBundle.putString("compName", listItem.getName());
-        compBundle.putString("dateStr", listItem.getWholeDateStr());
-        compBundle.putString("recordedSong", listItem.getNotes());
-        compBundle.putString("fileName", listItem.getFileName());
-        compBundle.putBoolean("enableEditMode", true);
-
-        Intent reviewCompIntent = new Intent(CompositionsActivity.this,
-                CompositionViewerActivity.class);
-        reviewCompIntent.putExtras(compBundle);
-        startActivity(reviewCompIntent);
+        startCompReviewActivity(listItem.getName(), listItem.getWholeDateStr(), listItem.getNotes(),
+                listItem.getFileName(), true);
     }
 
     /**
@@ -264,5 +255,30 @@ public class CompositionsActivity extends ChordinateActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    /**
+     * Bundles up necessary variables to pass to the composition review activity and starts that
+     * activity.
+     *
+     * @param compName the name of the composition to be viewed
+     * @param dateStr the date of the composition to be viewed
+     * @param recordedSong the notes string of the composition to be viewed
+     * @param fileName the file name of the composition to be viewed
+     * @param bEnableEditMode whether or not edit mode should be enabled in the next activity
+     */
+    private void startCompReviewActivity(String compName, String dateStr, String recordedSong,
+                                         String fileName, boolean bEnableEditMode) {
+        Bundle compBundle = new Bundle();
+        compBundle.putString("compName", compName);
+        compBundle.putString("dateStr", dateStr);
+        compBundle.putString("recordedSong", recordedSong);
+        compBundle.putString("fileName", fileName);
+        compBundle.putBoolean("enableEditMode", bEnableEditMode);
+
+        Intent reviewCompIntent = new Intent(CompositionsActivity.this,
+                CompositionViewerActivity.class);
+        reviewCompIntent.putExtras(compBundle);
+        startActivity(reviewCompIntent);
     }
 }

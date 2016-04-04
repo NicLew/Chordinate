@@ -342,7 +342,7 @@ public class Chord {
                         break;
 
                     default:
-                        return chord;// TODO: test...
+                        return chord;
                 }
             } else {
                 invertedChord = chord;

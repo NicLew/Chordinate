@@ -51,9 +51,6 @@ public class Algorithm {
             }
         }
 
-        /* Try to make first chord a tonic chord */ // TODO: Should we do this or not???
-        //mChords.get(0).changeChord(mKey, mScaleType, Chord.AbstractChord.I);
-
         /* Try to create a proper cadence for a stronger ending. */
         cadenceEnding();
 

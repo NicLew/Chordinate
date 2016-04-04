@@ -18,12 +18,22 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.lang.Math;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import edu.pacificu.chordinate.chordinate.algorithm.Algorithm;
 
 public class CompositionViewerActivity extends ChordinateActivity implements View.OnClickListener {
+    private static final char SEMICOLON = ';';
+    private static final char END_OF_COMP = '$';
+    private static final String CHORD_TAG = "Chord";
+    private static final String NOTE_TAG = "Note";
+    private static final String UNDO_BTN_TAG = "undo";
+    private static final String MODE_BTN_TAG = "editMode";
+    private static final String COMP_SAVED_MSG = "Composition Saved";
+    private static final String BTN_TXT_EDIT = "EDIT MODE";
+    private static final String BTN_TXT_PLAY = "EXIT EDIT MODE";
+    private static final int CHORD_NUM_INDEX = 5;
+
     private String mRecordedSong = "";
     private SavedComposition mComposition;
     private Button mEditModeBtn;
@@ -41,7 +51,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
 
         Intent reviewIntent = getIntent();
         Bundle extras = reviewIntent.getExtras();
-        mRecordedSong = extras.getString("recordedSong");
+        mRecordedSong = extras.getString("recordedSong"); // TODO: Fix magic constants (make public so can use in the other places too)
         mComposition = new SavedComposition(extras.getString("compName"),
                                             extras.getString("dateStr"),
                                             mRecordedSong, extras.getString("fileName"));
@@ -60,12 +70,12 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         }
         else {
             mEditModeBtn.setOnClickListener(this);
-            mEditModeBtn.setTag("editMode");
+            mEditModeBtn.setTag(MODE_BTN_TAG);
         }
 
         mUndoBtn = (Button) findViewById(R.id.undoButton);
         mUndoBtn.setOnClickListener(this);
-        mUndoBtn.setTag("undo");
+        mUndoBtn.setTag(UNDO_BTN_TAG);
         if (mPrevComps.size() <= 0) {
             mUndoBtn.setEnabled(false);
         }
@@ -73,7 +83,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         displayNotes();
     }
 
-    private void displayNotes () {
+    private void displayNotes () { // TODO: Fix magic constants in this function
         char current;
         int index = 0, keyNum = 0, octNum, chordNum, noteNum, noteGap, lineGap;
         boolean bNextChord = true;
@@ -121,7 +131,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                     case '#':
                         keyNum = -keyNum;
                         break;
-                    case ';':
+                    case SEMICOLON:
                         compNotes.add(-1000);
                         /*
                         try {
@@ -145,13 +155,13 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 }
 
                 index ++;
-            } while (current != '$');
+            } while (current != END_OF_COMP);
         }
         chordNum = 0;
         noteNum = 0;
         for (int i = 0; i < compNotes.size(); i ++)
         {
-            if ((int) compNotes.get(i) != -1000) { // TODO: Magic constant
+            if ((int) compNotes.get(i) != -1000) {
 
                 if (bNextChord == true) {
                     view = layoutInflater.inflate(R.layout.comp_view_item, mParentLayout, false);
@@ -184,20 +194,17 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
 
                 if ((int) compNotes.get(i) < 0)
                 {
-                    //button.setText("S");
                     singleNote.setBackgroundResource(R.drawable.note_s);
                 }
                 else {
-                    //button.setText("N");
                     singleNote.setBackgroundResource(R.drawable.note);
                 }
 
-                singleNote.setTag("Note" + noteNum);
-                //singleNote.setOnClickListener(this);
+                singleNote.setTag(NOTE_TAG + noteNum);
                 chord.addView(singleNote, noteLayoutParams);
 
                 if (bNextChord == true) {
-                    chord.setTag("Chord" + chordNum);
+                    chord.setTag(CHORD_TAG + chordNum);
                     ++chordNum;
                     chord.setOnClickListener(this);
                     mParentLayout.addView(chord);
@@ -239,9 +246,9 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     @Override
     public void onClick (View v)
     {
-        if (((String) v.getTag()).contains("Chord"))
+        if (((String) v.getTag()).contains(CHORD_TAG))
         {
-            final int startIndex = getStringIndex(mRecordedSong, Integer.parseInt (((String)v.getTag()).substring(5)));// TODO Fix magic constant
+            final int startIndex = getStringIndex(mRecordedSong, Integer.parseInt(((String)v.getTag()).substring(CHORD_NUM_INDEX)));
 
             if (mbIsEditMode) {
                 final Dialog chooseOpts = new Dialog(this);
@@ -268,7 +275,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
 
                         chooseOpts.dismiss();
                         mbIsEditMode = false;
-                        mEditModeBtn.setText("EDIT MODE");
+                        mEditModeBtn.setText(BTN_TXT_EDIT);
 
                         String composition = Algorithm.compose(mRecordedSong, key, scaleType, startIndex);
 
@@ -281,7 +288,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                         mComposition.writeItemToFile(mContextWrapper);
 
                         displayNotes();
-                        Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), COMP_SAVED_MSG, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -289,18 +296,18 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 this.getTheKPlayback().playComposition (mRecordedSong, startIndex);
             }
         }
-        else if (((String) v.getTag()).contains("editMode"))
+        else if (((String) v.getTag()).contains(MODE_BTN_TAG))
         {
             if (!mbIsEditMode) {
                 mbIsEditMode = true;
-                mEditModeBtn.setText("PLAY MODE");
+                mEditModeBtn.setText(BTN_TXT_PLAY);
             }
             else {
                 mbIsEditMode = false;
-                mEditModeBtn.setText("EDIT MODE");
+                mEditModeBtn.setText(BTN_TXT_EDIT);
             }
         }
-        else if (((String) v.getTag()).contains("undo")) {
+        else if (((String) v.getTag()).contains(UNDO_BTN_TAG)) {
             if (mPrevComps.size() > 0) {
                 mRecordedSong = mPrevComps.get(mPrevComps.size() - 1);
                 mPrevComps.remove(mPrevComps.size() - 1);
@@ -309,7 +316,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 mComposition.writeItemToFile(mContextWrapper);
 
                 displayNotes();
-                Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), COMP_SAVED_MSG, Toast.LENGTH_SHORT).show();
             }
 
             if (mPrevComps.size() <= 0) {
@@ -328,8 +335,8 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         int strIndex = 0;
         int semicolonCount = 0;
 
-        while (startingIndex != semicolonCount && '$' != comp.charAt(strIndex) && strIndex < comp.length()) {
-            if (';' == comp.charAt(strIndex)) {// TODO: fix magic consts
+        while (startingIndex != semicolonCount && END_OF_COMP != comp.charAt(strIndex) && strIndex < comp.length()) {
+            if (SEMICOLON == comp.charAt(strIndex)) {
                 ++semicolonCount;
             }
             ++strIndex;

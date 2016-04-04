@@ -45,7 +45,7 @@ public class KeyPlayback {
             SoundID[i] = KeySoundPool.load (context,SoundFileID[i], 1);
         }
     }
-    // TODO: Add ability to stop loop upon closing program, Done?
+
     private Runnable playLoop = new Runnable()
     {
         public void run()
