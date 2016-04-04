@@ -138,19 +138,8 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                             compToSave.writeItemToFile(mContextWrapper);
                             ++mNumComps;
                             Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
-                            finish();
 
-                            Bundle compBundle = new Bundle();
-                            compBundle.putString("compName", compToSave.getName());
-                            compBundle.putString("dateStr", compToSave.getWholeDateStr());
-                            compBundle.putString("recordedSong", compToSave.getNotes());
-                            compBundle.putString("fileName", compToSave.getFileName());
-                            compBundle.putBoolean("enableEditMode", true);
-
-                            Intent reviewCompIntent = new Intent(KeyboardReviewActivity.this,
-                                    CompositionViewerActivity.class);
-                            reviewCompIntent.putExtras(compBundle);
-                            startActivity(reviewCompIntent);
+                            startReviewActivity(compToSave.getName(), compToSave.getWholeDateStr(), compToSave.getNotes(), compToSave.getFileName(), true);
                         }
                     });
                     break;
@@ -159,21 +148,24 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                     break;
 
                 case R.id.reviewPlay:
-                    Bundle compBundle = new Bundle();
-                    compBundle.putString("compName", mCompName.getText().toString());
-                    compBundle.putString("dateStr", "160402190427-0700");
-                    compBundle.putString("recordedSong", mRecordedSong);
-                    compBundle.putString("fileName", "bogus");
-                    compBundle.putBoolean("enableEditMode", false);
-                    // TODO: Create method for this block of code...
-
-                    Intent reviewCompIntent = new Intent(KeyboardReviewActivity.this,
-                            CompositionViewerActivity.class);
-                    reviewCompIntent.putExtras(compBundle);
-                    startActivity(reviewCompIntent);
+                    startReviewActivity(mCompName.getText().toString(), "160402190427-0700", mRecordedSong, "bogus", false);
                     break;
             }
         }
         return true;
+    }
+
+    private void startReviewActivity (String compName, String dateStr, String recordedSong, String fileName, boolean bEnableEditMode) {
+        Bundle compBundle = new Bundle();
+        compBundle.putString("compName", compName);
+        compBundle.putString("dateStr", dateStr);
+        compBundle.putString("recordedSong", recordedSong);
+        compBundle.putString("fileName", fileName);
+        compBundle.putBoolean("enableEditMode", bEnableEditMode);
+
+        Intent reviewCompIntent = new Intent(KeyboardReviewActivity.this,
+                CompositionViewerActivity.class);
+        reviewCompIntent.putExtras(compBundle);
+        startActivity(reviewCompIntent);
     }
 }

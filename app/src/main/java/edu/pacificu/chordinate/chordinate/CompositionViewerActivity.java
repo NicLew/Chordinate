@@ -304,7 +304,12 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
             if (mPrevComps.size() > 0) {
                 mRecordedSong = mPrevComps.get(mPrevComps.size() - 1);
                 mPrevComps.remove(mPrevComps.size() - 1);
+
+                mComposition.setNotesString(mRecordedSong);
+                mComposition.writeItemToFile(mContextWrapper);
+
                 displayNotes();
+                Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
             }
 
             if (mPrevComps.size() <= 0) {

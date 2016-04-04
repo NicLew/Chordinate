@@ -148,6 +148,18 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
         recording = "";
         bIsRecording = false;
     }
+
+    /**
+     * Resets the start and stop record buttons on resume
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        startRecord.setEnabled(true);
+        stopRecord.setEnabled(false);
+    }
+
     /**
      * Performs the proper actions when an on touch event occurs based on the button and
      * the action performed

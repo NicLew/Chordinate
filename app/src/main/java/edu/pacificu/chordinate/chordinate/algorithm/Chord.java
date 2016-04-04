@@ -262,13 +262,11 @@ public class Chord {
         }
         else
         {
-            Log.e("ValidChordSize", "No valid chords found."); // TODO: Test this solution, find case that breaks then comment in this code to see if it fixes it
-            //chord = new Chord();
-            //Note root = Scale.getRootFromFifth(note, Scale.ScaleType.MAJOR);
-            //chord.add(root);
-            //chord.add(Scale.getThird(root, Scale.ScaleType.MAJOR, ScaleDegree.TONIC));
-            //chord.add(note);
-            chord = null;
+            chord = new Chord();
+            Note root = Scale.getRootFromFifth(note, Scale.ScaleType.MAJOR);
+            chord.add(root);
+            chord.add(Scale.getThird(root, Scale.ScaleType.MAJOR, ScaleDegree.TONIC));
+            chord.add(note);
         }
 
         return chord;
