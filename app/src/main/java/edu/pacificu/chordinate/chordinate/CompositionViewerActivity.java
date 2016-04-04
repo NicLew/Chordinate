@@ -29,6 +29,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private boolean mbIsEditMode;
     private boolean mbEnableEditMode;
     private ContextWrapper mContextWrapper;
+    private LinearLayout mParentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +46,8 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         mbEnableEditMode = extras.getBoolean("enableEditMode");
         mContextWrapper = this;
 
-        char current;
-        int index = 0, keyNum = 0, octNum = 0, chordNum = 0, noteNum = 0, noteGap = 0, lineGap = 0;
-        boolean bNextChord = true;
-        ArrayList compNotes = new ArrayList();
-        LinearLayout parentLayout = (LinearLayout) findViewById(R.id.parentLayout);
-        LayoutInflater layoutInflater = getLayoutInflater();
-        View view;
-        RelativeLayout chord = (RelativeLayout) this.findViewById(R.id.childLayout);
+        mParentLayout = (LinearLayout) findViewById(R.id.parentLayout);
+        Log.d("Comp String coming in:", mRecordedSong);
 
         mbIsEditMode = false;
         mEditModeBtn = (Button) findViewById(R.id.editModeButton);
@@ -63,6 +58,20 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
             mEditModeBtn.setOnClickListener(this);
             mEditModeBtn.setTag("editMode");
         }
+
+        displayNotes();
+    }
+
+    private void displayNotes () {
+        char current;
+        int index = 0, keyNum = 0, octNum, chordNum, noteNum, noteGap, lineGap;
+        boolean bNextChord = true;
+        ArrayList compNotes = new ArrayList();
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view;
+        RelativeLayout chord = (RelativeLayout) this.findViewById(R.id.childLayout);
+
+        mParentLayout.removeViews(1, mParentLayout.getChildCount() - 1);
 
         Point screenSize = new Point();
         Display display = getWindowManager().getDefaultDisplay();
@@ -134,7 +143,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
             if ((int) compNotes.get(i) != -1000) { // TODO: Magic constant
 
                 if (bNextChord == true) {
-                    view = layoutInflater.inflate(R.layout.comp_view_item, parentLayout, false);
+                    view = layoutInflater.inflate(R.layout.comp_view_item, mParentLayout, false);
                     chord = (RelativeLayout) view.findViewById(R.id.childLayout);
 
                     for (int j = 0; j < 24; j ++)
@@ -180,7 +189,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                     chord.setTag("Chord" + chordNum);
                     ++chordNum;
                     chord.setOnClickListener(this);
-                    parentLayout.addView(chord);
+                    mParentLayout.addView(chord);
                     bNextChord = false;
                 }
             }
@@ -250,14 +259,12 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
 
                         Log.d("Original Comp:", mRecordedSong);
                         Log.d("Edited Comp:", mComposition.getNotes());
-                        mRecordedSong = mComposition.getNotes();//??????????????????????????????????????????????????????????????? TODO working here
+                        mRecordedSong = mComposition.getNotes();
 
-                        mComposition.writeItemToFile(mContextWrapper); // TODO: Should overwrite existing file.... double check
+                        mComposition.writeItemToFile(mContextWrapper);
 
-                        view.refreshDrawableState();//???????????????????????????????????????????????????????????????
-                        // TODO: reposition notes, ask Jacob about this
+                        displayNotes();
                         Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
-                        //finish();
                     }
                 });
 
