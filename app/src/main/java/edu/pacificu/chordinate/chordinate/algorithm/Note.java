@@ -133,8 +133,22 @@ public class Note {
      * @param left the note to compare to the calling note
      * @return true if the index of the calling note is less than the passed in note, otherwise false
      */
-    public Boolean bIsNoteLessThen(Note left) {
+    public Boolean bIsNoteLessThan(Note left) {
         if (Scale.findNoteInList(this) < Scale.findNoteInList(left)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines if the index of one note is greater than the index of another in the chromatic scale.
+     *
+     * @param left the note to compare to the calling note
+     * @return true if the index of the calling note is greater than the passed in note, otherwise false
+     */
+    public Boolean bIsNoteGreaterThan(Note left) {
+        if (Scale.findNoteInList(this) > Scale.findNoteInList(left)) {
             return true;
         }
 

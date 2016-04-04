@@ -58,7 +58,7 @@ public class Algorithm {
         cadenceEnding();
 
         /* Make sure all notes/chords are within the proper octaves. */
-        assignOctaves(0);
+        assignOctaves();
 
         /* Print chords to the screen */
         for (int i = 0; i < mChords.size(); ++i) {
@@ -108,8 +108,8 @@ public class Algorithm {
         }
     }
 
-    private static void assignOctaves (int startingIndex) {
-        for (int i = startingIndex; i < mChords.size(); ++i) {
+    private static void assignOctaves () {
+        for (int i = 0; i < mChords.size(); ++i) {
             mChords.get(i).assignOctave(mMelody.get(i));
         }
     }

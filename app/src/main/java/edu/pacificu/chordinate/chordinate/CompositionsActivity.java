@@ -113,7 +113,7 @@ public class CompositionsActivity extends ChordinateActivity {
                 editCompName.setText(listItem.getName());
 
                 final Button playSelRec = (Button) dialog.findViewById(R.id.selPlaybackButton);
-                initPlayButton(playSelRec, listItem);
+                initPlayButton(playSelRec, listItem, dialog);
 
                 final Button delSelRec = (Button) dialog.findViewById(R.id.selDeleteButton);
                 initDeleteButton(delSelRec, dialog, position);
@@ -132,11 +132,11 @@ public class CompositionsActivity extends ChordinateActivity {
      * @param playButton The playback button to be initialized.
      * @param listItem   The list item to be played.
      */
-    private void initPlayButton(final Button playButton, final SavedComposition listItem) {
+    private void initPlayButton(final Button playButton, final SavedComposition listItem, final Dialog dialog) {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CompositionsActivity.this.onPlayButtonClick(listItem);
+                CompositionsActivity.this.onPlayButtonClick(listItem, dialog);
             }
         });
     }
@@ -147,7 +147,7 @@ public class CompositionsActivity extends ChordinateActivity {
      *
      * @param listItem the list item to be played back
      */
-    private void onPlayButtonClick(SavedComposition listItem) {
+    private void onPlayButtonClick(SavedComposition listItem, Dialog dialog) {
         Bundle compBundle = new Bundle();
         compBundle.putString("compName", listItem.getName());
         compBundle.putString("dateStr", listItem.getWholeDateStr());
@@ -158,6 +158,8 @@ public class CompositionsActivity extends ChordinateActivity {
         Intent reviewCompIntent = new Intent(CompositionsActivity.this,
                 CompositionViewerActivity.class);
         reviewCompIntent.putExtras(compBundle);
+
+        dialog.dismiss(); // TODO: START HERE also, when back out to menu page it works, need to reread file instead of using data stored in memory, in onResume put something maybe???
         startActivity(reviewCompIntent);
     }
 

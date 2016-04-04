@@ -213,6 +213,14 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     }
 
     @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        this.getTheKPlayback().stopPlayback();
+    }
+
+    @Override
     protected void onPause()
     {
         super.onPause();
@@ -236,7 +244,6 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
             final int startIndex = getStringIndex(mRecordedSong, Integer.parseInt (((String)v.getTag()).substring(5)));// TODO Fix magic constant
 
             if (mbIsEditMode) {
-
                 final Dialog chooseOpts = new Dialog(this);
                 chooseOpts.setContentView(R.layout.choose_comp_options);
                 chooseOpts.show();
@@ -275,16 +282,13 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                         mUndoBtn.setEnabled(true);
                         mRecordedSong = mComposition.getNotes();
 
+                        // TODO: START HERE Right now if edit saved comp and then hit back button, changes are not saved (except sometimes when back all the way out of the app)
                         mComposition.writeItemToFile(mContextWrapper);
 
                         displayNotes();
                         Toast.makeText(getApplicationContext(), "Composition Saved", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
-
-
             }
             else {
                 this.getTheKPlayback().playComposition (mRecordedSong, startIndex);

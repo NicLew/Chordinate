@@ -125,6 +125,7 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
 
         stopRecord = (Button) findViewById(R.id.stop_record);
         stopRecord.setOnTouchListener(this);
+        stopRecord.setEnabled(false);
 
         OctSpinner = (Spinner) findViewById(R.id.spinner);
         OctSpinner.setAdapter(stringArrayAdapter);
@@ -327,6 +328,8 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
                  event.getAction() == MotionEvent.ACTION_DOWN))
         {
             bIsRecording = true;
+            startRecord.setEnabled(false);
+            stopRecord.setEnabled(true);
         }
 
         // Action when Stop button is pressed

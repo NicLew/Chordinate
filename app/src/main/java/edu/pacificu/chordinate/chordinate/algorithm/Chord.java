@@ -98,15 +98,30 @@ public class Chord {
      * @param melodyNote the note to base the octave assignment off of
      */
     public void assignOctave (Note melodyNote) {
-        for (int i = 0; i < mChord.size(); ++i) {
 
-            /* If less than or equal to in chromatic scale use same octave, otherwise subtract one */
-            if (MIN_OCTAVE == melodyNote.getOctave() || mChord.get(i).bIsNoteLessThen(melodyNote) ||
-                    mChord.get(i).bAreNotesEqual(melodyNote))
+        for (int i = 0; i < mChord.size(); ++i) {
+            if (MIN_OCTAVE == melodyNote.getOctave() ||
+                    (melodyNote.bIsNoteLessThan(new Note('C', 'n', '0', false)) &&
+                            mChord.get(i).bIsNoteGreaterThan(new Note('B', 'n', '0', false))))
             {
                 mChord.get(i).assignOctave(melodyNote.getOctave());
             }
+            else if ((melodyNote.bIsNoteLessThan(new Note('C', 'n', '0', false)) &&
+                        mChord.get(i).bIsNoteLessThan(new Note('C', 'n', '0', false))) ||
+                    (melodyNote.bIsNoteGreaterThan(new Note('B', 'n', '0', false)) &&
+                        mChord.get(i).bIsNoteGreaterThan(new Note('B', 'n', '0', false)))) {
+                if (melodyNote.bIsNoteLessThan(mChord.get(i))) {
+                    mChord.get(i).assignOctave((char) (((int) melodyNote.getOctave()) - 1));
+                }
+                else {
+                    mChord.get(i).assignOctave(melodyNote.getOctave());
+                }
+            }
+            else if (melodyNote.bIsNoteGreaterThan(new Note('B', 'n', '0', false)) && mChord.get(i).bIsNoteLessThan(new Note('C', 'n', '0', false))) {
+                mChord.get(i).assignOctave((char) (((int) melodyNote.getOctave()) - 1));
+            }
             else {
+                Log.d("Should not hit", "the else in assign octave was hit");
                 mChord.get(i).assignOctave((char) (((int) melodyNote.getOctave()) - 1));
             }
         }
@@ -247,8 +262,13 @@ public class Chord {
         }
         else
         {
-            Log.e("ValidChordSize", "No valid chords found.");
-            chord = null; // TODO: what chord?
+            Log.e("ValidChordSize", "No valid chords found."); // TODO: Test this solution, find case that breaks then comment in this code to see if it fixes it
+            //chord = new Chord();
+            //Note root = Scale.getRootFromFifth(note, Scale.ScaleType.MAJOR);
+            //chord.add(root);
+            //chord.add(Scale.getThird(root, Scale.ScaleType.MAJOR, ScaleDegree.TONIC));
+            //chord.add(note);
+            chord = null;
         }
 
         return chord;
