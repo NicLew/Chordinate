@@ -268,21 +268,16 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
 
                         chooseOpts.dismiss();
                         mbIsEditMode = false;
-                        mEditModeBtn.setText("EDIT MODE"); //TODO: Change button to toggle??
+                        mEditModeBtn.setText("EDIT MODE");
 
                         String composition = Algorithm.compose(mRecordedSong, key, scaleType, startIndex);
-                        Log.d("Composition", composition);
 
                         mComposition.setNotesString(mRecordedSong.substring(0, startIndex) + composition);
-
-                        Log.d("Original Comp:", mRecordedSong);
-                        Log.d("Edited Comp:", mComposition.getNotes());
-
                         mPrevComps.add(mRecordedSong);
-                        mUndoBtn.setEnabled(true);
-                        mRecordedSong = mComposition.getNotes();
 
-                        // TODO: START HERE Right now if edit saved comp and then hit back button, changes are not saved (except sometimes when back all the way out of the app)
+                        mUndoBtn.setEnabled(true);
+
+                        mRecordedSong = mComposition.getNotes();
                         mComposition.writeItemToFile(mContextWrapper);
 
                         displayNotes();
