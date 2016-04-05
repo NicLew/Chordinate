@@ -327,6 +327,7 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
                  event.getAction() == MotionEvent.ACTION_DOWN))
         {
             bIsRecording = true;
+            ((Button) v).setText("RECORDING");
         }
 
         // Action when Stop button is pressed
@@ -334,14 +335,17 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
                 (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS ||
                         event.getAction() == MotionEvent.ACTION_DOWN))
         {
-            bIsRecording = false;
-            recording = recording.concat ("$");
-            Intent reviewIntent = new Intent(KeyboardActivity.this, KeyboardReviewActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString ("recordedSong", recording);
-            reviewIntent.putExtras(bundle);
-            startActivity (reviewIntent);
-            recording = "";
+            if (bIsRecording) {
+                bIsRecording = false;
+                recording = recording.concat("$");
+                ((Button) findViewById(R.id.start_record)).setText("RECORD");
+                Intent reviewIntent = new Intent(KeyboardActivity.this, KeyboardReviewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("recordedSong", recording);
+                reviewIntent.putExtras(bundle);
+                startActivity(reviewIntent);
+                recording = "";
+            }
         }
         return false;
     }

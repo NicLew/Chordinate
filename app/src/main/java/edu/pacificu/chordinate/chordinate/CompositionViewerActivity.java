@@ -17,6 +17,18 @@ import java.util.ArrayList;
 
 public class CompositionViewerActivity extends ChordinateActivity implements View.OnClickListener {
     private String mRecordedSong = "";
+    private static final int NUM_OF_NOTE_POS = 48;
+    private static final int NUM_OF_LINE_POS = 24;
+    private static final int END_CHORD = -1000;
+    private static final int NOTE_HEIGHT = 20;
+    private static final int NOTE_WIDTH = 20;
+    private static final int SHARP_HEIGHT = 40;
+    private static final int SHARP_WIDTH = 30;
+    private static final int NOTE_LEFT_MARGIN = 10;
+    private static final int SHARP_LEFT_MARGIN = 30;
+    private static final int NOTE_TOP_MARGIN_OFFSET = 90;
+    private static final int SHARP_TOP_MARGIN_OFFSET = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +47,8 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         Point screenSize = new Point();
         Display display = getWindowManager().getDefaultDisplay();
         display.getSize(screenSize);
-        noteGap = (screenSize.y - 20) / 48;
-        lineGap = (screenSize.y - 20) / 24;
+        noteGap = (screenSize.y - NOTE_HEIGHT) / NUM_OF_NOTE_POS;
+        lineGap = (screenSize.y - NOTE_HEIGHT) / NUM_OF_LINE_POS;
 
         if (mRecordedSong.length() > 1)
         {
@@ -70,7 +82,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                         keyNum = -keyNum;
                         break;
                     case ';':
-                        compNotes.add(-1000);
+                        compNotes.add(END_CHORD);
                         /*
                         try {
                             Thread.sleep (500);
@@ -98,19 +110,19 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         chordNum = 0;
         for (int i = 0; i < compNotes.size(); i ++)
         {
-            if ((int) compNotes.get(i) != -1000) { // TODO: Magic constant
+            if ((int) compNotes.get(i) != END_CHORD) { // TODO: Magic constant
 
                 if (bNextChord == true) {
                     view = layoutInflater.inflate(R.layout.comp_view_item, parentLayout, false);
                     chord = (RelativeLayout) view.findViewById(R.id.childLayout);
 
-                    for (int j = 0; j < 24; j ++)
+                    for (int j = 0; j < NUM_OF_LINE_POS; j ++)
                     {
                         RelativeLayout.LayoutParams lineLayoutParams = new RelativeLayout.LayoutParams
                                 (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                         ImageView singleLine = new ImageView(chord.getContext());
                         lineLayoutParams.setMargins(0,(lineGap * j) + 7, 0, 0);
-                        if (j != 12) {
+                        if (j != (NUM_OF_LINE_POS / 2)) {
                             singleLine.setBackgroundResource(R.drawable.music_staff_line);
                         }
                         else
@@ -124,17 +136,28 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 RelativeLayout.LayoutParams noteLayoutParams = new RelativeLayout.LayoutParams
                         (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                noteLayoutParams.width = 20;
-                noteLayoutParams.height = 20;
-                noteLayoutParams.setMargins(10, (screenSize.y - 90) -
+                noteLayoutParams.width = NOTE_WIDTH;
+                noteLayoutParams.height = NOTE_HEIGHT;
+                noteLayoutParams.setMargins(NOTE_LEFT_MARGIN, (screenSize.y - NOTE_TOP_MARGIN_OFFSET) -
                         (noteGap * (Math.abs((int) compNotes.get(i)) - 1)), 0, 0);
                 if ((int) compNotes.get(i) < 0)
                 {
-                    //button.setText("S");
+                    ImageView sharp = new ImageView(chord.getContext());
+                    RelativeLayout.LayoutParams sharpLayoutParams = new RelativeLayout.LayoutParams
+                            (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                    sharpLayoutParams.width = SHARP_WIDTH;
+                    sharpLayoutParams.height = SHARP_HEIGHT;
+                    sharpLayoutParams.setMargins(SHARP_LEFT_MARGIN, (screenSize.y - SHARP_TOP_MARGIN_OFFSET) -
+                            (noteGap * (Math.abs((int) compNotes.get(i)) - 1)), 0, 0);
+                    sharp.setTag("Note" + chordNum);
+                    sharp.setOnClickListener(this);
+                    sharp.setBackgroundResource(R.drawable.sharp);
+                    chord.addView(sharp, sharpLayoutParams);
                     singleNote.setBackgroundResource(R.drawable.note_s);
+
                 }
                 else {
-                    //button.setText("N");
                     singleNote.setBackgroundResource(R.drawable.note);
                 }
 
@@ -180,7 +203,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         if (((String) v.getTag()).contains ("Chord"))
         {
             this.getTheKPlayback().stopPlayback();
-            startNote = Integer.parseInt (((String)v.getTag()).substring(4));
+            startNote = Integer.parseInt (((String)v.getTag()).substring(5));
             this.getTheKPlayback().playComposition (mRecordedSong, startNote);
         }
     }

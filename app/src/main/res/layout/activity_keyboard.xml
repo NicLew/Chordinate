@@ -218,9 +218,11 @@
         android:text="Record"
         android:id="@+id/start_record"
         android:background="@drawable/record_button"
-        android:layout_marginBottom="21dp"
+        android:layout_marginBottom="25dp"
         android:layout_above="@+id/stop_record"
-        android:layout_alignParentEnd="true" />
+        android:layout_toEndOf="@+id/E2_button"
+        android:layout_alignParentEnd="false"
+        android:textSize="10sp"/>
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -231,7 +233,8 @@
         android:layout_alignBottom="@+id/E2_button"
         android:layout_toRightOf="@+id/E2_button"
         android:layout_toEndOf="@+id/E2_button"
-        android:background="@drawable/stop_button" />
+        android:background="@drawable/stop_button"
+        android:textSize="10sp"/>
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
