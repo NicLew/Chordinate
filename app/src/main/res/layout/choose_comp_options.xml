@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/choose_comp_opts_title"
+        android:id="@+id/choose_comp_opt_title"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/choose_comp_opts_key"
+        android:id="@+id/choose_key_title"
+        android:textAlignment="center"
+        android:textStyle="italic"
+        android:layout_gravity="left"
+        android:layout_marginLeft="5dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_choose_key"
+        android:spinnerMode="dropdown"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/choose_comp_opts_scale_type"
+        android:id="@+id/choose_scale_title"
+        android:textAlignment="center"
+        android:textStyle="italic"
+        android:layout_gravity="left"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_choose_scale"
+        android:spinnerMode="dropdown"
+        android:textAlignment="center"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_comp_opts_done_btn"
+        android:id="@+id/btn_done"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

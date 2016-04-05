@@ -3,7 +3,7 @@ package edu.pacificu.chordinate.chordinate;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +25,8 @@ public class CompositionsActivity extends ChordinateActivity {
     private ContextWrapper mContextWrapper = this;
     private CompositionsAdapter mAdapter;
     private ArrayList<SavedComposition> mSavedFiles = new ArrayList<SavedComposition>();
-    //private KeyPlayback mPlayback;
+    private boolean mbDoReload;
+    private int mCurrentIndex;
 
     /**
      * Creates the page, initializes the list view, reads in the saved files to an array,
@@ -41,8 +42,38 @@ public class CompositionsActivity extends ChordinateActivity {
         mAdapter = new CompositionsAdapter(this, mSavedFiles);
         initListView();
         readFilesToArray();
-        //mPlayback = new KeyPlayback();
-        //mPlayback.loadSounds(this);
+        mbDoReload = false;
+    }
+
+    /**
+     * When returning to this activity from editing, reload the current composition from memory.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mbDoReload) {
+            String fileName, compName, notesStr, dateStr;
+
+            try {
+                InputStreamReader fInput =
+                        new InputStreamReader(openFileInput(mSavedFiles.get(mCurrentIndex).getFileName() + SAVED_COMP_EXT));
+                BufferedReader buffReader = new BufferedReader(fInput);
+
+                compName = buffReader.readLine();
+                dateStr = buffReader.readLine();
+                notesStr = buffReader.readLine();
+                fileName = buffReader.readLine();
+
+                mSavedFiles.set(mCurrentIndex, new SavedComposition(compName, dateStr, notesStr, fileName));
+
+            } catch (Exception e) {
+                Log.d("onResume()", e.toString());
+            }
+
+            mAdapter.notifyDataSetChanged();
+            mbDoReload = false;
+        }
     }
 
     /**
@@ -112,7 +143,7 @@ public class CompositionsActivity extends ChordinateActivity {
                 editCompName.setText(listItem.getName());
 
                 final Button playSelRec = (Button) dialog.findViewById(R.id.selPlaybackButton);
-                initPlayButton(playSelRec, listItem.getNotes());
+                initPlayButton(playSelRec, position);
 
                 final Button delSelRec = (Button) dialog.findViewById(R.id.selDeleteButton);
                 initDeleteButton(delSelRec, dialog, position);
@@ -129,13 +160,13 @@ public class CompositionsActivity extends ChordinateActivity {
      * Initializes a playback button.
      *
      * @param playButton The playback button to be initialized.
-     * @param notes      The notes to be played.
+     * @param position   The position of the list item to be played.
      */
-    private void initPlayButton(final Button playButton, final String notes) {
+    private void initPlayButton(final Button playButton, final int position) {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CompositionsActivity.this.onPlayButtonClick(notes);
+                CompositionsActivity.this.onPlayButtonClick(position);
             }
         });
     }
@@ -144,10 +175,15 @@ public class CompositionsActivity extends ChordinateActivity {
      * Performs the proper actions when a playback button is pressed. Calls the playback
      * function of KeyPlayback.
      *
-     * @param notes      The notes to be played back
+     * @param position the position of the list item to be played back
      */
-    private void onPlayButtonClick(String notes) {
-        this.getTheKPlayback().playComposition(notes);
+    private void onPlayButtonClick(int position) {
+        SavedComposition listItem = mSavedFiles.get(position);
+        mbDoReload = true;
+        mCurrentIndex = position;
+
+        startCompReviewActivity(listItem.getName(), listItem.getWholeDateStr(), listItem.getNotes(),
+                listItem.getFileName(), true);
     }
 
     /**
@@ -219,5 +255,30 @@ public class CompositionsActivity extends ChordinateActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    /**
+     * Bundles up necessary variables to pass to the composition review activity and starts that
+     * activity.
+     *
+     * @param compName the name of the composition to be viewed
+     * @param dateStr the date of the composition to be viewed
+     * @param recordedSong the notes string of the composition to be viewed
+     * @param fileName the file name of the composition to be viewed
+     * @param bEnableEditMode whether or not edit mode should be enabled in the next activity
+     */
+    private void startCompReviewActivity(String compName, String dateStr, String recordedSong,
+                                         String fileName, boolean bEnableEditMode) {
+        Bundle compBundle = new Bundle();
+        compBundle.putString("compName", compName);
+        compBundle.putString("dateStr", dateStr);
+        compBundle.putString("recordedSong", recordedSong);
+        compBundle.putString("fileName", fileName);
+        compBundle.putBoolean("enableEditMode", bEnableEditMode);
+
+        Intent reviewCompIntent = new Intent(CompositionsActivity.this,
+                CompositionViewerActivity.class);
+        reviewCompIntent.putExtras(compBundle);
+        startActivity(reviewCompIntent);
     }
 }

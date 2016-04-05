@@ -61,4 +61,9 @@
     <string name="title_activity_keyboard_review">KeyboardReviewActivity</string>
     <string name="title_activity_record">RecordActivity</string>
     <string name="title_activity_compositions">CompositionsActivity</string>
+
+    <string name="choose_comp_opts_title">Choose a key and scale</string>
+    <string name="choose_comp_opts_done_btn">Done</string>
+    <string name="choose_comp_opts_key">Choose a key:</string>
+    <string name="choose_comp_opts_scale_type">Chose a scale:</string>
 </resources>

@@ -41,8 +41,16 @@ public class SavedComposition extends SavedFile {
      * @return  The string of notes.
      */
     public String getNotes () {
-
         return mNotesStr;
+    }
+
+    /**
+     * Sets the notes string of the composition to the notes passed in.
+     *
+     * @param notes the notes to be assigned
+     */
+    public void setNotesString (String notes) {
+        mNotesStr = notes;
     }
 
     /**
