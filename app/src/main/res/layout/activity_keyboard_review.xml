@@ -31,7 +31,8 @@
         android:id="@+id/saveAsIsButton"
         android:layout_alignBottom="@+id/redoButton"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/save_button" />
+        android:background="@drawable/save_button"
+        android:text="SAVE" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

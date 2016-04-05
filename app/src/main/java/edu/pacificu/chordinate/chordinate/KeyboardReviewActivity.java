@@ -143,6 +143,7 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                     break;
 
                 case R.id.redoButton:
+                    finish();
                     break;
 
                 case R.id.reviewPlay:
