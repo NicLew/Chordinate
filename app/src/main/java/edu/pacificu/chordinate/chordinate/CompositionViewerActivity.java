@@ -31,7 +31,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private static final String MODE_BTN_TAG = "editMode";
     private static final String COMP_SAVED_MSG = "Composition Saved";
     private static final String BTN_TXT_EDIT = "EDIT MODE";
-    private static final String BTN_TXT_PLAY = "EXIT EDIT MODE";
+    private static final String BTN_TXT_PLAY = "EXIT\nEDIT MODE";
     private static final int CHORD_NUM_INDEX = 5;
 
     private String mRecordedSong = "";

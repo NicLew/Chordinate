@@ -34,8 +34,6 @@ public class Algorithm {
 
         /* Determine the key. */
         getKey(key);
-        //System.out.println("Key: " + mKey);
-
 
         /* Determine chords based on the melody. */
         for (int i = 0; i < mMelody.size(); ++i) {
