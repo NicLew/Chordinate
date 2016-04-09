@@ -181,6 +181,10 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
         startActivity(reviewCompIntent);
     }
 
+    /**
+     * Overrides onResume. If this activity is resuming after entering the composition viewer,
+     * immediately finish this activity.
+     */
     @Override
     public void onResume()
     {

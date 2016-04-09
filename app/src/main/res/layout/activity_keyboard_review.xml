@@ -14,7 +14,8 @@
         android:text="Redo"
         android:id="@+id/redoButton"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@drawable/redo_button" />
 
     <Button
         android:layout_width="130dp"
@@ -41,7 +42,8 @@
         android:id="@+id/reviewPlay"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/play_button" />
+        android:background="@drawable/view_button"
+        android:text="VIEW\nMELODY" />
 
     <EditText
         android:layout_width="wrap_content"

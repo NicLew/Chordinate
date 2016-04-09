@@ -6,9 +6,7 @@ import android.os.Handler;
 
 import java.util.ArrayList;
 
-/**
- * Created by lund3481 on 11/22/2015.
- */
+
 public class KeyPlayback {
     public SoundPool KeySoundPool; // Stores sounds to be played
     SoundPool.Builder KeySPBuilder;
@@ -24,20 +22,26 @@ public class KeyPlayback {
             R.raw.d6, R.raw.ds6, R.raw.e6, R.raw.f6, R.raw.fs6, R.raw.g6, R.raw.gs6, R.raw.a6,
             R.raw.as6, R.raw.b6, R.raw.c7, R.raw.cs7, R.raw.d7, R.raw.ds7, R.raw.e7, R.raw.f7,
             R.raw.fs7, R.raw.g7, R.raw.gs7, R.raw.a7, R.raw.as7, R.raw.b7};
-    private static boolean isLoaded;
     private int soundIndex;
     private static int playbackSpeed = 600;
     private ArrayList compNotes = new ArrayList();
     private Handler handler = new Handler ();
 
+    /**
+     * Constructor for the KeyPlayback object
+     */
     KeyPlayback(){
         KeySPBuilder = new SoundPool.Builder();
         KeySPBuilder.setMaxStreams(4);
         KeySoundPool = KeySPBuilder.build();
-
-
     }
 
+    /**
+     * Loads all sounds into the KeySoundPool
+     *
+     * @param context the context of the activity that calls this function,
+     *                needed for SoundPool.load()
+     */
     public void loadSounds (Context context){
         for (int i = 0; i < SoundFileID.length; i ++)
         {
@@ -46,6 +50,10 @@ public class KeyPlayback {
         }
     }
 
+    /**
+     * Loop for playing the chords of compNotes, starts at soundIndex and loops until the end of
+     * the array of chords
+     */
     private Runnable playLoop = new Runnable()
     {
         public void run()
@@ -73,20 +81,39 @@ public class KeyPlayback {
         }
     };
 
+    /**
+     * public function for playing a single note
+     *
+     * @param id sound ID of the played note
+     * @param lVolume volume of the left ear
+     * @param rVolume volume of the right ear
+     * @param priority priority of the sound
+     * @param loop determines if the note loops or note, should be 0
+     * @param rate speed of the sound
+     */
     public void play (int id, int lVolume, int rVolume, int priority, int loop, float rate)
     {
         KeySoundPool.play(id, lVolume, rVolume, priority, loop, rate);
     }
 
+    /**
+     * public function for stopping the playback loop runnable
+     */
     public void stopPlayback ()
     {
         handler.removeCallbacks(playLoop);
     }
 
+    /**
+     * public function for playing a passed in composition
+     *
+     * @param comp String of notes to be played
+     * @param startNote index of the note to start on
+     */
     public void playComposition (String comp, int startNote)
     {
         char current;
-        int /*index = 0,*/ keyNum = 0, octNum = 0;
+        int keyNum = 0, octNum = 0;
         int index = startNote;
         soundIndex = 0;
         compNotes.clear();
@@ -124,12 +151,6 @@ public class KeyPlayback {
                         break;
                     case ';':
                         compNotes.add(-1);
-                        /*
-                        try {
-                            Thread.sleep (500);
-                        } catch (Exception E){}
-
-                        KeySoundPool.play(SoundID[keyNum + (octNum * 12)], 1, 1, 0, 0, 1);*/
                         break;
                 }
 
