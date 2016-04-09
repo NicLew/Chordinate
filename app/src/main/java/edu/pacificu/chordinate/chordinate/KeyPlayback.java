@@ -24,9 +24,9 @@ public class KeyPlayback {
             R.raw.d6, R.raw.ds6, R.raw.e6, R.raw.f6, R.raw.fs6, R.raw.g6, R.raw.gs6, R.raw.a6,
             R.raw.as6, R.raw.b6, R.raw.c7, R.raw.cs7, R.raw.d7, R.raw.ds7, R.raw.e7, R.raw.f7,
             R.raw.fs7, R.raw.g7, R.raw.gs7, R.raw.a7, R.raw.as7, R.raw.b7};
-    private static boolean isLoaded;
+
     private int soundIndex;
-    private static int playbackSpeed = 600;
+    private int mPlaybackSpeed = 600;
     private ArrayList compNotes = new ArrayList();
     private Handler handler = new Handler ();
 
@@ -36,6 +36,10 @@ public class KeyPlayback {
         KeySoundPool = KeySPBuilder.build();
 
 
+    }
+
+    public void setPlaybackSpeed (int speed) {
+        mPlaybackSpeed = speed;
     }
 
     public void loadSounds (Context context){
@@ -68,7 +72,7 @@ public class KeyPlayback {
                 for (chordIndex = 0; chordIndex < chord.size(); chordIndex ++) {
                     KeySoundPool.play(SoundID[(int)chord.get(chordIndex)], 1, 1, 0, 0, 1);
                 }
-                handler.postDelayed(this, playbackSpeed);
+                handler.postDelayed(this, mPlaybackSpeed);
             }
         }
     };

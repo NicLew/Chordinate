@@ -82,8 +82,8 @@ public class MainMenuActivity extends ChordinateActivity {
      */
     public void onSettingsButtonClick(View view) {
         view.setBackgroundResource(R.drawable.middle_button4_press);
-        //Intent myIntent = new Intent(MainMenuActivity.this, NewActivity.class);
-        //startActivity(myIntent);
+        Intent myIntent = new Intent(MainMenuActivity.this, SettingsActivity.class);
+        startActivity(myIntent);
     }
 
     /**
