@@ -92,6 +92,15 @@ public class SettingsActivity extends ChordinateActivity {
 
         return realSpeed;
     }
+
+    /**
+     * Stops playback when you leave the page.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ChordinateActivity.getTheKPlayback().stopPlayback();
+    }
 }
 
 
