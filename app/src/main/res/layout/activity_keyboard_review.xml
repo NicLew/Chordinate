@@ -24,7 +24,8 @@
         android:id="@+id/chordinateButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/chordinate_button" />
+        android:background="@drawable/chordinate_button"
+        android:textColor="@color/material_grey_850" />
 
     <Button
         android:layout_width="65dp"
