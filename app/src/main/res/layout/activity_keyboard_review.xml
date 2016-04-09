@@ -32,7 +32,7 @@
         android:layout_alignBottom="@+id/redoButton"
         android:layout_centerHorizontal="true"
         android:background="@drawable/save_button"
-        android:text="SAVE" />
+        android:text="SAVE\nMELODY" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

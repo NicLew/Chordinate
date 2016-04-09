@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:text="@string/choose_comp_opts_done_btn"
         android:id="@+id/btn_done"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="0dp"
         android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

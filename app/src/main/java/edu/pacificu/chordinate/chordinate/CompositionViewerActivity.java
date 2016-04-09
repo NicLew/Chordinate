@@ -28,6 +28,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private static final String NOTE_TAG = "Note";
     private static final String UNDO_BTN_TAG = "undo";
     private static final String MODE_BTN_TAG = "editMode";
+    private static final String DONE_BTN_TAG = "done";
     private static final String COMP_SAVED_MSG = "Composition Saved";
     private static final String BTN_TXT_EDIT = "EDIT MODE";
     private static final String BTN_TXT_PLAY = "EXIT\nEDIT MODE";
@@ -37,6 +38,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private SavedComposition mComposition;
     private Button mEditModeBtn;
     private Button mUndoBtn;
+    private Button mDoneBtn;
     private boolean mbIsEditMode;
     private boolean mbEnableEditMode;
     private ContextWrapper mContextWrapper;
@@ -77,6 +79,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         mEditModeBtn = (Button) findViewById(R.id.editModeButton);
         if (!mbEnableEditMode) {
             mEditModeBtn.setEnabled(false);
+            mEditModeBtn.setVisibility(View.GONE);
         }
         else {
             mEditModeBtn.setOnClickListener(this);
@@ -84,11 +87,23 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         }
 
         mUndoBtn = (Button) findViewById(R.id.undoButton);
-        mUndoBtn.setOnClickListener(this);
-        mUndoBtn.setTag(UNDO_BTN_TAG);
-        if (mPrevComps.size() <= 0) {
+        if (!mbEnableEditMode)
+        {
             mUndoBtn.setEnabled(false);
+            mUndoBtn.setVisibility(View.GONE);
         }
+
+        else {
+            mUndoBtn.setOnClickListener(this);
+            mUndoBtn.setTag(UNDO_BTN_TAG);
+            if (mPrevComps.size() <= 0) {
+                mUndoBtn.setEnabled(false);
+            }
+        }
+
+        mDoneBtn = (Button) findViewById (R.id.doneButton);
+        mDoneBtn.setOnClickListener(this);
+        mDoneBtn.setTag(DONE_BTN_TAG);
 
         displayNotes();
     }
@@ -102,7 +117,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         View view;
         RelativeLayout chord = (RelativeLayout) this.findViewById(R.id.childLayout);
 
-        mParentLayout.removeViews(2, mParentLayout.getChildCount() - 2);// TODO: fix magic const
+        mParentLayout.removeViews(1, mParentLayout.getChildCount() - 1);// TODO: fix magic const
 
         Point screenSize = new Point();
         Display display = getWindowManager().getDefaultDisplay();
@@ -177,12 +192,14 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                                 (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                         ImageView singleLine = new ImageView(chord.getContext());
                         lineLayoutParams.setMargins(0,(lineGap * j) + 7, 0, 0);
-                        if (j != (NUM_OF_LINE_POS / 2)) {
-                            singleLine.setBackgroundResource(R.drawable.music_staff_line);
+                        if (j == (NUM_OF_LINE_POS / 2) || j < ((NUM_OF_LINE_POS / 2) - 5)
+                                || j > ((NUM_OF_LINE_POS / 2) + 5)) {
+                            singleLine.setBackgroundResource(R.drawable.music_staff_line_mid_c);
                         }
                         else
                         {
-                            singleLine.setBackgroundResource(R.drawable.music_staff_line_mid_c);
+
+                            singleLine.setBackgroundResource(R.drawable.music_staff_line);
                         }
                         chord.addView(singleLine, lineLayoutParams);
                     }
@@ -340,6 +357,11 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
             if (mPrevComps.size() <= 0) {
                 mUndoBtn.setEnabled(false);
             }
+        }
+
+        else if (((String) v.getTag()).contains(DONE_BTN_TAG))
+        {
+            finish();
         }
     }
 

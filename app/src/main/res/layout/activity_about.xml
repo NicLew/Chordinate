@@ -48,8 +48,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/about_contact_team_name_2"
             android:id="@+id/textViewContactName2"
-            android:layout_below="@+id/textViewContactName1"
-            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textViewContactEmail1"
             android:layout_alignParentStart="true" />
 
         <TextView
@@ -58,9 +57,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/about_git_title"
             android:id="@+id/textViewGitTitle"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/textViewContactName2"
-            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textViewContactEmail2"
             android:layout_alignParentStart="true" />
 
         <TextView
@@ -81,9 +78,8 @@
             android:text="@string/about_contact_team_email_1"
             android:id="@+id/textViewContactEmail1"
             android:autoText="false"
-            android:layout_above="@+id/textViewContactEmail2"
-            android:layout_alignLeft="@+id/textViewContactEmail2"
-            android:layout_alignStart="@+id/textViewContactEmail2" />
+            android:layout_below="@+id/textViewContactName1"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -91,9 +87,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/about_contact_team_email_2"
             android:id="@+id/textViewContactEmail2"
-            android:layout_alignTop="@+id/textViewContactName2"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_below="@+id/textViewContactName2"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
