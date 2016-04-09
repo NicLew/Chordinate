@@ -17,44 +17,73 @@ MORE!!!! An Android app that assists composers by algorithmically composing chor
 
 4. Import the project into Android Studio ([tutorial](https://www.jetbrains.com/help/idea/2016.1/importing-project-from-gradle-model.html?origin=old_help)).
 
-5. Connect an Android device to your computer through USB([more info](http://developer.android.com/tools/device.html)). NOTE: This project does not run using the Android Studio Emulator because it does not support sound input and output.
+5. Connect an Android device to your computer through USB ([more info](http://developer.android.com/tools/device.html)). NOTE: The emulator may crash with this project since it does not support sound input.
 
 6. Build and run the project from Android Studio ([more info](http://developer.android.com/tools/building/building-studio.html)).
 
 ### How to Contribute
 
-fkajdfkdjf
+We would be happy to have you contribute to our project!
 
 ##### Bug Reporting
 
-sdkjfkdsjf
+If you wish to file a bug report, please open a GitHub Issue marked as **bug**. Here are the things you should include:
+* A clear description of the bug you found
+* Screenshots where applicable and possible
+* Clear instructions on how to replicate the bug, if known
+* Where in the code you think the bug may be originating
+* If the bug causes the app to crash, show logs
+
+If you wish to fix a bug, choose from the list of GitHub Issues marked as bugs, assign yourself, fix it, and follow instructions for making a pull request.
 
 ##### Adding a Feature
 
-askdjfdkjf
+If you wish to add a new feature to the app, these are the steps you should take:
+
+1. Choose from the list of additional features we have listed or imagine your own!
+
+2. If you choose from our list of features, look up the enhancement in GitHub Issues. Assign yourself that issue to show that it is claimed. If you still have questions, contact us at chordinate.help@gmail.com.
+
+4. If your feature adds any new media (such as new images or sounds), make sure they are under compatible licenses.
+
+List of additional features we would like:
+* Interpreting pitch through the microphone to allow for easier input of the melody
+* Implementing rhythm
+* Adding more scale and chord types to the composition algorithm
+* MIDI file output
+* PDF sheet music output
+* Support for all Android devices
 
 ##### Making a Pull Request
 
-aslkdjfdl
+Once you have made changes (by either fixing a bug or adding a feature), create a pull request. For your pull request to be merged, follow these guidelines:
+* A pull request from outside contributor must have at least two positive reviews.
+* A pull request must be merged by one of the project leads.
+* Please follow good Java coding standards (https://google.github.io/styleguide/javaguide.html). Your pull request will not be merged without proper documentation. 
+* Please test your changes throughly.
+
+If you follow all of these guidelines, you will be a successful contributor to our project!
 
 ### Goals
 
-slkdjfkdsfj
+??????????????????????
 
 ### Contact Information
 
-aksdjfsdkjfk
+If you have any questions, email us at chordinate.help@gmail.com or comment on the relevant issue or pull request.
 
 ### System Information
 
-Windows 7
-Android Studios version ???
-Developed for Nexus 5 ???
+Developed in Windows 7
+Developed in Android Studio 1.4 Preview 3
+Tested on the Samsung Galaxy S5
 
 ### Documentation
 
-asdklfjkdfj
+All documentation is within the code.
 
 ### License Information
 
-askljdfdksjf
+This software is under [The MIT License (MIT)](https://opensource.org/licenses/MIT).
+
+All images and sounds used in this software are licensed under the [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](http://creativecommons.org/licenses/by-nc/4.0/).
