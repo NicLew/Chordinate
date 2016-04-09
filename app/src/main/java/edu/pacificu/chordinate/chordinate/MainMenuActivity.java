@@ -1,6 +1,5 @@
 package edu.pacificu.chordinate.chordinate;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -199,5 +198,18 @@ public class MainMenuActivity extends ChordinateActivity {
         initInstrBtn();
         initSettingsBtn();
         initAboutBtn();
+    }
+
+    /**
+     * Overrides onBackPressed to close the app when the back button is pressed, instead of
+     * returning to the load screen activity
+     */
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent (Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

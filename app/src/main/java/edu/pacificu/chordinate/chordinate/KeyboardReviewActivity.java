@@ -29,6 +29,7 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
     private static final int START_INDEX = 0;
 
     private int mNumComps;
+    private boolean bChordinated = false;
     private ContextWrapper mContextWrapper = this;
 
     /**
@@ -125,6 +126,7 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                             String key = (String) keysSpin.getSelectedItem();
                             String scaleType = (String) scaleSpin.getSelectedItem();
 
+                            bChordinated = true;
                             chooseOpts.dismiss();
 
                             String composition = Algorithm.compose(mRecordedSong, key, scaleType, START_INDEX);
@@ -177,5 +179,20 @@ public class KeyboardReviewActivity extends KeyboardActivity implements View.OnT
                 CompositionViewerActivity.class);
         reviewCompIntent.putExtras(compBundle);
         startActivity(reviewCompIntent);
+    }
+
+    /**
+     * Overrides onResume. If this activity is resuming after entering the composition viewer,
+     * immediately finish this activity.
+     */
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        if (bChordinated)
+        {
+            finish();
+        }
     }
 }

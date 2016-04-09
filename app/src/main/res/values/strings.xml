@@ -17,8 +17,8 @@
 
     <string name="about_version_text">Version 1.0A</string>
     <string name="about_contact_title_text">Development Team</string>
-    <string name="about_contact_team_name_1">Jacob Lundgren</string>
-    <string name="about_contact_team_name_2">Nicole Lewey</string>
+    <string name="about_contact_team_name_1">Jacob Lundgren:</string>
+    <string name="about_contact_team_name_2">Nicole Lewey:</string>
     <string name="about_contact_team_email_1">lund3481@pacificu.edu</string>
     <string name="about_contact_team_email_2">lewe4441@pacificu.edu </string>
     <string name="about_git_title">GitHub</string>
@@ -43,9 +43,10 @@
     <string name="record_rec_button_stop">Stop</string>
     <string name="record_playback_button_play"></string>
     <string name="record_save_button"></string>
-    <string name="record_delete_button"></string>
+    <string name="record_delete_button">DELETE</string>
+    <string name="record_view_dialog_button">VIEW/\nEDIT</string>
     <string name="record_exit_dialog_button">Close</string>
-    <string name="record_save_dialog_button"></string>
+    <string name="record_save_dialog_button">SAVE\nNAME</string>
     <string name="record_list_title">Saved Recordings</string>
     <string name="record_list_item_name_default">Name</string>
     <string name="record_list_item_date_default">Date</string>

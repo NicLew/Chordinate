@@ -28,6 +28,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private static final String NOTE_TAG = "Note";
     private static final String UNDO_BTN_TAG = "undo";
     private static final String MODE_BTN_TAG = "editMode";
+    private static final String DONE_BTN_TAG = "done";
     private static final String COMP_SAVED_MSG = "Composition Saved";
     private static final String BTN_TXT_EDIT = "EDIT MODE";
     private static final String BTN_TXT_PLAY = "EXIT\nEDIT MODE";
@@ -37,6 +38,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private SavedComposition mComposition;
     private Button mEditModeBtn;
     private Button mUndoBtn;
+    private Button mDoneBtn;
     private boolean mbIsEditMode;
     private boolean mbEnableEditMode;
     private ContextWrapper mContextWrapper;
@@ -51,9 +53,12 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private static final int SHARP_WIDTH = 30;
     private static final int NOTE_LEFT_MARGIN = 30;
     private static final int SHARP_LEFT_MARGIN = 0;
-    private static final int NOTE_TOP_MARGIN_OFFSET = 90;
-    private static final int SHARP_TOP_MARGIN_OFFSET = 100;
 
+    /**
+     * Sets the content view, creates buttons, and initiates creation of composition view
+     *
+     * @param   savedInstanceState  The instance state to be created.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +82,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         mEditModeBtn = (Button) findViewById(R.id.editModeButton);
         if (!mbEnableEditMode) {
             mEditModeBtn.setEnabled(false);
+            mEditModeBtn.setVisibility(View.GONE);
         }
         else {
             mEditModeBtn.setOnClickListener(this);
@@ -84,15 +90,30 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         }
 
         mUndoBtn = (Button) findViewById(R.id.undoButton);
-        mUndoBtn.setOnClickListener(this);
-        mUndoBtn.setTag(UNDO_BTN_TAG);
-        if (mPrevComps.size() <= 0) {
+        if (!mbEnableEditMode)
+        {
             mUndoBtn.setEnabled(false);
+            mUndoBtn.setVisibility(View.GONE);
         }
+
+        else {
+            mUndoBtn.setOnClickListener(this);
+            mUndoBtn.setTag(UNDO_BTN_TAG);
+            if (mPrevComps.size() <= 0) {
+                mUndoBtn.setEnabled(false);
+            }
+        }
+
+        mDoneBtn = (Button) findViewById (R.id.doneButton);
+        mDoneBtn.setOnClickListener(this);
+        mDoneBtn.setTag(DONE_BTN_TAG);
 
         displayNotes();
     }
-
+    /**
+     * Determines position of each line and note on the grand scale. Creates each chord in its
+     * own layout, adds each chord to the parent layout, and sets all the onClickListeners
+     */
     private void displayNotes () { // TODO: Fix magic constants in this function
         char current;
         int index = 0, keyNum = 0, octNum, chordNum, noteNum, noteGap, lineGap;
@@ -102,14 +123,17 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         View view;
         RelativeLayout chord = (RelativeLayout) this.findViewById(R.id.childLayout);
 
-        mParentLayout.removeViews(2, mParentLayout.getChildCount() - 2);// TODO: fix magic const
+        mParentLayout.removeViews(1, mParentLayout.getChildCount() - 1);// TODO: fix magic const
 
+        // Determine size of gaps between notes, in pixels
         Point screenSize = new Point();
         Display display = getWindowManager().getDefaultDisplay();
         display.getSize(screenSize);
         noteGap = (screenSize.y - NOTE_HEIGHT) / NUM_OF_NOTE_POS;
         lineGap = (screenSize.y - NOTE_HEIGHT) / NUM_OF_LINE_POS;
 
+        // Parse the composition, and determine number of gaps between a given note and the top
+        // of the screen. Assigns them to an array for the display
         if (mRecordedSong.length() > 1)
         {
             do {
@@ -118,25 +142,25 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 switch (current)
                 {
                     case 'C':
-                        keyNum = 1;
+                        keyNum = 7;
                         break;
                     case 'D':
-                        keyNum = 2;
+                        keyNum = 6;
                         break;
                     case 'E':
-                        keyNum = 3;
+                        keyNum = 5;
                         break;
                     case 'F':
                         keyNum = 4;
                         break;
                     case 'G':
-                        keyNum = 5;
+                        keyNum = 3;
                         break;
                     case 'A':
-                        keyNum = 6;
+                        keyNum = 2;
                         break;
                     case 'B':
-                        keyNum = 7;
+                        keyNum = 1;
                         break;
                     case '#':
                         keyNum = -keyNum;
@@ -148,13 +172,13 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
 
                 if (Character.isDigit(current))
                 {
-                    octNum = current - '1';
+                    octNum = 6 - (current - '1');
                     if (keyNum > 0) {
-                        compNotes.add(keyNum + (octNum * 7));
+                        compNotes.add((keyNum + (octNum * 7)) - 3);
                     }
                     else
                     {
-                        compNotes.add (-(Math.abs(keyNum) + (octNum * 7)));
+                        compNotes.add (-((Math.abs(keyNum) + (octNum * 7)) - 3));
                     }
                 }
 
@@ -163,6 +187,9 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         }
         chordNum = 0;
         noteNum = 0;
+
+        // With the array of distances for each notes, create each view with each chord and set
+        // each chord's onClickListener
         for (int i = 0; i < compNotes.size(); i ++)
         {
             if ((int) compNotes.get(i) != END_CHORD) {
@@ -177,12 +204,14 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                                 (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                         ImageView singleLine = new ImageView(chord.getContext());
                         lineLayoutParams.setMargins(0,(lineGap * j) + 7, 0, 0);
-                        if (j != (NUM_OF_LINE_POS / 2)) {
-                            singleLine.setBackgroundResource(R.drawable.music_staff_line);
+                        if (j == (NUM_OF_LINE_POS / 2) || j < ((NUM_OF_LINE_POS / 2) - 5)
+                                || j > ((NUM_OF_LINE_POS / 2) + 5)) {
+                            singleLine.setBackgroundResource(R.drawable.music_staff_line_mid_c);
                         }
                         else
                         {
-                            singleLine.setBackgroundResource(R.drawable.music_staff_line_mid_c);
+
+                            singleLine.setBackgroundResource(R.drawable.music_staff_line);
                         }
                         chord.addView(singleLine, lineLayoutParams);
                     }
@@ -193,7 +222,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
 
                 noteLayoutParams.width = NOTE_WIDTH;
                 noteLayoutParams.height = NOTE_HEIGHT;
-                noteLayoutParams.setMargins(NOTE_LEFT_MARGIN, (screenSize.y - NOTE_TOP_MARGIN_OFFSET) -
+                noteLayoutParams.setMargins(NOTE_LEFT_MARGIN,
                         (noteGap * (Math.abs((int) compNotes.get(i)) - 1)), 0, 0);
 
                 if ((int) compNotes.get(i) < 0)
@@ -204,8 +233,8 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
 
                     sharpLayoutParams.width = SHARP_WIDTH;
                     sharpLayoutParams.height = SHARP_HEIGHT;
-                    sharpLayoutParams.setMargins(SHARP_LEFT_MARGIN, (screenSize.y - SHARP_TOP_MARGIN_OFFSET) -
-                            (noteGap * (Math.abs((int) compNotes.get(i)) - 1)), 0, 0);
+                    sharpLayoutParams.setMargins(SHARP_LEFT_MARGIN,
+                            (noteGap * (Math.abs((int) compNotes.get(i)) - 1)) - 10, 0, 0);
                     sharp.setTag("Note" + chordNum);
                     sharp.setOnClickListener(this);
                     sharp.setBackgroundResource(R.drawable.sharp);
@@ -237,6 +266,9 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         }
     }
 
+    /**
+     * Overrides onDestroy to stop KeyPlayback
+     */
     @Override
     protected void onDestroy()
     {
@@ -245,6 +277,9 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         this.getTheKPlayback().stopPlayback();
     }
 
+    /**
+     * Overrides onPause to stop KeyPlayback
+     */
     @Override
     protected void onPause()
     {
@@ -253,6 +288,9 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         this.getTheKPlayback().stopPlayback();
     }
 
+    /**
+     * Overrides onStop to stop KeyPlayback
+     */
     @Override
     protected void onStop()
     {
@@ -261,13 +299,20 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         this.getTheKPlayback().stopPlayback();
     }
 
+    /**
+     * Sets functions for all buttons' onClick
+     *
+     * @param v the view being clicked
+     */
     @Override
     public void onClick (View v)
     {
+        // onClick for a Chord in the viewer
         if (((String) v.getTag()).contains(CHORD_TAG))
         {
             final int startIndex = getStringIndex(mRecordedSong, Integer.parseInt(((String)v.getTag()).substring(CHORD_NUM_INDEX)));
 
+            // Brings up editor dialog box, if in Edit Mode
             if (mbIsEditMode) {
                 final Dialog chooseOpts = new Dialog(this);
                 chooseOpts.setContentView(R.layout.choose_comp_options);
@@ -310,10 +355,12 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                     }
                 });
             }
+            // Otherwise, start KeyPlayback from selected Chord
             else {
                 this.getTheKPlayback().playComposition (mRecordedSong, startIndex);
             }
         }
+        // onClick for Edit Mode Button
         else if (((String) v.getTag()).contains(MODE_BTN_TAG))
         {
             if (!mbIsEditMode) {
@@ -325,6 +372,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 mEditModeBtn.setText(BTN_TXT_EDIT);
             }
         }
+        // onClick for Undo Button
         else if (((String) v.getTag()).contains(UNDO_BTN_TAG)) {
             if (mPrevComps.size() > 0) {
                 mRecordedSong = mPrevComps.get(mPrevComps.size() - 1);
@@ -340,6 +388,11 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
             if (mPrevComps.size() <= 0) {
                 mUndoBtn.setEnabled(false);
             }
+        }
+        // onClick for Done Button
+        else if (((String) v.getTag()).contains(DONE_BTN_TAG))
+        {
+            finish();
         }
     }
 

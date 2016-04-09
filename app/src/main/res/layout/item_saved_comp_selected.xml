@@ -20,11 +20,11 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/selPlaybackButton"
-        android:text="@string/record_playback_button_play"
+        android:text="@string/record_view_dialog_button"
         android:layout_alignTop="@+id/selDeleteButton"
         android:layout_alignLeft="@+id/compNameEdit"
         android:layout_alignStart="@+id/compNameEdit"
-        android:background="@drawable/play_button" />
+        android:background="@drawable/view_button" />
 
     <Button
         android:layout_width="80dp"
@@ -35,7 +35,8 @@
         android:layout_below="@+id/compNameEdit"
         android:layout_alignRight="@+id/compNameEdit"
         android:layout_alignEnd="@+id/compNameEdit"
-        android:background="@drawable/delete_button" />
+        android:background="@drawable/delete_button"
+        android:textColor="@color/material_grey_900" />
 
     <Button
         android:layout_width="80dp"
