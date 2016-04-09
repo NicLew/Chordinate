@@ -67,4 +67,9 @@
     <string name="choose_comp_opts_done_btn">Done</string>
     <string name="choose_comp_opts_key">Choose a key:</string>
     <string name="choose_comp_opts_scale_type">Chose a scale:</string>
+
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="change_speed_title">Change the speed of playback:</string>
+    <string name="test_speed_btn_txt">TEST</string>
+
 </resources>
