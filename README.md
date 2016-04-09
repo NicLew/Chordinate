@@ -11,11 +11,11 @@ Write description here...
 
 ## How to Contribute
 fkajdfkdjf
-### Bug Reporting
+#### Bug Reporting
 sdkjfkdsjf
-### Adding a Feature
+#### Adding a Feature
 askdjfdkjf
-### Making a Pull Request
+#### Making a Pull Request
 
 ## Goals
 slkdjfkdsfj
