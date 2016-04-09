@@ -1,10 +1,9 @@
 Chordinate
-An Android app that assists composers by algorithmically composing chords beneath a given melody.
-=================================================================================================
+==========
 
 ### Description
 
-Write description here...
+MORE!!!! An Android app that assists composers by algorithmically composing chords beneath a given melody.
 
 ### How to Build and Run the Code
 
