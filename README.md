@@ -12,7 +12,8 @@ MORE!!!! An Android app that assists composers by algorithmically composing chor
 2. Fork the Chordinate repository to your personal GitHub account.
 
 3. Clone your personal copy of Chordinate to your computer, replacing USERNAME with your GitHub user name:
-    ```git clone git@github.com:USERNAME/Chordinate.git```
+
+    `git clone git@github.com:USERNAME/Chordinate.git`
 
 4. Import the project into Android Studio ([tutorial](https://www.jetbrains.com/help/idea/2016.1/importing-project-from-gradle-model.html?origin=old_help)).
 
