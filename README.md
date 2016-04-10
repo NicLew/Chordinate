@@ -74,9 +74,9 @@ If you have any questions, email us at chordinate.help@gmail.com or comment on t
 
 ### System Information
 
-Developed in Windows 7
-Developed in Android Studio 1.4 Preview 3
-Tested on the Samsung Galaxy S5
+* Developed in Windows 7
+* Developed in Android Studio 1.4 Preview 3
+* Tested on the Samsung Galaxy S5
 
 ### Documentation
 
