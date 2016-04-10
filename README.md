@@ -68,6 +68,10 @@ If you follow all of these guidelines, you will be a successful contributor to o
 
 If you have any questions, email us at chordinate.help@gmail.com or comment on the relevant issue or pull request.
 
+### Original Authors
+
+Nicole Lewey (NicLew) and Jacob Lundgren (TwoSeconds) are senior computer science majors at Pacific University.
+
 ### System Information
 
 * Developed in Windows 7
@@ -77,10 +81,6 @@ If you have any questions, email us at chordinate.help@gmail.com or comment on t
 ### Documentation
 
 All documentation is within the code.
-
-### Original Authors
-
-Nicole Lewey (NicLew) and Jacob Lundgren (TwoSeconds) are senior computer science majors at Pacific University.
 
 ### License Information
 
