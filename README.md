@@ -1,4 +1,4 @@
-![alt text](https://github.com/NicLew/Chordinate/blob/master/app/src/main/res/mipmap-mdpi/ic_launcher.png)Chordinate
+Chordinate                                                                                                              ![alt text](https://github.com/NicLew/Chordinate/blob/master/app/src/main/res/mipmap-mdpi/ic_launcher.png)
 ==========
 
 ### Description
