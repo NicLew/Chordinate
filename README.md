@@ -70,7 +70,7 @@ If you have any questions, email us at chordinate.help@gmail.com or comment on t
 
 ### Original Authors
 
-Nicole Lewey (NicLew) and Jacob Lundgren (TwoSeconds) are senior computer science majors at Pacific University.
+[Nicole Lewey](https://www.linkedin.com/in/nicolelewey) (NicLew) and [Jacob Lundgren](https://www.linkedin.com/in/jacob-lundgren-22771a86) (TwoSeconds) are computer science majors from Pacific University and developed this project throughout their senior year.
 
 ### System Information
 
