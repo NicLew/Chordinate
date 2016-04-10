@@ -1,4 +1,4 @@
-Chordinate                                                                                                              ![alt text](https://github.com/NicLew/Chordinate/blob/master/app/src/main/res/mipmap-mdpi/ic_launcher.png)
+Chordinate
 ==========
 
 ### Description
@@ -83,3 +83,5 @@ All documentation is within the code.
 This software is under [The MIT License (MIT)](https://opensource.org/licenses/MIT).
 
 All images and sounds used in this software are licensed under the [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](http://creativecommons.org/licenses/by-nc/4.0/).
+
+![alt text](https://github.com/NicLew/Chordinate/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
