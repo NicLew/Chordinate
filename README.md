@@ -3,7 +3,7 @@ Chordinate
 
 ### Description
 
-MORE!!!! An Android app that assists composers by algorithmically composing chords beneath a given melody.
+Chordinate is an Android application that aids music composers by accepting a melody played on an in-app keyboard and algorithmically composing chords to accompany that melody. Our app may also be used to record and save musical ideas via the microphone. The goal of this project is to develop a useful learning tool for amateur composers and a convenient, portable tool for experienced composers. Chordinate is implemented in Java using the Android SDK and is currently being tested on a Samsung Galaxy S5 smartphone. Chordinate’s algorithm takes your melody and finds appropriate chords and progressions based on a key, a major or minor scale, and the basic rules of “Bach chorale” music composition. We have successfully created an application that transforms your melody into a cohesive composition. Our hope is that Chordinate will inspire new musical ideas and facilitate those ideas by recording and building upon them whenever and wherever inspiration strikes.
 
 ### How to Build and Run the Code
 
@@ -63,10 +63,6 @@ Once you have made changes (by either fixing a bug or adding a feature), create 
 * Please test your changes throughly.
 
 If you follow all of these guidelines, you will be a successful contributor to our project!
-
-### Goals
-
-??????????????????????
 
 ### Contact Information
 
