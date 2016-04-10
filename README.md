@@ -42,7 +42,7 @@ If you wish to add a new feature to the app, these are the steps you should take
 
 1. Choose from the list of additional features we have listed or imagine your own!
 
-2. If you choose from our list of features, look up the enhancement in GitHub Issues. Assign yourself that issue to show that it is claimed. If you still have questions, contact us at chordinate.help@gmail.com.
+2. If you choose from our list of features, look up the **enhancement** tag in GitHub Issues. Assign yourself that issue to show that it is claimed. If you still have questions, contact us at chordinate.help@gmail.com.
 
 4. If your feature adds any new media (such as new images or sounds), make sure they are under compatible licenses.
 
