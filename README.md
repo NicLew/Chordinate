@@ -78,6 +78,10 @@ If you have any questions, email us at chordinate.help@gmail.com or comment on t
 
 All documentation is within the code.
 
+### Original Authors
+
+Nicole Lewey (NicLew) and Jacob Lundgren (TwoSeconds) are senior computer science majors at Pacific University.
+
 ### License Information
 
 This software is under [The MIT License (MIT)](https://opensource.org/licenses/MIT).
