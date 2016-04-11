@@ -1,12 +1,200 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="edu.pacificu.chordinate.chordinate.InstructionsActivity">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollViewAbout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    android:scrollIndicators="right">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="edu.pacificu.chordinate.chordinate.InstructionsActivity">
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:text="@string/title_activity_instructions"
+            android:id="@+id/instrTitle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:layout_marginBottom="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/instr_watch_video_title"
+            android:id="@+id/videoTitle"
+            android:layout_below="@+id/instrTitle"
+            android:layout_alignParentStart="true"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/instr_watch_video_txt"
+            android:id="@+id/videoLink"
+            android:layout_below="@+id/videoTitle"
+            android:layout_alignParentStart="true"
+            android:autoLink="web" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/instr_create_comp_title"
+            android:id="@+id/createCompTitle"
+            android:layout_below="@+id/videoLink"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/instr_create_comp_txt"
+            android:id="@+id/createCompTxt"
+            android:layout_below="@+id/createCompTitle"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/instr_edit_comp_title"
+            android:id="@+id/editCompTitle"
+            android:layout_below="@+id/createCompTxt"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/instr_edit_comp_txt"
+            android:id="@+id/editCompTxt"
+            android:layout_below="@+id/editCompTitle"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/instr_save_melody_title"
+            android:id="@+id/saveMelodyTitle"
+            android:layout_below="@+id/editCompTxt"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/instr_save_melody_txt"
+            android:id="@+id/saveMelodyTxt"
+            android:layout_below="@+id/saveMelodyTitle"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/instr_record_idea_title"
+            android:id="@+id/recordIdeaTitle"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/saveMelodyTxt"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/instr_record_idea_txt"
+            android:id="@+id/recordIdeaTxt"
+            android:layout_below="@+id/recordIdeaTitle"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/instr_change_speed_title"
+            android:id="@+id/changeSpeedTitle"
+            android:layout_below="@+id/recordIdeaTxt"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/instr_change_speed_txt"
+            android:id="@+id/changeSpeedTxt"
+            android:layout_below="@+id/changeSpeedTitle"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/instr_report_bug_title"
+            android:id="@+id/reportBugTitle"
+            android:layout_below="@+id/changeSpeedTxt"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/instr_report_bug_txt_1"
+            android:id="@+id/reportBugTxt1"
+            android:layout_below="@+id/reportBugTitle"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/instr_report_bug_txt_2"
+            android:id="@+id/reportBugTxt2Link"
+            android:autoLink="web"
+            android:layout_below="@+id/reportBugTxt1"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/instr_report_bug_txt_3"
+            android:id="@+id/reportBugTxt3"
+            android:layout_below="@+id/reportBugTxt2Link"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/instr_report_bug_txt_4"
+            android:id="@+id/reportBugTxt4"
+            android:autoLink="email"
+            android:layout_below="@+id/reportBugTxt3"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+</ScrollView>
