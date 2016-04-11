@@ -1,11 +1,12 @@
 package edu.pacificu.chordinate.chordinate;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 
-public class MainMenuActivity extends ChordinateActivity {
+public class MainMenuActivity extends AppCompatActivity {
     Button mKeyboardButton;
     Button mRecordButton;
     Button mCompsButton;
@@ -69,8 +70,8 @@ public class MainMenuActivity extends ChordinateActivity {
      */
     public void onInstrButtonClick(View view) {
         view.setBackgroundResource(R.drawable.middle_button3_press);
-        //Intent myIntent = new Intent(MainMenuActivity.this, NewActivity.class);
-        //startActivity(myIntent);
+        Intent myIntent = new Intent(MainMenuActivity.this, InstructionsActivity.class);
+        startActivity(myIntent);
     }
 
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +19,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class CompositionsActivity extends ChordinateActivity {
+public class CompositionsActivity extends AppCompatActivity {
     private static final String SAVED_COMP_EXT = ".chd";
 
     private Context mContext = this;

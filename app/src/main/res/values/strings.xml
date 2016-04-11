@@ -73,4 +73,6 @@
     <string name="change_speed_title">Change the speed of playback:</string>
     <string name="test_speed_btn_txt">TEST</string>
 
+    <string name="title_activity_instructions">InstructionsActivity</string>
+
 </resources>

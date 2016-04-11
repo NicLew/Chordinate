@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class RecordActivity extends ChordinateActivity {
+public class RecordActivity extends AppCompatActivity {
     private static final int DFLT_INDEX = -1;
     private static final String SAVED_REC_EXT = ".sr";
     public static final String MY_PREFS_NAME = "MyRecordPrefs";
