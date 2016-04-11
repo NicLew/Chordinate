@@ -73,6 +73,42 @@
     <string name="change_speed_title">Change the speed of playback:</string>
     <string name="test_speed_btn_txt">TEST</string>
 
-    <string name="title_activity_instructions">InstructionsActivity</string>
+    <string name="title_activity_instructions">Instructions</string>
+    <string name="instr_watch_video_title">Watch a demo video</string>
+    <string name="instr_create_comp_title">Create a composition</string>
+    <string name="instr_edit_comp_title">Edit a composition</string>
+    <string name="instr_save_melody_title">Save a melody</string>
+    <string name="instr_record_idea_title">Record an idea</string>
+    <string name="instr_change_speed_title">Change the speed of playback</string>
+    <string name="instr_report_bug_title">Report a bug</string>
+
+    <string name="instr_watch_video_txt">https://youtu.be/DC6f5IB5Pxw</string>
+    <string name="instr_report_bug_txt_1">Fill out a GitHub issue at </string>
+    <string name="instr_report_bug_txt_2">https://github.com/NicLew/Chordinate/issues</string>
+    <string name="instr_report_bug_txt_3">or email us at </string>
+    <string name="instr_report_bug_txt_4">chordinate.help@gmail.com</string>
+    <string name="instr_change_speed_txt">From the main menu, go to Settings. Use the slider to
+        change the speed of playback. You can test how the new speed will sound by pressing the
+        TEST button.</string>
+    <string name="instr_record_idea_txt">From the main menu, go to Record. You can see your list
+        of saved recordings. Press the RECORD button. When you have finished, press STOP. You
+        may then play, save, or delete that recording. Once you have saved the recording, you
+        may select it from the list to edit the name.</string>
+    <string name="instr_save_melody_txt">From the main menu, go to Keyboard. Choose an octave
+        and press RECORD. When you have finished, press STOP. This will take you to a review
+        page. From here you can view the melody, redo the melody, or save the melody without
+        creating a composition by pressing the SAVE MELODY button.</string>
+    <string name="instr_edit_comp_txt">From the main menu, go to Saved Compositions. Select the
+        composition you wish to edit from the list. Press VIEW/EDIT. Press EDIT MODE. Select the
+        chord you wish to begin editing from. Select the key and scale type you want. Press DONE.
+        Chordinate’s algorithm will run from that chord until the end of the composition. All
+        changes are immediately and automatically saved. If you wish to undo a change, press the
+        UNDO button. However, once you leave the page, all edits are final.</string>
+    <string name="instr_create_comp_txt">From the main menu, go to Keyboard. Choose an octave and
+        press RECORD. When you have finished, press STOP. This will take you to a review page.
+        From here you can view the melody, redo the melody, or save the melody without creating a
+        composition by pressing the SAVE MELODY button. Press the CHORDINATE button. You have
+        successfully created and saved a composition! You can now view or edit this composition
+        from the Saved Compositions page.</string>
 
 </resources>
