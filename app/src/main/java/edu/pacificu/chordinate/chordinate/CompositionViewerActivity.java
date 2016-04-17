@@ -28,6 +28,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private static final String NOTE_TAG = "Note";
     private static final String UNDO_BTN_TAG = "undo";
     private static final String MODE_BTN_TAG = "editMode";
+    private static final String STOP_BTN_TAG = "stop";
     private static final String DONE_BTN_TAG = "done";
     private static final String COMP_SAVED_MSG = "Composition Saved";
     private static final String BTN_TXT_EDIT = "EDIT MODE";
@@ -38,6 +39,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private SavedComposition mComposition;
     private Button mEditModeBtn;
     private Button mUndoBtn;
+    private Button mStopBtn;
     private Button mDoneBtn;
     private boolean mbIsEditMode;
     private boolean mbEnableEditMode;
@@ -103,6 +105,10 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 mUndoBtn.setEnabled(false);
             }
         }
+
+        mStopBtn = (Button) findViewById(R.id.stop_comp);
+        mStopBtn.setOnClickListener(this);
+        mStopBtn.setTag(STOP_BTN_TAG);
 
         mDoneBtn = (Button) findViewById (R.id.doneButton);
         mDoneBtn.setOnClickListener(this);
@@ -357,6 +363,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
             }
             // Otherwise, start KeyPlayback from selected Chord
             else {
+                this.getTheKPlayback().stopPlayback();
                 this.getTheKPlayback().playComposition (mRecordedSong, startIndex);
             }
         }
@@ -389,6 +396,13 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 mUndoBtn.setEnabled(false);
             }
         }
+
+        // onClick for Stop Button
+        else if (((String) v.getTag()).contains(STOP_BTN_TAG))
+        {
+            this.getTheKPlayback().stopPlayback();
+        }
+
         // onClick for Done Button
         else if (((String) v.getTag()).contains(DONE_BTN_TAG))
         {
