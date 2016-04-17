@@ -69,6 +69,15 @@ public class RecordActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        mInput.stopPlaybackOnExit();
+
+        if (mbIsRecording) {
+            mInput.stopRecording(mCurrent);
+            mbIsRecording = false;
+            mRecordButton.setBackgroundResource(R.drawable.record_button);
+            mRecordButton.setText(R.string.record_rec_button_rec);
+        }
+
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
         editor.putInt("numRecs", mNumRecs);
         editor.commit();
@@ -129,12 +138,10 @@ public class RecordActivity extends AppCompatActivity {
      * Performs the proper actions when a playback button is pressed. Calls the playback
      * function of MicInput.
      *
-     * @param playButton The playback button that was pressed.
      * @param fileName   The name of the file to be played from.
      */
-    private void onPlayButtonClick(Button playButton, String fileName) {
-
-        mInput.playback(playButton, fileName);
+    private void onPlayButtonClick(String fileName) {
+        mInput.playback(fileName);
     }
 
     /**
@@ -142,6 +149,8 @@ public class RecordActivity extends AppCompatActivity {
      */
     private void onSaveButtonClick() {
         mCurrent.writeItemToFile(mContextWrapper);
+
+        mInput.stopPlaybackOnExit();
 
         mSavedFiles.add(mCurrent);
         ++mNumRecs;
@@ -163,6 +172,8 @@ public class RecordActivity extends AppCompatActivity {
      * @param index  The position of the recording in the saved recording list to be deleted.
      */
     private void onDeleteButtonClick(Dialog dialog, int index) {
+
+        mInput.stopPlaybackOnExit();
 
         if (null != dialog) {
             File infoFile = new File(getFilesDir(), mSavedFiles.get(index).getFileName() + SAVED_REC_EXT);
@@ -232,9 +243,9 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (null != fileName) {
-                    RecordActivity.this.onPlayButtonClick(playButton, fileName);
+                    RecordActivity.this.onPlayButtonClick(fileName);
                 } else {
-                    RecordActivity.this.onPlayButtonClick(playButton, mCurrent.getFilePath());
+                    RecordActivity.this.onPlayButtonClick(mCurrent.getFilePath());
                 }
             }
         });
@@ -312,6 +323,7 @@ public class RecordActivity extends AppCompatActivity {
         exitDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mInput.stopPlaybackOnExit();
                 dialog.dismiss();
             }
         });
@@ -334,6 +346,7 @@ public class RecordActivity extends AppCompatActivity {
                 listItem.setName(editRecName.getText().toString());
                 mAdapter.notifyDataSetChanged();
                 listItem.writeItemToFile(mContextWrapper);
+                mInput.stopPlaybackOnExit();
                 dialog.dismiss();
             }
         });
@@ -359,6 +372,16 @@ public class RecordActivity extends AppCompatActivity {
              */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long unused) {
+
+                if (mbIsRecording) {
+                    mInput.stopRecording(mCurrent);
+                    mbIsRecording = false;
+                    mRecordButton.setBackgroundResource(R.drawable.record_button);
+                    mRecordButton.setText(R.string.record_rec_button_rec);
+                }
+
+                mInput.stopPlaybackOnExit();
+
                 view.setSelected(true);
 
                 final SavedRecording listItem;
