@@ -111,6 +111,7 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
 
         OctSpinner = (Spinner) findViewById(R.id.spinner);
         OctSpinner.setAdapter(stringArrayAdapter);
+        OctSpinner.setSelection(3);
 
         PlayedNote = (TextView) findViewById(R.id.textView);
 
