@@ -207,6 +207,24 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         bassClef.setBackgroundResource(R.drawable.bass_clef);
         chord.addView(trebleClef, trebleParams);
         chord.addView(bassClef, bassParams);
+
+        for (int i = 0; i < NUM_OF_LINE_POS; i ++)
+        {
+            RelativeLayout.LayoutParams lineLayoutParams = new RelativeLayout.LayoutParams
+                    (150, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            ImageView singleLine = new ImageView(chord.getContext());
+            lineLayoutParams.setMargins(0,(lineGap * i) + 7, 0, 0);
+            if (i == (NUM_OF_LINE_POS / 2) || i < ((NUM_OF_LINE_POS / 2) - 5)
+                    || i > ((NUM_OF_LINE_POS / 2) + 5)) {
+                singleLine.setBackgroundResource(R.drawable.music_staff_line_mid_c);
+            }
+            else
+            {
+
+                singleLine.setBackgroundResource(R.drawable.music_staff_line);
+            }
+            chord.addView(singleLine, lineLayoutParams);
+        }
         mParentLayout.addView(chord);
 
 
