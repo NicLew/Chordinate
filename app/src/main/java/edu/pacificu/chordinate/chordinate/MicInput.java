@@ -12,6 +12,7 @@ public class MicInput {
     private MediaPlayer mPlayer;
     private long mStartTime;
     private long mEndTime;
+    private boolean mbIsPlaying;
 
     /**
      * Constructor for MicInput.
@@ -22,10 +23,9 @@ public class MicInput {
     /**
      * Starts playback or stops playback if a playback is already in process.
      *
-     * @param playButton    The play button that was pressed.
      * @param fileName      The name of the file to be played from.
      */
-    public void playback (Button playButton, String fileName) {
+    public void playback (String fileName) {
 
         mPlayer = new MediaPlayer();
 
@@ -37,6 +37,7 @@ public class MicInput {
         }
 
         mPlayer.start();
+        mbIsPlaying = true;
 
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -44,6 +45,17 @@ public class MicInput {
                 stopPlayback();
             }
         });
+    }
+
+    /**
+     * Checks if playback is in progress, and if so, stops playback. Used mostly
+     * when user is exiting a dialog or activity or moving on to another task before
+     * playback has finished.
+     */
+    public void stopPlaybackOnExit () {
+        if (mbIsPlaying) {
+            stopPlayback();
+        }
     }
 
     /**
@@ -86,8 +98,9 @@ public class MicInput {
     /**
      * Stops playback and resets the media player.
      */
-    private void stopPlayback () {
+    public void stopPlayback () {
         mPlayer.release();
         mPlayer = null;
+        mbIsPlaying = false;
     }
 }
