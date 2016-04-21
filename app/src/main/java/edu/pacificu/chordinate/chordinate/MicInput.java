@@ -42,7 +42,7 @@ public class MicInput {
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer player) {
-                stopPlayback();
+                stopPlaybackOnExit();
             }
         });
     }
@@ -87,12 +87,16 @@ public class MicInput {
      * @param current The recording to stop.
      */
     public void stopRecording (SavedRecording current) {
-        mRecorder.stop();
-        mEndTime = System.currentTimeMillis();
-        mRecorder.reset();
-        mRecorder.release();
-        mRecorder = null;
-        current.setLength(mEndTime - mStartTime);
+        try {
+            mRecorder.stop();
+            mEndTime = System.currentTimeMillis();
+            mRecorder.reset();
+            mRecorder.release();
+            mRecorder = null;
+            current.setLength(mEndTime - mStartTime);
+        } catch (RuntimeException e) {
+            Log.d("RecordPage", "Runtime exception on record page when trying to stop recorder.");
+        }
     }
 
     /**
