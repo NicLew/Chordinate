@@ -187,14 +187,15 @@ public class Chord {
      * @param key the key
      * @param note the note to base the chord choice on
      * @param scaleType the scale type
+     * @param prevChord the previous chord
      * @return the chosen chord
      */
-    public static Chord getScaleToneChord(Note key, Note note, Scale.ScaleType scaleType) {
+    public static Chord getScaleToneChord(Note key, Note note, Scale.ScaleType scaleType, Chord prevChord) {
         Vector<Chord> possibleChords;
         Chord chord;
 
         possibleChords = getAllTriads(key, scaleType);
-        chord = chooseChord(possibleChords, note);
+        chord = chooseChord(possibleChords, note, prevChord);
         chord = invertRootPosChord(chord, note);
 
         return chord;
@@ -206,9 +207,10 @@ public class Chord {
      * @param key the key
      * @param note the note to base the chord choice on
      * @param scaleType the scale type
+     * @param prevChord the previous chord
      * @return the chosen chord
      */
-    public static Chord getNonScaleToneChord(Note key, Note note, Scale.ScaleType scaleType) {
+    public static Chord getNonScaleToneChord(Note key, Note note, Scale.ScaleType scaleType, Chord prevChord) {
 
         Vector<Chord> possibleChords = new Vector<Chord>();
         Chord chord;
@@ -216,7 +218,7 @@ public class Chord {
         possibleChords.addAll(getAllBorrowedTriads(key, scaleType));
         possibleChords.addAll(getAllDomSevenths (key, scaleType));
 
-        chord = chooseChord(possibleChords, note);
+        chord = chooseChord(possibleChords, note, prevChord);
         chord = invertRootPosChord(chord, note);
 
         return chord;
@@ -227,13 +229,15 @@ public class Chord {
      *
      * @param possibleChords the vector of possible chords to choose from
      * @param note the note that a valid chord should contain
+     * @param prevChord the previous chord (null if no previous chord)
      * @return the chosen chord
      */
-    private static Chord chooseChord (Vector<Chord> possibleChords, Note note) {
-        Vector<Chord> validChords = new Vector<Chord>();
+    private static Chord chooseChord (Vector<Chord> possibleChords, Note note, Chord prevChord) {
+        Vector<Chord> validChords = new Vector<>();
+        Vector<Chord> smartChords = new Vector<>();
         Chord chord;
         Random rand = new Random();
-        int i = 0, j = 0;
+        int i = 0, j = 0, k = 0;
 
         /* Searches all possible chords and adds valid chords to a new vector. */
         while (i < possibleChords.size())
@@ -256,9 +260,24 @@ public class Chord {
             }
         }
 
-        /* From the remaining valid chords, choose one at random. */
+        /* Choose from the remaining valid chords */
         if (validChords.size() > 0) {
-            chord = validChords.get(rand.nextInt(validChords.size()));
+
+            if (null != prevChord) {
+                while (validChords.size() > 1 && k < validChords.size()) {
+                    if (prevChord.bSharesNote(validChords.get(k))) {
+                        smartChords.add(validChords.get(k));
+                    }
+                    ++k;
+                }
+            }
+
+            if (smartChords.size() > 0) {
+                chord = smartChords.get(rand.nextInt(smartChords.size()));
+            }
+            else {
+                chord = validChords.get(rand.nextInt(validChords.size()));
+            }
         }
         else
         {
@@ -660,6 +679,26 @@ public class Chord {
             default:
                 return ScaleDegree.TONIC;
         }
+    }
+
+    /**
+     * Determines if two chords share any notes.
+     *
+     * @param chord the chord to compare to
+     * @return true if the two chords share a note, otherwise false
+     */
+    private boolean bSharesNote (Chord chord) {
+        boolean bSharesNote = false;
+
+        for (int i = 0; !bSharesNote && i < this.size(); ++i) {
+            for (int j = 0; !bSharesNote && j < chord.size(); ++j) {
+                if (this.get(i).bAreNotesEqual(chord.get(j))) {
+                    bSharesNote = true;
+                }
+            }
+        }
+
+        return bSharesNote;
     }
 }
 
