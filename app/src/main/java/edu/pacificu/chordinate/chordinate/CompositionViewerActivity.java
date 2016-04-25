@@ -28,6 +28,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private static final String NOTE_TAG = "Note";
     private static final String UNDO_BTN_TAG = "undo";
     private static final String MODE_BTN_TAG = "editMode";
+    private static final String START_BTN_TAG = "start";
     private static final String STOP_BTN_TAG = "stop";
     private static final String DONE_BTN_TAG = "done";
     private static final String COMP_SAVED_MSG = "Composition Saved";
@@ -39,6 +40,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
     private SavedComposition mComposition;
     private Button mEditModeBtn;
     private Button mUndoBtn;
+    private Button mStartBtn;
     private Button mStopBtn;
     private Button mDoneBtn;
     private boolean mbIsEditMode;
@@ -105,6 +107,9 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
                 mUndoBtn.setEnabled(false);
             }
         }
+        mStartBtn = (Button) findViewById(R.id.start_comp);
+        mStartBtn.setOnClickListener(this);
+        mStartBtn.setTag(START_BTN_TAG);
 
         mStopBtn = (Button) findViewById(R.id.stop_comp);
         mStopBtn.setOnClickListener(this);
@@ -429,6 +434,13 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
             if (mPrevComps.size() <= 0) {
                 mUndoBtn.setEnabled(false);
             }
+        }
+
+        // onClick for Start Button
+        else if (((String) v.getTag()).contains(START_BTN_TAG))
+        {
+            this.getTheKPlayback().stopPlayback();
+            this.getTheKPlayback().playComposition (mRecordedSong, 0);
         }
 
         // onClick for Stop Button

@@ -1,7 +1,6 @@
 package edu.pacificu.chordinate.chordinate.algorithm;
 
 import android.util.Log;
-
 import java.util.Vector;
 
 /**
@@ -12,8 +11,8 @@ public class Algorithm {
     private static String mMelodyStr;
     private static Scale.ScaleType mScaleType;
     private static Note mKey;
-    private static Vector<Note> mMelody = new Vector<Note>();
-    private static Vector<Chord> mChords = new Vector<Chord>();
+    private static Vector<Note> mMelody = new Vector<>();
+    private static Vector<Chord> mChords = new Vector<>();
 
     /**
      * The main method that runs the composition algorithm.
@@ -21,6 +20,7 @@ public class Algorithm {
      */
     public static String compose (String melodyStr, String key, String scaleType, int startingIndex) {
         Chord.AbstractChord abstractChord;
+        Chord prevChord = null;
         String composition = "";
 
         mMelody.clear();
@@ -40,12 +40,16 @@ public class Algorithm {
 
             abstractChord = Chord.getAbstractChord(mKey, mMelody.get(i), mScaleType);
 
+            if (i > 0) {
+                prevChord = mChords.get(i - 1);
+            }
+
             if (Chord.AbstractChord.NONE == abstractChord) {
-                mChords.add(Chord.getNonScaleToneChord(mKey, mMelody.get(i), mScaleType));
+                mChords.add(Chord.getNonScaleToneChord(mKey, mMelody.get(i), mScaleType, prevChord));
             }
             else
             {
-                mChords.add(Chord.getScaleToneChord(mKey, mMelody.get(i), mScaleType));
+                mChords.add(Chord.getScaleToneChord(mKey, mMelody.get(i), mScaleType, prevChord));
             }
         }
 
@@ -55,7 +59,7 @@ public class Algorithm {
         /* Make sure all notes/chords are within the proper octaves. */
         assignOctaves();
 
-        /* Print chords to the screen */
+        /* Create string from chords */
         for (int i = 0; i < mChords.size(); ++i) {
             composition += mChords.get(i).toString();
         }
@@ -65,8 +69,8 @@ public class Algorithm {
 
     /**
      * Attempts to create a cadence at the end of a composition by changing the last two chords to
-     * a V-I (Authentic cadence) or IV-I (Plagal cadence). If the chords cannot be changed, they are left
-     * as they were.
+     * a V-I (Authentic cadence) or IV-I (Plagal cadence). If the chords cannot be changed, they
+     * are left as they were.
      */
     private static void cadenceEnding () {
         if (mChords.size() > 1) {
@@ -77,14 +81,12 @@ public class Algorithm {
                 lastChord.changeChord(mKey, mScaleType, Chord.AbstractChord.I);
             }
 
-            if (Chord.AbstractChord.V != penultChord.getAbstractChord() && Chord.AbstractChord.IV != penultChord.getAbstractChord()) {
+            if (Chord.AbstractChord.V != penultChord.getAbstractChord() &&
+                    Chord.AbstractChord.IV != penultChord.getAbstractChord()) {
                 if (!penultChord.changeChord(mKey, mScaleType, Chord.AbstractChord.V)) {
                     penultChord.changeChord(mKey, mScaleType, Chord.AbstractChord.IV);
                 }
             }
-
-            System.out.println("Penult: " + penultChord.getAbstractChord());// TODO: Remove after debugging
-            System.out.println("Last: " + lastChord.getAbstractChord());
 
             mChords.set(mChords.size() - 2, penultChord);
             mChords.set(mChords.size() - 1, lastChord);
@@ -95,9 +97,6 @@ public class Algorithm {
             if (Chord.AbstractChord.I != lastChord.getAbstractChord()) {
                 lastChord.changeChord(mKey, mScaleType, Chord.AbstractChord.I);
             }
-
-            // TODO: Remove after debugging
-            System.out.println("Last: " + lastChord.getAbstractChord());
 
             mChords.set(mChords.size() - 1, lastChord);
         }
@@ -136,8 +135,6 @@ public class Algorithm {
 
             ++i;
         }
-
-        System.out.println("Melody: " + mMelody.toString());// TODO: Remove after debugging
     }
 
     /**
@@ -146,11 +143,9 @@ public class Algorithm {
     private static void getKey (String userKey) {
 
         if (0 == userKey.compareTo("Let us decide")) {// TODO Fix magic const
-            //mKey = mMelody.get(mMelody.size() - 1);// get key from last note
-            mKey = Scale.getRootFromFifth(mMelody.get(mMelody.size() - 1), mScaleType);// TODO: Should it be a fifth down from the last note????? so last chord is always tonic
+            mKey = Scale.getRootFromFifth(mMelody.get(mMelody.size() - 1), mScaleType);
         }
         else {
-
             if (1 == userKey.length()) {
                 userKey += "0";
             }
