@@ -138,7 +138,7 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         noteGap = (screenSize.y - NOTE_HEIGHT) / NUM_OF_NOTE_POS;
         lineGap = (screenSize.y - NOTE_HEIGHT) / NUM_OF_LINE_POS;
 
-        // Parse the composition, and determine number of gaps between a given note and the top
+        // Parse the composition, and determine  of gaps between a given note and the top
         // of the screen. Assigns them to an array for the display
         if (mRecordedSong.length() > 1)
         {
@@ -193,6 +193,40 @@ public class CompositionViewerActivity extends ChordinateActivity implements Vie
         }
         chordNum = 0;
         noteNum = 0;
+
+        view = layoutInflater.inflate(R.layout.comp_view_item, mParentLayout, false);
+        chord = (RelativeLayout) view.findViewById((R.id.childLayout));
+        RelativeLayout.LayoutParams trebleParams = new RelativeLayout.LayoutParams(100, lineGap * 5);
+        trebleParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        trebleParams.setMargins(0, (lineGap * ((NUM_OF_LINE_POS / 2) - 5)), 0, 0);
+        RelativeLayout.LayoutParams bassParams = new RelativeLayout.LayoutParams(150, lineGap * 4);
+        bassParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        bassParams.setMargins(0, (lineGap * ((NUM_OF_LINE_POS / 2) + 1)), 0, 0);
+        ImageView trebleClef = new ImageView(chord.getContext()), bassClef = new ImageView(chord.getContext());
+        trebleClef.setBackgroundResource(R.drawable.treble_clef);
+        bassClef.setBackgroundResource(R.drawable.bass_clef);
+        chord.addView(trebleClef, trebleParams);
+        chord.addView(bassClef, bassParams);
+
+        for (int i = 0; i < NUM_OF_LINE_POS; i ++)
+        {
+            RelativeLayout.LayoutParams lineLayoutParams = new RelativeLayout.LayoutParams
+                    (150, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            ImageView singleLine = new ImageView(chord.getContext());
+            lineLayoutParams.setMargins(0,(lineGap * i) + 7, 0, 0);
+            if (i == (NUM_OF_LINE_POS / 2) || i < ((NUM_OF_LINE_POS / 2) - 5)
+                    || i > ((NUM_OF_LINE_POS / 2) + 5)) {
+                singleLine.setBackgroundResource(R.drawable.music_staff_line_mid_c);
+            }
+            else
+            {
+
+                singleLine.setBackgroundResource(R.drawable.music_staff_line);
+            }
+            chord.addView(singleLine, lineLayoutParams);
+        }
+        mParentLayout.addView(chord);
+
 
         // With the array of distances for each notes, create each view with each chord and set
         // each chord's onClickListener

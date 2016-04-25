@@ -111,6 +111,7 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
 
         OctSpinner = (Spinner) findViewById(R.id.spinner);
         OctSpinner.setAdapter(stringArrayAdapter);
+        OctSpinner.setSelection(3);
 
         PlayedNote = (TextView) findViewById(R.id.textView);
 
@@ -173,6 +174,7 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
                 if (bIsRecording)
                 {
                     recording = recording.concat(newNote + ";");
+                    stopRecord.setEnabled(true);
                 }
 
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
@@ -211,6 +213,7 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
                 if (bIsRecording)
                 {
                     recording = recording.concat(newNote + ";");
+                    stopRecord.setEnabled(true);
                 }
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
@@ -245,6 +248,7 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
                 if (bIsRecording)
                 {
                     recording = recording.concat(newNote + ";");
+                    stopRecord.setEnabled(true);
                 }
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
@@ -295,6 +299,7 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
                 if (bIsRecording)
                 {
                     recording = recording.concat(newNote + ";");
+                    stopRecord.setEnabled(true);
                 }
             } else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE ||
                     event.getAction() == MotionEvent.ACTION_UP ||
@@ -310,11 +315,10 @@ public class KeyboardActivity extends ChordinateActivity implements View.OnTouch
         {
             bIsRecording = true;
             startRecord.setEnabled(false);
-            stopRecord.setEnabled(true);
         }
 
         // Action when Stop button is pressed
-        else if (id == R.id.stop_record &&
+        else if (id == R.id.stop_record && recording != "" &&
                 (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS ||
                         event.getAction() == MotionEvent.ACTION_DOWN))
         {
